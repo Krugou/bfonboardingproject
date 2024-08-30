@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 
 const Home = () => {
   const [messages, setMessages] = useState<{text: string; isUser: boolean}[]>(
@@ -65,7 +65,6 @@ const Home = () => {
       trigger: 'miten perustan toiminimen?',
       response: 'Sinun täytyy rekisteröityä yrittäjäksi ja perustaa toiminimi.',
     },
-    // Add more preset replies as needed
   ];
 
   useEffect(() => {
@@ -106,7 +105,7 @@ const Home = () => {
     }
   };
 
-  const handleReplyClick = async (reply:string) => {
+  const handleReplyClick = async (reply: string) => {
     await setInputValue(reply);
     handleSendMessage();
   };

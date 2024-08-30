@@ -3,7 +3,12 @@ module.exports = {
     browser: true,
     es2021: true,
   },
-  extends: ['eslint:recommended', 'plugin:react/recommended'],
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'next',
+    'next/core-web-vitals',
+  ],
   settings: {
     react: {
       version: 'detect', // Automatically detect the react version
@@ -26,5 +31,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react'],
-  rules: {},
+  rules: {
+    // Add your custom rules here
+  },
 };

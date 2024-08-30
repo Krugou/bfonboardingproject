@@ -7,13 +7,9 @@ export const metadata: Metadata = {
   description: 'Onboarding testing description',
 };
 
-const RootLayout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => (
+const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
-    <body className='font-mainFont '>{children}</body>
+    <body className='font-mainFont'>{children}</body>
   </html>
 );
 
