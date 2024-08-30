@@ -1,11 +1,12 @@
 {
-  "name": "my-app",
+  "name": "bfonboarding",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start": "npm run dev",
+    "dev": "next dev --turbo --port 3008",
     "build": "next build",
-    "start": "next start",
+    "startB": "next start",
     "lint": "next lint"
   },
   "dependencies": {
