@@ -1,10 +1,10 @@
-import type { Metadata } from "next";
-import "./globals.css";
-
+import type {Metadata} from 'next';
+import React from 'react';
+import './globals.css';
 
 export const metadata: Metadata = {
-  title: "Onboarding testing",
-  description: "Onboarding testing description",
+  title: 'Onboarding testing',
+  description: 'Onboarding testing description',
 };
 
 const RootLayout = ({
@@ -12,7 +12,7 @@ const RootLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => (
-  <html lang="en">
+  <html lang='en'>
     <body className='font-mainFont '>{children}</body>
   </html>
 );
