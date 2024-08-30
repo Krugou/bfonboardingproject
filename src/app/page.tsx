@@ -1,6 +1,6 @@
 'use client';
 
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Home = () => {
   const [messages, setMessages] = useState<{text: string; isUser: boolean}[]>(
@@ -106,7 +106,7 @@ const Home = () => {
     }
   };
 
-  const handleReplyClick = async (reply) => {
+  const handleReplyClick = async (reply:string) => {
     await setInputValue(reply);
     handleSendMessage();
   };
