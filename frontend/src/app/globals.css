@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Finlandica';
+  src: url('/fonts/Finlandica/Finlandica-VariableFont_wght.ttf') format('truetype'); 
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
