@@ -1,6 +1,6 @@
 'use client';
-
 import React, {useEffect, useState} from 'react';
+import replies from '../data/mockdata';
 
 const Home = () => {
   const [messages, setMessages] = useState<{text: string; isUser: boolean}[]>(
@@ -13,59 +13,6 @@ const Home = () => {
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
-  const replies = [
-    {trigger: 'hello', response: 'Hi there!'},
-    {trigger: 'how are you', response: 'I am fine, thank you!'},
-    {trigger: 'bye', response: 'Goodbye!'},
-    {trigger: 'oletko sinä ihminen?', response: 'En, olen botti.'},
-    {
-      trigger: 'mikä on nimesi?',
-      response: 'Nimeni on My Business Finland botti',
-    },
-    {
-      trigger: 'mikä on tehtäväsi?',
-      response:
-        'Autan sinua löytämään tietoa yrityksen perustamisesta Suomessa.',
-    },
-    {
-      trigger: 'mikä on yrityksen perustaminen?',
-      response:
-        'Yrityksen perustaminen on prosessi, jossa perustetaan uusi yritys.',
-    },
-    {
-      trigger: 'miten perustan yrityksen?',
-      response: 'Sinun täytyy rekisteröityä yrittäjäksi ja perustaa yritys.',
-    },
-    {
-      trigger: 'mikä on y-tunnus?',
-      response:
-        'Y-tunnus on yrityksen tunnus, jota käytetään verotuksessa ja viranomaisasioinnissa.',
-    },
-    {
-      trigger: 'mikä on prh?',
-      response:
-        'PRH on Patentti- ja rekisterihallitus, joka vastaa yritysten rekisteröinnistä.',
-    },
-    {
-      trigger: 'mitä tarkoittaa osakeyhtiö?',
-      response:
-        'Osakeyhtiö on yritysmuoto, jossa omistajat vastaavat rajoitetusti yrityksen veloista.',
-    },
-    {
-      trigger: 'miten perustan osakeyhtiön?',
-      response:
-        'Sinun täytyy rekisteröityä yrittäjäksi ja perustaa osakeyhtiö.',
-    },
-    {
-      trigger: 'mikä on toiminimi?',
-      response:
-        'Toiminimi on yritysmuoto, jossa yrityksen ja omistajan taloudellinen vastuu on yksi ja sama.',
-    },
-    {
-      trigger: 'miten perustan toiminimen?',
-      response: 'Sinun täytyy rekisteröityä yrittäjäksi ja perustaa toiminimi.',
-    },
-  ];
 
   useEffect(() => {
     generateRandomReplies();
@@ -104,7 +51,7 @@ const Home = () => {
       generateRandomReplies();
     }
   };
-
+  console.log(process.env.NODE_ENV);
   const handleReplyClick = async (reply: string) => {
     await setInputValue(reply);
     handleSendMessage();
@@ -120,6 +67,7 @@ const Home = () => {
         <div>
           <p className='w-10 mx-2 text-white'>My Business Finland</p>
         </div>
+        <h2></h2>
       </header>
       <main className='flex-grow w-full max-w-screen-lg p-4'>
         <h1 className='font-mainFont text-center text-2xl'>
@@ -183,6 +131,12 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <div className='h-10'></div>
+      {process.env.NODE_ENV === 'development' && (
+        <div className='fixed top-0 right-0 p-2 bg-red-500 text-white'>
+          Development Mode
+        </div>
+      )}
     </div>
   );
 };
