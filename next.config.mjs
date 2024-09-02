@@ -22,6 +22,8 @@ const nextConfig = {
    * @see https://nextjs.org/docs/app/api-reference/components/image#unoptimized
    */
   ...(process.env.NODE_ENV === 'production' && {images: {unoptimized: true}}),
+
+  removeConsole: process.env.NODE_ENV === "production"
 };
 
 export default nextConfig;
