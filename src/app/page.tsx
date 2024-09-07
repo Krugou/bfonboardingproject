@@ -1,15 +1,15 @@
 'use client';
 import DevModeBanner from '@/components/DevModeBanner';
 import Header from '@/components/Header';
-import Stepper from '@/components/Stepper';
-import React, {useEffect, useState} from 'react';
-import questions from '../data/mockdata';
 import QuestionsNavigator from '@/components/QuestionsNavigator';
+import Stepper from '@/components/Stepper';
+import React, {useState} from 'react';
+import questions from '../data/mockdata';
 
 const Home = () => {
-  const capitalizeFirstLetter = (string: string) => {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  };
+  // const capitalizeFirstLetter = (string: string) => {
+  //   return string.charAt(0).toUpperCase() + string.slice(1);
+  // };
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
 
@@ -41,7 +41,10 @@ const Home = () => {
         <div className='flex h-1/2 justify-center items-center'>
           <h2>{questions[currentStep - 1].question}</h2>
         </div>
-        <QuestionsNavigator currentStep={currentStep} setCurrentStep={setCurrentStep} />
+        <QuestionsNavigator
+          currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
+        />
       </main>
 
       <DevModeBanner />

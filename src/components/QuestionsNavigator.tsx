@@ -3,6 +3,7 @@ import questions from '../data/mockdata';
 import QuestionInput from './QuestionInput';
 interface QuestionNavigatorProps {
   currentStep: number;
+  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
 }
 
