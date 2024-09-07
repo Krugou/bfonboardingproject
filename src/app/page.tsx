@@ -1,142 +1,50 @@
 'use client';
+import DevModeBanner from '@/components/DevModeBanner';
+import Header from '@/components/Header';
+import Stepper from '@/components/Stepper';
 import React, {useEffect, useState} from 'react';
-import replies from '../data/mockdata';
+import questions from '../data/mockdata';
+import QuestionsNavigator from '@/components/QuestionsNavigator';
 
 const Home = () => {
-  const [messages, setMessages] = useState<{text: string; isUser: boolean}[]>(
-    [],
-  );
-  const [inputValue, setInputValue] = useState('');
-  const [randomReplies, setRandomReplies] = useState<
-    {trigger: string; response: string}[]
-  >([]);
   const capitalizeFirstLetter = (string: string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  const [listeningMode, setListeningMode] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
 
-  useEffect(() => {
-    generateRandomReplies();
-  }, []);
-
-  const generateRandomReplies = () => {
-    const shuffled = replies.sort(() => 0.5 - Math.random());
-    setRandomReplies(shuffled.slice(0, 3));
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-  };
-
-  const handleSendMessage = () => {
-    if (inputValue.trim()) {
-      const newMessages = [...messages, {text: inputValue, isUser: true}];
-      setMessages(newMessages);
-      setInputValue('');
-
-      // Check for preset messages and add a reply
-      const lowerCaseInput = inputValue.toLowerCase().trim();
-      const reply = replies.find(
-        (r) => r.trigger.toLowerCase() === lowerCaseInput,
-      );
-      if (reply) {
-        setTimeout(() => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            {text: reply.response, isUser: false},
-          ]);
-        }, 500); // Delay to simulate response time
-      }
-
-      // Generate new random replies
-      generateRandomReplies();
-    }
-  };
-  console.log(process.env.NODE_ENV);
-  const handleReplyClick = async (reply: string) => {
-    await setInputValue(reply);
-    handleSendMessage();
-  };
-  const handleReset = () => {
-    setMessages([]);
-    setInputValue('');
-    generateRandomReplies();
-  };
   return (
-    <div className='flex flex-col items-center justify-between min-h-screen '>
-      <header className='bg-blue-500 flex justify-between h-20 w-full'>
-        <div>
-          <p className='w-10 mx-2 text-white'>My Business Finland</p>
-        </div>
-        <h2></h2>
-      </header>
-      <main className='flex-grow w-full max-w-screen-lg p-4'>
-        <h1 className='font-mainFont text-center text-2xl'>
-          Testing next.js with a fake chatbot
-        </h1>
-        <div className='mt-4 h-full w-full'>
-          {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`p-2 my-2 rounded w-full   flex ${
-                message.isUser ? 'justify-end' : 'justify-start'
-              }`}>
-              <p
-                className={`p-2 rounded max-w-[50%] ${
-                  message.isUser
-                    ? 'bg-blue-200 text-right'
-                    : 'bg-gray-200 text-left'
-                }`}>
-                {capitalizeFirstLetter(message.text)}
-              </p>
-            </div>
-          ))}
-        </div>
-      </main>
-      <div className='w-full p-4 bg-gray-100 flex flex-col max-w-screen-lg items-center'>
-        <div className='mb-4 flex space-x-2'>
-          {randomReplies.map((reply, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                handleReplyClick(reply.trigger);
-              }}
-              style={{userSelect: 'none'}}
-              className='p-2 bg-blue-500 text-white rounded'>
-              {capitalizeFirstLetter(reply.trigger)}
+    <div className='flex flex-col bg-gray-300 h-screen items-center justify-between  '>
+      <Header />
+      <main className=' w-full h-full flex flex-col bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg '>
+        <div className='flex justify-between mx-10 mt-10'>
+          <div className='flex items-center w-1/3 mb-4'>
+            <label className='inline-flex items-center cursor-pointer'>
+              <input
+                type='checkbox'
+                value=''
+                className='sr-only peer'
+                checked={listeningMode}
+                onChange={() => setListeningMode(!listeningMode)}
+              />
+              <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+              <span className='text-sm font-medium text-gray-900 ms-3 dark:text-gray-300'></span>
+            </label>
+          </div>
+          <Stepper steps={questions} currentStep={currentStep} />
+          <div className='flex justify-end w-1/3 mb-4'>
+            <button className='bg-blue-500 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded'>
+              History
             </button>
-          ))}
+          </div>
         </div>
-        <div className='w-full flex items-center'>
-          <input
-            type='text'
-            value={inputValue}
-            onChange={handleInputChange}
-            className='flex-grow p-2 border border-gray-300 rounded'
-            placeholder='Type your message...'
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
-          />
-          <button
-            onClick={handleSendMessage}
-            className='ml-2 p-2 bg-blue-500 text-white rounded'>
-            Send
-          </button>
-          <button
-            onClick={handleReset}
-            className='ml-2 p-2 bg-red-500 text-white rounded'>
-            Reset
-          </button>
+        <div className='flex h-1/2 justify-center items-center'>
+          <h2>{questions[currentStep - 1].question}</h2>
         </div>
-      </div>
-      <div className='h-10'></div>
-      {process.env.NODE_ENV === 'development' && (
-        <div className='fixed top-0 right-0 p-2 bg-red-500 text-white'>
-          Development Mode
-        </div>
-      )}
+        <QuestionsNavigator currentStep={currentStep} setCurrentStep={setCurrentStep} />
+      </main>
+
+      <DevModeBanner />
     </div>
   );
 };
