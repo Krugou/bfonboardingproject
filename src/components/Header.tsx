@@ -6,7 +6,6 @@ const Header = () => {
       <div>
         <p className='w-10 mx-2 text-white'>My Business Finland</p>
       </div>
-      <h2></h2>
     </header>
   );
 };

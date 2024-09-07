@@ -1,7 +1,17 @@
 import React from 'react';
-
+interface Question {
+  id: string;
+  question: string;
+  condition: string;
+  tooltip: string;
+  syntaxPlaceholder: string;
+  answerType: string;
+  answerOptions: string;
+  targetAudience: string;
+  errorAnswer: string;
+}
 interface StepperProps {
-  steps: string[];
+  steps: Question[];
   currentStep: number;
 }
 
