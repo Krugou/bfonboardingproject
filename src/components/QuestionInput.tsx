@@ -14,7 +14,18 @@ interface QuestionInputProps {
 const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const handleSingleChoiceClick = (option: string) => {
+    setSelectedAnswer(option);
+  };
 
+  const handleMultiChoiceClick = (option: string) => {
+    setSelectedAnswers((prevSelected) =>
+      prevSelected.includes(option)
+        ? prevSelected.filter((item) => item !== option)
+        : [...prevSelected, option],
+    );
+  };
   const renderInput = () => {
     switch (question.answerType) {
       case 'directInput':
@@ -46,7 +57,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
             <span className='ml-2'>{sliderValue}</span>
           </div>
         );
-      case 'multiChoice':
+      case 'singleChoice':
         if (!question.answerOptions) {
           return (
             <div className='ml-4 p-2 text-red-500'>No options provided</div>
@@ -62,7 +73,29 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
                     ? 'bg-green-500 text-white'
                     : 'border-gray-300'
                 }`}
-                onClick={() => setSelectedAnswer(option.trim())}>
+                onClick={() => handleSingleChoiceClick(option.trim())}>
+                {option.trim()}
+              </button>
+            ))}
+          </div>
+        );
+      case 'multiChoice':
+        if (!question.answerOptions) {
+          return (
+            <div className='ml-4 p-2 text-red-500'>No options provided</div>
+          );
+        }
+        return (
+          <div className='ml-4'>
+            {question.answerOptions.split(',').map((option, index) => (
+              <button
+                key={index}
+                className={`p-2 m-1 border rounded ${
+                  selectedAnswers.includes(option.trim())
+                    ? 'bg-green-500 text-white'
+                    : 'border-gray-300'
+                }`}
+                onClick={() => handleMultiChoiceClick(option.trim())}>
                 {option.trim()}
               </button>
             ))}

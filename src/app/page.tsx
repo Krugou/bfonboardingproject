@@ -3,8 +3,11 @@ import DevModeBanner from '@/components/DevModeBanner';
 import Header from '@/components/Header';
 import QuestionsNavigator from '@/components/QuestionsNavigator';
 import Stepper from '@/components/Stepper';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
 import React, {useState} from 'react';
 import questions from '../data/mockdata';
+import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 
 const Home = () => {
   // const capitalizeFirstLetter = (string: string) => {
@@ -12,13 +15,26 @@ const Home = () => {
   // };
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+  const [modalOpen, setModalOpen] = useState(false);
 
+  const handleOpenModal = () => {
+    setModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  };
   return (
     <div className='flex flex-col bg-gray-300 h-screen items-center justify-between  '>
       <Header />
       <main className=' w-full h-full flex flex-col bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg '>
         <div className='flex justify-between mx-10 mt-10'>
           <div className='flex items-center w-1/3 mb-4'>
+            {listeningMode ? (
+              <MicIcon className='text-green-600' />
+            ) : (
+              <MicOffIcon className='text-gray-600' />
+            )}
             <label className='inline-flex items-center cursor-pointer'>
               <input
                 type='checkbox'
@@ -33,20 +49,33 @@ const Home = () => {
           </div>
           <Stepper steps={questions} currentStep={currentStep} />
           <div className='flex justify-end w-1/3 mb-4'>
-            <button className='bg-blue-500 hover:bg-blue-700  text-white font-bold py-2 px-4 rounded'>
-              History
-            </button>
+            {currentStep !== 1 && (
+              <button
+                className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+                onClick={handleOpenModal}>
+                History
+              </button>
+            )}
           </div>
         </div>
         <div className='flex h-1/2 justify-center items-center'>
-          <h2>{questions[currentStep - 1].question}</h2>
+          {currentStep <= questions.length ? (
+            <h2>{questions[currentStep - 1].question}</h2>
+          ) : (
+            <h2>You have completed all the questions!</h2>
+          )}
         </div>
         <QuestionsNavigator
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
       </main>
-
+      <AnsweredQuestionsModal
+        open={modalOpen}
+        onClose={handleCloseModal}
+        questions={questions}
+        currentStep={currentStep}
+      />
       <DevModeBanner />
     </div>
   );
