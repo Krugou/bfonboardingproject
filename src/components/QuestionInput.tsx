@@ -48,6 +48,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
           <div className='flex items-center'>
             <input
               type='range'
+              title='slider'
               className='ml-4 p-2'
               min={min}
               max={max}
@@ -65,6 +66,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
         }
         return (
           <div className='ml-4'>
+            <div className='mb-2 text-gray-700'>Please select one option:</div>
             {question.answerOptions.split(',').map((option, index) => (
               <button
                 key={index}
@@ -87,6 +89,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
         }
         return (
           <div className='ml-4'>
+            <div className='mb-2 text-gray-700'>
+              Please select one or more options:
+            </div>
             {question.answerOptions.split(',').map((option, index) => (
               <button
                 key={index}

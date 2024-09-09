@@ -1,6 +1,7 @@
 import React from 'react';
 import questions from '../data/mockdata';
 import QuestionInput from './QuestionInput';
+
 interface QuestionNavigatorProps {
   currentStep: number;
   // eslint-disable-next-line no-unused-vars
@@ -14,10 +15,11 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
   const handleReset = () => {
     setCurrentStep(1);
   };
+
   return (
-    <div className='flex h-1/2 justify-center gap-4 items-center'>
+    <div className='flex flex-col sm:flex-row h-1/2 justify-center gap-4 items-center p-4'>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-20'
         onClick={() => setCurrentStep(currentStep - 1)}
         disabled={currentStep === 1}>
         Previous
@@ -26,7 +28,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
         <>
           <QuestionInput question={questions[currentStep - 1]} />
           <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50'
             onClick={() => setCurrentStep(currentStep + 1)}
             disabled={currentStep === questions.length + 1}>
             Next
