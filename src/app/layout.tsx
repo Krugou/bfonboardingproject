@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
+import Head from 'next/head';
 import React from 'react';
 import './globals.css';
-
 export const metadata: Metadata = {
   title: 'Business Finland Onboarding Portal',
   description:
@@ -20,9 +20,9 @@ export const metadata: Metadata = {
 console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
-    <head>
+    <Head>
       <link rel='icon' href='/icons/favicon-32x32.webp' />
-    </head>
+    </Head>
     <body className='font-mainFont'>{children}</body>
   </html>
 );
