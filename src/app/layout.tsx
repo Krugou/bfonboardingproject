@@ -1,7 +1,7 @@
 import type {Metadata} from 'next';
 import React from 'react';
+import Favicon from './favicon.webp';
 import './globals.css';
-import Favicon from './public/favicon.webp';
 export const metadata: Metadata = {
   title: 'Business Finland Onboarding Portal',
   description:
