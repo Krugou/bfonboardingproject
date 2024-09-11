@@ -17,26 +17,28 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
   };
 
   return (
-    <div className='flex flex-col sm:flex-row h-1/2 justify-center gap-4 items-center p-4'>
+    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-20'
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
         onClick={() => setCurrentStep(currentStep - 1)}
         disabled={currentStep === 1}>
         Previous
       </button>
       {currentStep <= questions.length ? (
         <>
-          <QuestionInput question={questions[currentStep - 1]} />
+          <div className='w-full sm:w-3/4'>
+            <QuestionInput question={questions[currentStep - 1]} />
+          </div>
           <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50'
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
             onClick={() => setCurrentStep(currentStep + 1)}
-            disabled={currentStep === questions.length + 1}>
+            disabled={currentStep === questions.length}>
             Next
           </button>
         </>
       ) : (
         <button
-          className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+          className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
           onClick={handleReset}>
           Reset
         </button>
