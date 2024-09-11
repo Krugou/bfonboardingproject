@@ -1,7 +1,12 @@
 import type {Metadata} from 'next';
+import localFont from 'next/font/local';
 import React from 'react';
 import Favicon from './favicon.webp';
 import './globals.css';
+
+const finlandica = localFont({
+  src: './Finlandica/Finlandica-VariableFont_wght.ttf',
+});
 export const metadata: Metadata = {
   title: 'Business Finland Onboarding Portal',
   description:
@@ -21,7 +26,7 @@ export const metadata: Metadata = {
 console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
-    <body className='font-mainFont'>{children}</body>
+    <body className={finlandica.className}>{children}</body>
   </html>
 );
 
