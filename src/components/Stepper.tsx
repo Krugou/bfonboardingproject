@@ -1,5 +1,5 @@
+import {useUserContext} from '@/context/UserContext';
 import React from 'react';
-import { useUserContext } from '@/context/UserContext';
 
 interface Question {
   id: string;
@@ -25,13 +25,17 @@ const Stepper: React.FC<StepperProps> = ({
   currentStep,
   setCurrentStep,
 }) => {
-  const { answers } = useUserContext();
+  const {answers} = useUserContext();
 
   return (
     <div className='flex flex-wrap justify-between items-center w-full max-w-3xl mx-auto px-4'>
       {steps.map((step, i) => {
         const isAnswered = answers[step.id] !== undefined;
         const isSkipped = !isAnswered && i + 1 < currentStep;
+        const shortenedQuestion =
+          step.question.length > 10
+            ? `${step.question.substring(0, 10)}...`
+            : step.question;
 
         return (
           <div key={i} className='flex-1 flex items-center mb-4'>
@@ -45,7 +49,8 @@ const Stepper: React.FC<StepperProps> = ({
                   ? 'border-green-500 bg-green-500 text-white'
                   : 'border-gray-300 bg-white text-gray-500'
               }`}
-              onClick={() => setCurrentStep(i + 1)}>
+              onClick={() => setCurrentStep(i + 1)}
+              title={`Click to go to question: ${shortenedQuestion}`}>
               {i + 1 < currentStep ? (
                 <svg
                   className='w-4 h-4 sm:w-6 sm:h-6 text-white'
