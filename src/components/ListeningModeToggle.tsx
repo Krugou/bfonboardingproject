@@ -13,7 +13,11 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({
   setListeningMode,
 }) => {
   return (
-    <div className='flex gap-2 justify-center items-center w-1/3  mb-4'>
+    <div
+      className='flex gap-2 justify-center items-center w-1/3  mb-4'
+      title={
+        listeningMode ? 'Turn off listening mode' : 'Turn on listening mode'
+      }>
       <label className='inline-flex items-center cursor-pointer'>
         <input
           type='checkbox'
@@ -27,9 +31,15 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({
         <span className='text-sm font-medium text-gray-900 ms-3 dark:text-gray-300'></span>
       </label>
       {listeningMode ? (
-        <MicIcon className='text-green-600' />
+        <MicIcon
+          className='text-green-600 cursor-pointer'
+          onClick={() => setListeningMode(!listeningMode)}
+        />
       ) : (
-        <MicOffIcon className='text-gray-600' />
+        <MicOffIcon
+          className='text-gray-600 cursor-pointer'
+          onClick={() => setListeningMode(!listeningMode)}
+        />
       )}
     </div>
   );

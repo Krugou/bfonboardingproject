@@ -41,6 +41,7 @@ const MainContent: React.FC<MainContentProps> = ({
           currentStep={currentStep}
           handleOpenModal={handleOpenModal}
           questions={questions}
+          setCurrentStep={setCurrentStep}
         />
         <QuestionDisplay currentStep={currentStep} questions={questions} />
         <QuestionsNavigator
