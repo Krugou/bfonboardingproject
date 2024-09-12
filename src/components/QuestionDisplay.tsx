@@ -40,14 +40,15 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
     <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10'>
       {currentStep <= questions.length ? (
         <div className='flex justify-center items-center'>
-          <div className='relative group'>
+          <div className=' group'>
             <h2
-              className='text-center text-lg sm:text-2xl md:text-3xl lg:text-4xl'
+              className='text-center w-full h-full text-lg sm:text-2xl md:text-3xl lg:text-4xl'
               title={questions[currentStep - 1].tooltip}>
               {questions[currentStep - 1].question}
             </h2>
+
             <h3
-              className={`text-center absolute transition-opacity duration-300 ${
+              className={`text-center  transition-opacity duration-300 ${
                 showTooltip
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100'
