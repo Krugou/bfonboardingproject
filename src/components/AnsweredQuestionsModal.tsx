@@ -17,7 +17,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   currentStep,
   setCurrentStep,
 }) => {
-  console.log('🚀 ~ currentStep:', currentStep);
+  // console.log('🚀 ~ currentStep:', currentStep);
   const {answers} = useUserContext();
 
   if (!open) return null;
