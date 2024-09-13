@@ -9,13 +9,16 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
   currentStep,
   onClick,
 }) => {
-  if (currentStep === 1) return <div></div>;
+  const isDisabled = currentStep === 1;
 
   return (
-    <div className='flex justify-end  w-1/3 mb-4'>
+    <div className='flex justify-end w-1/3 mb-4'>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={onClick}>
+        className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ${
+          isDisabled ? 'opacity-50 cursor-not-allowed' : ''
+        }`}
+        onClick={onClick}
+        disabled={isDisabled}>
         History
       </button>
     </div>
