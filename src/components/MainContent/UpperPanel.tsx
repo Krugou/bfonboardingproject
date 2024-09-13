@@ -1,25 +1,16 @@
+import {QuestionItem} from '@/app/types';
 import React from 'react';
-import HistoryButton from './HistoryButton';
-import ListeningModeToggle from './ListeningModeToggle';
-import Stepper from './Stepper';
-interface Question {
-  id: string;
-  question: string;
-  condition: string;
-  tooltip: string;
-  syntaxPlaceholder: string;
-  answerType: string;
-  answerOptions: string;
-  targetAudience: string;
-  errorAnswer: string;
-}
+import HistoryButton from './UpperPanel/HistoryButton';
+import ListeningModeToggle from './UpperPanel/ListeningModeToggle';
+import Stepper from './UpperPanel/Stepper';
+
 interface UpperPanelProps {
   listeningMode: boolean;
   // eslint-disable-next-line no-unused-vars
   setListeningMode: (mode: boolean) => void;
   currentStep: number;
   handleOpenModal: () => void;
-  questions: Question[];
+  questions: QuestionItem[];
   // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
 }
@@ -39,15 +30,11 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
         setListeningMode={setListeningMode}
       />
       <Stepper
-        steps={questions}
+        questions={questions}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
       />
-      <HistoryButton
-        currentStep={currentStep}
-        onClick={handleOpenModal}
-
-      />
+      <HistoryButton currentStep={currentStep} onClick={handleOpenModal} />
     </div>
   );
 };

@@ -4,6 +4,9 @@ interface UserContextType {
   answers: Record<string, any>;
   // eslint-disable-next-line no-unused-vars
   setAnswer: (questionId: string, answer: any) => void;
+  language: string;
+  // eslint-disable-next-line no-unused-vars
+  setLanguage: (language: string) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -20,9 +23,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       [questionId]: answer,
     }));
   };
+  const [language, setLanguage] = useState('en');
 
   return (
-    <UserContext.Provider value={{answers, setAnswer}}>
+    <UserContext.Provider value={{answers, setAnswer, language, setLanguage}}>
       {children}
     </UserContext.Provider>
   );
