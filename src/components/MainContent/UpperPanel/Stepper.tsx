@@ -1,21 +1,9 @@
+import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import React from 'react';
-interface Question {
-  id: string;
-  question: {
-    [key: string]: string;
-  };
-  condition: string;
-  tooltip: string;
-  syntaxPlaceholder: string;
-  answerType: string;
-  answerOptions: string;
-  targetAudience: string;
-  errorAnswer: string;
-}
 
 interface StepperProps {
-  questions: Question[];
+  questions: QuestionItem[];
   currentStep: number;
   // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
