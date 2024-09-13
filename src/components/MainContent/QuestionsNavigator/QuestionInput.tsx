@@ -1,17 +1,9 @@
+import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import Slider from '@mui/material/Slider';
 import React, {useEffect, useState} from 'react';
-
-interface Question {
-  id: string;
-  question: string;
-  answerType: string;
-  answerOptions?: string;
-  syntaxPlaceholder?: string;
-}
-
 interface QuestionInputProps {
-  question: Question;
+  question: QuestionItem;
 }
 
 const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
@@ -19,7 +11,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
-
+  const {language} = useUserContext();
   useEffect(() => {
     if (answers[question.id]) {
       const answer = answers[question.id];
@@ -61,21 +53,21 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
             <input
               type='text'
               className='p-2 sm:p-4 border border-gray-300 rounded w-full sm:w-3/4 lg:w-1/2'
-              placeholder={question.syntaxPlaceholder}
+              placeholder={question.syntaxPlaceholder[language]}
               value={answers[question.id] || ''}
               onChange={(e) => setAnswer(question.id, e.target.value)}
             />
           </div>
         );
       case 'slider':
-        if (!question.answerOptions) {
+        if (!question.answerOptions || !question.answerOptions[language]) {
           return (
             <div className='ml-4 p-2 text-red-500'>No options provided</div>
           );
         }
         // es
         // eslint-disable-next-line no-case-declarations
-        const [min, max, step, unit] = question.answerOptions
+        const [min, max, step, unit] = question.answerOptions[language]
           .split(',')
           .map(Number);
         return (
@@ -98,7 +90,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
           </div>
         );
       case 'singleChoice': {
-        if (!question.answerOptions) {
+        if (!question.answerOptions || !question.answerOptions[language]) {
           return (
             <div className='ml-4 p-2 text-red-500'>No options provided</div>
           );
@@ -106,49 +98,60 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
         return (
           <div className='ml-4 p-2 flex flex-col justify-center items-center w-full'>
             <div className='mb-2 text-gray-700 text-center'>
-              Please select one option:
+              {language === 'fi'
+                ? ' Valitse yksi vaihtoehto:'
+                : ' Select one option:'}
             </div>
             <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
-              {question.answerOptions.split(',').map((option, index) => (
-                <button
-                  key={index}
-                  className={`p-2 sm:p-4 m-1 sm:m-2 border rounded ${
-                    selectedAnswer === option.trim()
-                      ? 'bg-green-500 text-white'
-                      : 'border-gray-300'
-                  } w-full sm:w-auto text-sm sm:text-lg`}
-                  onClick={() => handleSingleChoiceClick(option.trim())}>
-                  {option.trim()}
-                </button>
-              ))}
+              {question.answerOptions[language]
+                .split(',')
+                .map((option, index) => (
+                  <button
+                    key={index}
+                    className={`p-2 sm:p-4 m-1 sm:m-2 border rounded ${
+                      selectedAnswer === option.trim()
+                        ? 'bg-green-500 text-white'
+                        : 'border-gray-300'
+                    } w-full sm:w-auto text-sm sm:text-lg`}
+                    onClick={() => handleSingleChoiceClick(option.trim())}>
+                    {option.trim()}
+                  </button>
+                ))}
             </div>
           </div>
         );
       }
       case 'multiChoice': {
-        if (!question.answerOptions) {
+        if (!question.answerOptions || !question.answerOptions[language]) {
           return (
-            <div className='ml-4 p-2 text-red-500'>No options provided</div>
+            <div className='ml-4 p-2 text-red-500'>
+              {' '}
+              {language === 'fi' ? 'Ei vaihtoehtoja' : 'No options provided'}
+            </div>
           );
         }
         return (
           <div className=' p-2 ml-4 w-full flex flex-col justify-center items-center'>
             <div className='mb-2 text-gray-700 text-center'>
-              Please select one or more options:
+              {language === 'fi'
+                ? 'Valitse yksi tai useampi vaihtoehto'
+                : 'Select one or more options from below'}
             </div>
             <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
-              {question.answerOptions.split(',').map((option, index) => (
-                <button
-                  key={index}
-                  className={`p-2 m-1 border sm:m-2 rounded ${
-                    selectedAnswers.includes(option.trim())
-                      ? 'bg-green-500 text-white'
-                      : 'border-gray-300'
-                  } w-full sm:w-auto text-sm sm:text-lg`}
-                  onClick={() => handleMultiChoiceClick(option.trim())}>
-                  {option.trim()}
-                </button>
-              ))}
+              {question.answerOptions[language]
+                .split(',')
+                .map((option, index) => (
+                  <button
+                    key={index}
+                    className={`p-2 m-1 border sm:m-2 rounded ${
+                      selectedAnswers.includes(option.trim())
+                        ? 'bg-green-500 text-white'
+                        : 'border-gray-300'
+                    } w-full sm:w-auto text-sm sm:text-lg`}
+                    onClick={() => handleMultiChoiceClick(option.trim())}>
+                    {option.trim()}
+                  </button>
+                ))}
             </div>
           </div>
         );

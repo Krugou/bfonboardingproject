@@ -1,9 +1,10 @@
 import {useUserContext} from '@/context/UserContext';
 import React from 'react';
-
 interface Question {
   id: string;
-  question: string;
+  question: {
+    [key: string]: string;
+  };
   condition: string;
   tooltip: string;
   syntaxPlaceholder: string;
@@ -14,29 +15,32 @@ interface Question {
 }
 
 interface StepperProps {
-  steps: Question[];
+  questions: Question[];
   currentStep: number;
   // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
 }
 
 const Stepper: React.FC<StepperProps> = ({
-  steps,
+  questions,
   currentStep,
   setCurrentStep,
 }) => {
   const {answers} = useUserContext();
-
+  const {language} = useUserContext();
   return (
     <div className='flex flex-wrap justify-between items-center w-full max-w-3xl mx-auto px-4'>
-      {steps.map((step, i) => {
+      {questions.map((step, i) => {
         const isAnswered = answers[step.id] !== undefined;
         const isSkipped = !isAnswered && i + 1 < currentStep;
         const shortenedQuestion =
-          step.question.length > 10
-            ? `${step.question.substring(0, 10)}...`
+          step.question[language].length > 10
+            ? `${step.question[language].substring(0, 10)}...`
             : step.question;
-
+        const titleText =
+          language === 'fi'
+            ? `Klikkaa siirtyäksesi kysymykseen: ${shortenedQuestion}`
+            : `Click to go to question: ${shortenedQuestion}`;
         return (
           <div key={i} className='flex-1 flex items-center mb-4'>
             <div
@@ -50,7 +54,7 @@ const Stepper: React.FC<StepperProps> = ({
                   : 'border-gray-300 bg-white text-gray-500'
               }`}
               onClick={() => setCurrentStep(i + 1)}
-              title={`Click to go to question: ${shortenedQuestion}`}>
+              title={titleText}>
               {i + 1 < currentStep ? (
                 <svg
                   className='w-4 h-4 sm:w-6 sm:h-6 text-white'
@@ -65,11 +69,13 @@ const Stepper: React.FC<StepperProps> = ({
                     d='M5 13l4 4L19 7'></path>
                 </svg>
               ) : (
-                <span className='text-xs sm:text-base'>{i + 1}</span>
+                <span className='text-xs sm:text-base md:text-2xl text-bf-brand-primary font-bold'>
+                  {i + 1}
+                </span>
               )}
             </div>
-            {i < steps.length - 1 && (
-              <div className='flex-1 h-1 bg-gray-300 mx-1 sm:mx-2'>
+            {i < questions.length - 1 && (
+              <div className='flex-1 h-1 w-1'>
                 {i + 1 < currentStep && (
                   <div className='h-full bg-green-500'></div>
                 )}

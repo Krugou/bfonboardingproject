@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   icons: [{rel: 'icon', url: Favicon.src}],
 };
-console.log('Website rendered in ' + process.env.NODE_ENV);
+// console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
     <body className={finlandica.className}>{children}</body>

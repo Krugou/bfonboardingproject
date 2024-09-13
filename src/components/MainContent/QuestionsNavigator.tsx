@@ -1,7 +1,7 @@
 import React from 'react';
-import questions from '../data/mockdata';
-import QuestionInput from './QuestionInput';
-
+import {useUserContext} from '../../context/UserContext';
+import questions from '../../data/mockdata';
+import QuestionInput from './QuestionsNavigator/QuestionInput';
 interface QuestionNavigatorProps {
   currentStep: number;
   // eslint-disable-next-line no-unused-vars
@@ -15,14 +15,14 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
   const handleReset = () => {
     setCurrentStep(1);
   };
-
+  const {language} = useUserContext();
   return (
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
       <button
         className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
         onClick={() => setCurrentStep(currentStep - 1)}
         disabled={currentStep === 1}>
-        Previous
+        {language === 'fi' ? 'Edellinen' : 'Previous'}
       </button>
       {currentStep <= questions.length ? (
         <>
@@ -33,14 +33,14 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
             onClick={() => setCurrentStep(currentStep + 1)}
             disabled={currentStep === questions.length}>
-            Next
+            {language === 'fi' ? 'Seuraava' : 'Next'}
           </button>
         </>
       ) : (
         <button
-          className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
+          className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
           onClick={handleReset}>
-          Reset
+          {language === 'fi' ? 'Nollaa' : 'Reset'}
         </button>
       )}
     </div>

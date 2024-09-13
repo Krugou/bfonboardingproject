@@ -1,18 +1,9 @@
+import {QuestionItem} from '@/app/types';
 import React from 'react';
-import QuestionDisplay from './QuestionDisplay';
-import QuestionsNavigator from './QuestionsNavigator';
-import UpperPanel from './UpperPanel';
-interface Question {
-  id: string;
-  question: string;
-  condition: string;
-  tooltip: string;
-  syntaxPlaceholder: string;
-  answerType: string;
-  answerOptions: string;
-  targetAudience: string;
-  errorAnswer: string;
-}
+import QuestionDisplay from './MainContent/QuestionDisplay';
+import QuestionsNavigator from './MainContent/QuestionsNavigator';
+import UpperPanel from './MainContent/UpperPanel';
+
 interface MainContentProps {
   listeningMode: boolean;
   // eslint-disable-next-line no-unused-vars
@@ -21,7 +12,7 @@ interface MainContentProps {
   // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   handleOpenModal: () => void;
-  questions: Question[];
+  questions: QuestionItem[];
 }
 
 const MainContent: React.FC<MainContentProps> = ({

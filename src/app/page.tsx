@@ -1,6 +1,5 @@
 'use client';
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
-import DevModeBanner from '@/components/DevModeBanner';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
 
@@ -9,9 +8,6 @@ import React, {useState} from 'react';
 import questions from '../data/mockdata';
 
 const Home = () => {
-  // const capitalizeFirstLetter = (string: string) => {
-  //   return string.charAt(0).toUpperCase() + string.slice(1);
-  // };
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
@@ -25,7 +21,7 @@ const Home = () => {
   };
   return (
     <UserProvider>
-      <div className='flex flex-col w-full  bg-gray-400 h-screen items-center  '>
+      <div className='flex flex-col w-full  bg-bf-gray h-screen items-center  '>
         <Header />
         <MainContent
           listeningMode={listeningMode}
@@ -42,7 +38,6 @@ const Home = () => {
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
         />
-        <DevModeBanner />
       </div>
     </UserProvider>
   );
