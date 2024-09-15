@@ -38,6 +38,7 @@ const MainContent: React.FC<MainContentProps> = ({
         <QuestionsNavigator
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
+          listeningMode={listeningMode}
         />
       </main>
     </div>

@@ -2,16 +2,38 @@ import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import Slider from '@mui/material/Slider';
 import React, {useEffect, useState} from 'react';
+
 interface QuestionInputProps {
   question: QuestionItem;
+  listeningMode: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setCurrentStep: (step: number) => void;
+  currentStep: number;
 }
-
-const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
+interface SpeechRecognition {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  // eslint-disable-next-line no-unused-vars
+  onresult: (event: any) => void;
+  start: () => void;
+  stop: () => void;
+}
+const QuestionInput: React.FC<QuestionInputProps> = ({
+  question,
+  listeningMode,
+  setCurrentStep,
+  currentStep,
+}) => {
   const {answers, setAnswer} = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
   const {language} = useUserContext();
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(
+    null,
+  );
+  const [transcriptContent, setTranscriptContent] = useState<string>('');
   useEffect(() => {
     if (answers[question.id]) {
       const answer = answers[question.id];
@@ -24,6 +46,79 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
       }
     }
   }, [answers, question]);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      // @ts-ignore
+      window.SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (SpeechRecognition) {
+      const recognitionInstance = new SpeechRecognition();
+      recognitionInstance.continuous = true;
+      console.log('🚀 ~ useEffect ~ true:', true);
+      recognitionInstance.interimResults = false;
+      recognitionInstance.lang = language === 'fi' ? 'fi-FI' : 'en-US';
+      //@ts-ignore
+      recognitionInstance.onresult = (event) => {
+        const transcript =
+          event.results[event.results.length - 1][0].transcript.trim();
+        handleVoiceCommand(transcript);
+        setTranscriptContent(transcript);
+        console.log(transcript);
+      };
+
+      setRecognition(recognitionInstance);
+    } else {
+      console.error('SpeechRecognition is not supported in this browser.');
+    }
+  }, [language]);
+
+  const handleVoiceCommand = (command: string) => {
+    if (language === 'fi') {
+      if (command.toLowerCase() === 'seuraava') {
+        setCurrentStep(currentStep + 1);
+        return;
+      } else if (command.toLowerCase() === 'edellinen') {
+        setCurrentStep(currentStep - 1);
+        return;
+      } else if (command.toLowerCase() === 'nollaa') {
+        setCurrentStep(1);
+        return;
+      }
+    } else {
+      if (command.toLowerCase() === 'next') {
+        setCurrentStep(currentStep + 1);
+        return;
+      } else if (command.toLowerCase() === 'previous') {
+        setCurrentStep(currentStep - 1);
+        return;
+      } else if (command.toLowerCase() === 'reset') {
+        setCurrentStep(1);
+        return;
+      }
+    }
+    if (question.answerType === 'singleChoice') {
+      const option = question.answerOptions?.[language]
+        ?.split(',')
+        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
+      if (option) {
+        handleSingleChoiceClick(option.trim());
+      }
+    } else if (question.answerType === 'multiChoice') {
+      const option = question.answerOptions?.[language]
+        .split(',')
+        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
+      if (option) {
+        handleMultiChoiceClick(option.trim());
+      }
+    } else if (question.answerType === 'slider') {
+      const value = parseInt(command, 10);
+      if (!isNaN(value) && value >= 0 && value <= 100) {
+        handleSliderChange(value);
+      }
+    } else if (question.answerType === 'directInput') {
+      setAnswer(question.id, command);
+    }
+  };
 
   const handleSingleChoiceClick = (option: string) => {
     setSelectedAnswer(option);
@@ -43,6 +138,25 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   const handleSliderChange = (value: number) => {
     setSliderValue(value);
     setAnswer(question.id, value);
+  };
+  useEffect(() => {
+    if (listeningMode) {
+      startListening();
+    } else {
+      stopListening();
+    }
+  }, [listeningMode]);
+
+  const startListening = () => {
+    if (recognition) {
+      recognition.start();
+    }
+  };
+
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop();
+    }
   };
 
   const renderInput = () => {
@@ -65,7 +179,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
             <div className='ml-4 p-2 text-red-500'>No options provided</div>
           );
         }
-        // es
         // eslint-disable-next-line no-case-declarations
         const [min, max, step, unit] = question.answerOptions[language]
           .split(',')
@@ -83,7 +196,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
               valueLabelDisplay='auto'
               marks
             />
-
             <span className='mt-2 sm:mt-0 sm:ml-4 text-lg'>
               {sliderValue} {unit && unit}
             </span>
@@ -161,7 +273,19 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     }
   };
 
-  return <div className='w-full'>{renderInput()}</div>;
+  return (
+    <>
+      <div className='w-full'>{renderInput()}</div>
+      {listeningMode && (
+        <div className=' p-2 m-2 border rounded-xl'>
+          <p className=' text-xl font-bold text-bf-brand-primary'>
+            {language === 'fi' ? 'Kuulin Komennon: ' : 'I heard Command: '}
+            {transcriptContent}
+          </p>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default QuestionInput;
