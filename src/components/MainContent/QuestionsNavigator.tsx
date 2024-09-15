@@ -6,11 +6,13 @@ interface QuestionNavigatorProps {
   currentStep: number;
   // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
+  listeningMode: boolean;
 }
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
   currentStep,
   setCurrentStep,
+  listeningMode,
 }) => {
   const handleReset = () => {
     setCurrentStep(1);
@@ -27,7 +29,12 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
       {currentStep <= questions.length ? (
         <>
           <div className='w-full sm:w-3/4'>
-            <QuestionInput question={questions[currentStep - 1]} />
+            <QuestionInput
+              question={questions[currentStep - 1]}
+              listeningMode={listeningMode}
+              currentStep={currentStep}
+              setCurrentStep={setCurrentStep}
+            />
           </div>
           <button
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'

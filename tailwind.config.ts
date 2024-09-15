@@ -10,6 +10,58 @@ const config: Config = {
     extend: {
       fontFamily: {
         mainFont: ['Finlandica', 'sans-serif'],
+        fallback: [
+          '-apple-system',
+          'BlinkMacSystemFont',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica Neue',
+          'Arial',
+          'sans-serif',
+          'Apple Color Emoji',
+          'Segoe UI Emoji',
+          'Segoe UI Symbol',
+        ],
+      },
+      fontSize: {
+        'base': '16px',
+        'small': '0.9rem',
+        'header-1': '5.653rem',
+        'header-2': '3.998rem',
+        'header-3': '2.827rem',
+        'header-4': '1.999rem',
+        'header-5': '1.414rem',
+      },
+      fontWeight: {
+        thin: '300',
+        normal: '400',
+        bold: '700',
+      },
+      lineHeight: {
+        base: '1.6',
+        header: '1.15',
+      },
+      transitionTimingFunction: {
+        DEFAULT: '0.35s cubic-bezier(0.25, 0.1, 0.25, 1)',
+      },
+      borderRadius: {
+        bubble: '2rem',
+        input: '0.25rem',
+      },
+      spacing: {
+        xxs: '0.15rem',
+        xs: '0.25rem',
+        sm: '0.5rem',
+        md: '0.75rem',
+        lg: '1rem',
+        xl: '2rem',
+        xxl: '3rem',
+      },
+      screens: {
+        sm: '576px',
+        md: '768px',
+        lg: '992px',
+        xl: '1200px',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
