@@ -1,8 +1,8 @@
 import {QuestionItem} from '@/app/types';
 import React from 'react';
+import BFStepper from './UpperPanel/BFStepper';
 import HistoryButton from './UpperPanel/HistoryButton';
 import ListeningModeToggle from './UpperPanel/ListeningModeToggle';
-import Stepper from './UpperPanel/Stepper';
 
 interface UpperPanelProps {
   listeningMode: boolean;
@@ -29,7 +29,7 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
         listeningMode={listeningMode}
         setListeningMode={setListeningMode}
       />
-      <Stepper
+      <BFStepper
         questions={questions}
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
