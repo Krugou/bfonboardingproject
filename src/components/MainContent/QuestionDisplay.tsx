@@ -37,7 +37,10 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           },
         );
         const data = await response.json();
-
+        if (!data.companies) {
+          console.error('No company data found');
+          return;
+        }
         setCompanyInfo(data.companies[0]);
         if (companyInfo) {
           console.log('Company info:', companyInfo);
@@ -119,26 +122,50 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                       : 'Company Information:'}
                   </h3>
                   <p>
-                    {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
-                    {companyInfo?.businessId?.value}
+                    {companyInfo?.businessId?.value && (
+                      <>
+                        {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
+                        {companyInfo.businessId.value}
+                      </>
+                    )}
                   </p>
                   <p>
-                    {language === 'fi' ? 'Nimi: ' : 'Name: '}
-                    {companyInfo.names[0].name}
+                    {companyInfo?.names?.[0]?.name && (
+                      <>
+                        {language === 'fi' ? 'Nimi: ' : 'Name: '}
+                        {companyInfo.names[0].name}
+                      </>
+                    )}
                   </p>
                   <p>
-                    {language === 'fi' ? 'Osoite: ' : 'Address: '}
-                    {companyInfo.addresses[0].street}
+                    {companyInfo?.addresses?.[0]?.street && (
+                      <>
+                        {language === 'fi' ? 'Osoite: ' : 'Address: '}
+                        {companyInfo.addresses[0].street}
+                      </>
+                    )}
                   </p>
                   <p>
-                    {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
-                    {companyInfo.website.url}
+                    {companyInfo?.website?.url && (
+                      <>
+                        {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
+                        {companyInfo.website.url}
+                      </>
+                    )}
                   </p>
                   <p>
-                    {language === 'fi'
-                      ? 'Päätoimiala: '
-                      : 'Main Business Line: '}
-                    {companyInfo.mainBusinessLine.descriptions[0].description}
+                    {companyInfo?.mainBusinessLine?.descriptions?.[0]
+                      ?.description && (
+                      <>
+                        {language === 'fi'
+                          ? 'Päätoimiala: '
+                          : 'Main Business Line: '}
+                        {
+                          companyInfo.mainBusinessLine.descriptions[0]
+                            .description
+                        }
+                      </>
+                    )}
                   </p>
                 </div>
               )}
