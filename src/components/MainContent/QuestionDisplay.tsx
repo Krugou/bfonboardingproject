@@ -12,8 +12,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   currentStep,
   questions,
 }) => {
-  const {language} = useUserContext();
+  const {language, answers} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
+  const [companyInfo, setCompanyInfo] = useState<any>(null);
 
   useEffect(() => {
     if (language === 'fi') {
@@ -22,6 +23,40 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
       setLanguageSelection('en-US');
     }
   }, [language]);
+
+  useEffect(() => {
+    const fetchCompanyInfo = async (businessId: string) => {
+      try {
+        const response = await fetch(
+          `https://avoindata.prh.fi/opendata-ytj-api/v3/companies?businessId=${businessId}`,
+          {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+            },
+          },
+        );
+        const data = await response.json();
+
+        setCompanyInfo(data.companies[0]);
+        if (companyInfo) {
+          console.log('Company info:', companyInfo);
+        }
+      } catch (error) {
+        console.error('Error fetching company info:', error);
+      }
+    };
+
+    const currentQuestion = questions[currentStep - 1];
+    if (currentQuestion?.id === 'q2') {
+      const businessId = answers['q1'];
+
+      if (businessId) {
+        fetchCompanyInfo(businessId);
+      }
+    }
+  }, [currentStep, questions, answers]);
+
   const speakTooltip = (tooltip: string) => {
     if (!tooltip) {
       console.error('Tooltip is empty or undefined');
@@ -50,7 +85,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10'>
       {currentStep <= questions.length ? (
-        <div className='flex flex-col justify-center items-center h-full border-4 border-blue-400 rounded-xl p-6'>
+        <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6'>
           <div className='flex justify-end w-full items-center rounded-xl'>
             <button
               className='flex justify-center items-center border text-blue-500 hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6'
@@ -74,7 +109,39 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
               title={questions[currentStep - 1].tooltip[language]}>
               {questions[currentStep - 1].question[language]}
             </h2>
-
+            {questions[currentStep - 1].id === 'q2' &&
+              companyInfo &&
+              currentStep === 2 && (
+                <div className='mt-4 font-bold text-bf-brand-primary'>
+                  <h3 className='text-xl font-bold text-bf-brand-primary'>
+                    {language === 'fi'
+                      ? 'Yrityksen tiedot:'
+                      : 'Company Information:'}
+                  </h3>
+                  <p>
+                    {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
+                    {companyInfo?.businessId?.value}
+                  </p>
+                  <p>
+                    {language === 'fi' ? 'Nimi: ' : 'Name: '}
+                    {companyInfo.names[0].name}
+                  </p>
+                  <p>
+                    {language === 'fi' ? 'Osoite: ' : 'Address: '}
+                    {companyInfo.addresses[0].street}
+                  </p>
+                  <p>
+                    {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
+                    {companyInfo.website.url}
+                  </p>
+                  <p>
+                    {language === 'fi'
+                      ? 'Päätoimiala: '
+                      : 'Main Business Line: '}
+                    {companyInfo.mainBusinessLine.descriptions[0].description}
+                  </p>
+                </div>
+              )}
             <h3
               className={`text-center text-bf-brand-primary transition-opacity duration-300 overflow-wrap break-word ${
                 showTooltip

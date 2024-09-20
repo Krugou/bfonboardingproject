@@ -11,8 +11,6 @@ interface UpperPanelProps {
   currentStep: number;
   handleOpenModal: () => void;
   questions: QuestionItem[];
-  // eslint-disable-next-line no-unused-vars
-  setCurrentStep: (step: number) => void;
 }
 
 const UpperPanel: React.FC<UpperPanelProps> = ({
@@ -21,7 +19,6 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
   currentStep,
   handleOpenModal,
   questions,
-  setCurrentStep,
 }) => {
   return (
     <div className='flex flex-col sm:flex-row justify-between mx-4 sm:mx-6 md:mx-8 lg:mx-10 mt-4 sm:mt-6 md:mt-8 lg:mt-10'>
@@ -29,11 +26,7 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
         listeningMode={listeningMode}
         setListeningMode={setListeningMode}
       />
-      <BFStepper
-        questions={questions}
-        currentStep={currentStep}
-        setCurrentStep={setCurrentStep}
-      />
+      <BFStepper questions={questions} />
       <HistoryButton currentStep={currentStep} onClick={handleOpenModal} />
     </div>
   );
