@@ -7,7 +7,9 @@
     "dev": "next dev --turbo --port 3008",
     "build": "next build",
     "startB": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tsc": "tsc --noEmit",
+    "tsc:watch": "tsc --noEmit --watch"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
