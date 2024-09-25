@@ -2,7 +2,7 @@ import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import Slider from '@mui/material/Slider';
 import React, {useEffect, useState} from 'react';
-
+import {toast} from 'react-toastify';
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
@@ -51,24 +51,44 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     const SpeechRecognition =
       // @ts-ignore
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (SpeechRecognition) {
-      const recognitionInstance = new SpeechRecognition();
-      recognitionInstance.continuous = true;
-      console.log('🚀 ~ useEffect ~ true:', true);
-      recognitionInstance.interimResults = false;
-      recognitionInstance.lang = language === 'fi' ? 'fi-FI' : 'en-US';
-      //@ts-ignore
-      recognitionInstance.onresult = (event) => {
-        const transcript =
-          event.results[event.results.length - 1][0].transcript.trim();
-        handleVoiceCommand(transcript);
-        setTranscriptContent(transcript);
-        console.log(transcript);
-      };
 
-      setRecognition(recognitionInstance);
+    if (SpeechRecognition) {
+      try {
+        const recognitionInstance = new SpeechRecognition();
+        recognitionInstance.continuous = true;
+        recognitionInstance.interimResults = false;
+        recognitionInstance.lang = language === 'fi' ? 'fi-FI' : 'en-US';
+
+        recognitionInstance.onstart = () => {
+          toast.info('Speech recognition started');
+        };
+
+        recognitionInstance.onend = () => {
+          toast.info('Speech recognition ended');
+        };
+
+        recognitionInstance.onerror = (event: any) => {
+          toast.error(`Speech recognition error: ${event.error}`);
+        };
+
+        recognitionInstance.onresult = (event: any) => {
+          try {
+            const transcript =
+              event.results[event.results.length - 1][0].transcript.trim();
+            handleVoiceCommand(transcript);
+            setTranscriptContent(transcript);
+            toast.success(`Transcript: ${transcript}`);
+          } catch (error) {
+            toast.error(`Error processing speech recognition result: ${error}`);
+          }
+        };
+
+        setRecognition(recognitionInstance);
+      } catch (error) {
+        toast.error(`Error initializing SpeechRecognition: ${error}`);
+      }
     } else {
-      console.error('SpeechRecognition is not supported in this browser.');
+      toast.error('SpeechRecognition is not supported in this browser.');
     }
   }, [language]);
 

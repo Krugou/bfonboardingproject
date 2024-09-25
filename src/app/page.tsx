@@ -2,9 +2,10 @@
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
-
 import {UserProvider} from '@/context/UserContext';
 import React, {useState} from 'react';
+import {Bounce, ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import questions from '../data/mockdata';
 
 const Home = () => {
@@ -19,9 +20,23 @@ const Home = () => {
   const handleCloseModal = () => {
     setModalOpen(false);
   };
+
   return (
     <UserProvider>
-      <div className='flex flex-col w-full  bg-bf-gray h-screen items-center  '>
+      <ToastContainer
+        position='top-right'
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme='dark'
+        transition={Bounce}
+      />
+      <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
         <Header />
         <MainContent
           listeningMode={listeningMode}

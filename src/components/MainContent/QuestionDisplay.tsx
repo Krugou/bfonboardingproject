@@ -1,8 +1,9 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
+import {speakTooltip} from '@/utils/speakTooltip';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useEffect, useState} from 'react';
-
+import {toast} from 'react-toastify';
 interface QuestionDisplayProps {
   currentStep: number;
   questions: QuestionItem[];
@@ -60,30 +61,6 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
     }
   }, [currentStep, questions, answers]);
 
-  const speakTooltip = (tooltip: string) => {
-    if (!tooltip) {
-      console.error('Tooltip is empty or undefined');
-      return;
-    }
-
-    const utterance = new SpeechSynthesisUtterance(tooltip);
-    utterance.lang = languageSelection;
-
-    utterance.onstart = () => {
-      console.log('Speech synthesis started');
-    };
-
-    utterance.onend = () => {
-      console.log('Speech synthesis ended');
-    };
-
-    utterance.onerror = (event) => {
-      console.error('Speech synthesis error:', event.error);
-    };
-
-    speechSynthesis.speak(utterance);
-  };
-
   const [showTooltip, setShowTooltip] = useState(false);
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10'>
@@ -100,7 +77,11 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
               onClick={() =>
-                speakTooltip(questions[currentStep - 1].tooltip[language])
+                speakTooltip(
+                  questions[currentStep - 1].tooltip[language],
+                  languageSelection,
+                  toast,
+                )
               }
               className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'>
               <VolumeUpIcon fontSize='large' />
