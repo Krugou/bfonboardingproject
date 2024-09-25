@@ -18,7 +18,7 @@ const questions: QuestionItem[] = [
     },
     answerType: 'directInput',
     answerOptions: {
-      en: '',
+      en: '34',
       fi: '',
     },
     targetAudience: 'Everyone',
