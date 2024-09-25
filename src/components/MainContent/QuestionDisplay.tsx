@@ -1,5 +1,6 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
+import {fetchCompanyInfo} from '@/hooks/api';
 import {speakTooltip} from '@/utils/speakTooltip';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useEffect, useState} from 'react';
@@ -26,30 +27,8 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   }, [language]);
 
   useEffect(() => {
-    const fetchCompanyInfo = async (businessId: string) => {
-      try {
-        const response = await fetch(
-          `https://avoindata.prh.fi/opendata-ytj-api/v3/companies?businessId=${businessId}`,
-          {
-            method: 'GET',
-            headers: {
-              accept: 'application/json',
-            },
-          },
-        );
-        const data = await response.json();
-        if (!data.companies) {
-          console.error('No company data found');
-          return;
-        }
-        setCompanyInfo(data.companies[0]);
-        if (companyInfo) {
-          console.log('Company info:', companyInfo);
-        }
-      } catch (error) {
-        console.error('Error fetching company info:', error);
-      }
-    };
+    const companyInfo = fetchCompanyInfo(answers['q1']);
+    setCompanyInfo(companyInfo);
 
     const currentQuestion = questions[currentStep - 1];
     if (currentQuestion?.id === 'q2') {

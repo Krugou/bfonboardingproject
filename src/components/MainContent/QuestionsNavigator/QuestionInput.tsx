@@ -3,6 +3,9 @@ import {useUserContext} from '@/context/UserContext';
 import Slider from '@mui/material/Slider';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
+import ChoiceInput from './QuestionInput/ChoiceInput';
+import SliderInput from './QuestionInput/SliderInput';
+import TextInput from './QuestionInput/TextInput';
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
@@ -183,111 +186,45 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     switch (question.answerType) {
       case 'directInput':
         return (
-          <div className='flex flex-col sm:flex-row p-2 justify-center items-center w-full'>
-            <input
-              type='text'
-              className='p-2 sm:p-4 border border-gray-300 rounded w-full sm:w-3/4 lg:w-1/2'
-              placeholder={question.syntaxPlaceholder[language]}
-              value={answers[question.id] || ''}
-              onChange={(e) => setAnswer(question.id, e.target.value)}
-            />
-          </div>
+          <TextInput
+            question={question}
+            language={language}
+            answers={answers}
+            setAnswer={setAnswer}
+          />
         );
       case 'slider':
-        if (!question.answerOptions || !question.answerOptions[language]) {
-          return (
-            <div className='ml-4 p-2 text-red-500'>No options provided</div>
-          );
-        }
-        // eslint-disable-next-line no-case-declarations
-        const [min, max, step, unit] = question.answerOptions[language]
-          .split(',')
-          .map(Number);
         return (
-          <div className='flex p-2 flex-col sm:flex-row items-center w-full'>
-            <Slider
-              title='slider'
-              className='w-full sm:w-3/4 p-4'
-              min={min}
-              max={max}
-              step={step}
-              value={sliderValue}
-              onChange={(e, value) => handleSliderChange(value as number)}
-              valueLabelDisplay='auto'
-              marks
-            />
-            <span className='mt-2 sm:mt-0 sm:ml-4 text-lg'>
-              {sliderValue} {unit && unit}
-            </span>
-          </div>
+          <SliderInput
+            question={question}
+            language={language}
+            sliderValue={sliderValue}
+            handleSliderChange={handleSliderChange}
+          />
         );
-      case 'singleChoice': {
-        if (!question.answerOptions || !question.answerOptions[language]) {
-          return (
-            <div className='ml-4 p-2 text-red-500'>No options provided</div>
-          );
-        }
+      case 'singleChoice':
         return (
-          <div className='ml-4 p-2 flex flex-col justify-center items-center w-full'>
-            <div className='mb-2 text-gray-700 text-center'>
-              {language === 'fi'
-                ? ' Valitse yksi vaihtoehto:'
-                : ' Select one option:'}
-            </div>
-            <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
-              {question.answerOptions[language]
-                .split(',')
-                .map((option, index) => (
-                  <button
-                    key={index}
-                    className={`p-2 sm:p-4 m-1 sm:m-2 border rounded ${
-                      selectedAnswer === option.trim()
-                        ? 'bg-green-500 text-white'
-                        : 'border-gray-300'
-                    } w-full sm:w-auto text-sm sm:text-lg`}
-                    onClick={() => handleSingleChoiceClick(option.trim())}>
-                    {option.trim()}
-                  </button>
-                ))}
-            </div>
-          </div>
+          <ChoiceInput
+            question={question}
+            language={language}
+            selectedAnswer={selectedAnswer}
+            selectedAnswers={selectedAnswers}
+            handleSingleChoiceClick={handleSingleChoiceClick}
+            handleMultiChoiceClick={handleMultiChoiceClick}
+          />
         );
-      }
-      case 'multiChoice': {
-        if (!question.answerOptions || !question.answerOptions[language]) {
-          return (
-            <div className='ml-4 p-2 text-red-500'>
-              {' '}
-              {language === 'fi' ? 'Ei vaihtoehtoja' : 'No options provided'}
-            </div>
-          );
-        }
+
+      case 'multiChoice':
         return (
-          <div className=' p-2 ml-4 w-full flex flex-col justify-center items-center'>
-            <div className='mb-2 text-gray-700 text-center'>
-              {language === 'fi'
-                ? 'Valitse yksi tai useampi vaihtoehto'
-                : 'Select one or more options from below'}
-            </div>
-            <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
-              {question.answerOptions[language]
-                .split(',')
-                .map((option, index) => (
-                  <button
-                    key={index}
-                    className={`p-2 m-1 border sm:m-2 rounded ${
-                      selectedAnswers.includes(option.trim())
-                        ? 'bg-green-500 text-white'
-                        : 'border-gray-300'
-                    } w-full sm:w-auto text-sm sm:text-lg`}
-                    onClick={() => handleMultiChoiceClick(option.trim())}>
-                    {option.trim()}
-                  </button>
-                ))}
-            </div>
-          </div>
+          <ChoiceInput
+            question={question}
+            language={language}
+            selectedAnswer={selectedAnswer}
+            selectedAnswers={selectedAnswers}
+            handleSingleChoiceClick={handleSingleChoiceClick}
+            handleMultiChoiceClick={handleMultiChoiceClick}
+          />
         );
-      }
       default:
         return null;
     }

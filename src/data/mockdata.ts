@@ -18,7 +18,7 @@ const questions: QuestionItem[] = [
     },
     answerType: 'directInput',
     answerOptions: {
-      en: '34',
+      en: '',
       fi: '',
     },
     targetAudience: 'Everyone',
@@ -26,6 +26,11 @@ const questions: QuestionItem[] = [
       en: 'Please provide a valid business ID.',
       fi: 'Anna kelvollinen Y-tunnus.',
     },
+    validationRegex: {
+      en: '^[0-9]{7}-[0-9]$',
+      fi: '^[0-9]{7}-[0-9]$',
+    },
+    maxLength: 15,
   },
   {
     id: 'k1.1',
@@ -126,6 +131,7 @@ const questions: QuestionItem[] = [
       fi: 'Kyllä, Ei',
     },
     targetAudience: 'Under 5 years (Start)',
+
     errorAnswer: {
       en: '',
       fi: '',
@@ -433,7 +439,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'text',
+    answerType: 'directInput',
     answerOptions: {
       en: '',
       fi: '',
@@ -443,6 +449,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    maxLength: 500,
   },
 ];
 

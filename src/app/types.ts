@@ -13,6 +13,9 @@ export interface SyntaxPlaceholder {
 export interface ErrorAnswer {
   [key: string]: string;
 }
+export interface ValidationRegex {
+  [key: string]: string;
+}
 
 export interface QuestionItem {
   id: string;
@@ -26,4 +29,6 @@ export interface QuestionItem {
   errorAnswer: ErrorAnswer;
   optionalStepAnswer?: {[key: string]: string};
   unit?: string;
+  maxLength?: number;
+  validationRegex?: ValidationRegex;
 }
