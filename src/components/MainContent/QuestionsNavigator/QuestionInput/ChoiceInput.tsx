@@ -1,0 +1,76 @@
+import React from 'react';
+import { QuestionItem } from '@/app/types';
+
+interface ChoiceInputProps {
+  question: QuestionItem;
+  language: string;
+  selectedAnswer: string | null;
+  selectedAnswers: string[];
+  handleSingleChoiceClick: (option: string) => void;
+  handleMultiChoiceClick: (option: string) => void;
+}
+
+const ChoiceInput: React.FC<ChoiceInputProps> = ({
+  question,
+  language,
+  selectedAnswer,
+  selectedAnswers,
+  handleSingleChoiceClick,
+  handleMultiChoiceClick,
+}) => {
+  if (!question.answerOptions || !question.answerOptions[language]) {
+    return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
+  }
+
+  const options = question.answerOptions[language].split(',');
+
+  if (question.answerType === 'singleChoice') {
+    return (
+      <div className='ml-4 p-2 flex flex-col justify-center items-center w-full'>
+        <div className='mb-2 text-gray-700 text-center'>
+          {language === 'fi' ? ' Valitse yksi vaihtoehto:' : ' Select one option:'}
+        </div>
+        <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
+          {options.map((option, index) => (
+            <button
+              key={index}
+              className={`p-2 sm:p-4 m-1 sm:m-2 border rounded ${
+                selectedAnswer === option.trim() ? 'bg-green-500 text-white' : 'border-gray-300'
+              } w-full sm:w-auto text-sm sm:text-lg`}
+              onClick={() => handleSingleChoiceClick(option.trim())}
+            >
+              {option.trim()}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (question.answerType === 'multiChoice') {
+    return (
+      <div className='p-2 ml-4 w-full flex flex-col justify-center items-center'>
+        <div className='mb-2 text-gray-700 text-center'>
+          {language === 'fi' ? 'Valitse yksi tai useampi vaihtoehto' : 'Select one or more options from below'}
+        </div>
+        <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
+          {options.map((option, index) => (
+            <button
+              key={index}
+              className={`p-2 m-1 border sm:m-2 rounded ${
+                selectedAnswers.includes(option.trim()) ? 'bg-green-500 text-white' : 'border-gray-300'
+              } w-full sm:w-auto text-sm sm:text-lg`}
+              onClick={() => handleMultiChoiceClick(option.trim())}
+            >
+              {option.trim()}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return null;
+};
+
+export default ChoiceInput;

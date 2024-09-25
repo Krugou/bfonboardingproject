@@ -1,0 +1,50 @@
+,,CURRENT STATE,,,,,
+,,,,,,,
+,,KYSYMYS,EHTO,"OHJETEKSTI, TOOLTIP",VASTAUS MUOTO,VASTAUS VAIHTOEHDOT,KENELT� KYSYT���N
+,k1,Mik� on yrityksen Y-tunnus?,,,Y-tunnus formaatti (validointi),Y-tunnus formaatti (validointi),Kaikki
+,,Please correct your company basic data,,,"Industry = yksivalinta listalta (drop down or MUI search list component), Rest = text ","Industry, address, number of employees, www adress.",Kaikki
+,k1.1,Onko yritykseen tarkoitus rekrytoida henkil�kuntaa seuraavan vuoden aikana?,Jos vastaus k1 = 0 tai 1,,Yksivalinta,"Kyll�, Ei",Kaikki
+,,,,,,,
+,,,,,,,
+,k2,Paljonko yrityksen omaa vapaata p��omaa olette varautuneet k�ytt�m��n kehitt�miseen ja kansainv�list�miseen seuraavan 12 kk:n aikana?,,"Mik� on oma vapaa p��oma? Oma vapaa p��omaa on p��omaa, jolla ei ole takaisinmaksuvelvoitetta kuten yritykseen kertyneet voittovarat ja yritykseen tehdyt sijoitukset (ns. sijoitetun vapaan oman p��oman rahasto - SVOP). Esimerkiksi mahdolliset osingot maksetaan yrityksen vapaasta p��omasta.",Yksivalinta,"Alle 30 000�, 30 000 - 200 000�, 200 000 - 1M�, Yli 1M�",Kaikki
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,k2.1,"Onko perustajilla tai ydintiimill� aiempaa kokemusta kansainv�lisen, skaalautuvan liiketoiminnan perustamisesta tai johtamisesta?",Jos vastaus k1 = 0 tai 1 sek� jos <5v.,,Yksivalinta,"Kyll�, Ei",Alle 5v. (Startti)
+,,,,,,,
+,,,,,,,
+,k2.2,"Onko yrityksell� aineettomia oikeuksia, jotka on suojattu tai aiotaan suojata patenteilla, tuotemerkeill�, mallisuojilla tai muulla tavoin?",Jos vastaus k1 = 0 tai 1�sek� jos <5v.,,Yksivalinta,"Kyll�, Ei",Alle 5v. (Startti)
+,,,,,,,
+,,,,,,,
+,k2.3,Perustuuko liikeideanne korkeakouluissa tai tutkimuslaitoksissa tehtyyn tutkimukseen?,Jos vastaus k1 = 0 tai 1 sek� jos <5v.,,Yksivalinta,"Kyll�, Ei",Alle 5v. (Startti)
+,,,,,,,
+,,,,,,,
+,k2.4,Kuinka paljon ulkopuolista sijoitusrahaa yritys on saanut?,Jos vastaus k1 = 0 tai 1 sek� jos <5v.,,Vapaa kentt� (maks. 9 numeroa),,Alle 5v. (Startti)
+,k3.1,Onko yrityksell� tunnistettu kilpailuetu kansainv�lisill� markkinoilla?,,,Yksivalinta,"Kyll�, Ei",Kaikki
+,,,,,,,
+,,,,,,,
+,k3.2,Toimiiko yritys t�ll� hetkell� kansainv�lisill� markkinoilla?,,,"Monivalinta (Ehdollinen monivalinta: valitessa ""Ei"" ei voi valita muita?)","Ei, Kyll� (koti- ja kansainv�lisill� markkinoilla), Kyll� (Kyll�, ainoastaan kansainv�lisill� markkinoilla)",Kaikki
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,k3.3,Tavoitteleeko yritys kasvua kansainv�lisilt� markkinoilta 1-3 vuoden kuluessa?,,,"Monivalinta (Ehdollinen monivalinta: valitessa ""Ei"" ei voi valita muita?)","Ei, Kyll� (nykymarkkinoita vahvistamalla, Kyll� (uusia markkinoita avaamalla)",Kaikki
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,k3.4,Mill� keinoilla liikevaihdon ja viennin kasvu aiotaan toteuttaa?,,,Monivalinta,"Tutkimus- ja kehitysty�ll� (esim. uusia tuotteita ja palveluita kehitt�m�ll�), Vahvistamalla kansainv�list� myynti�, Etsimme tapoja kehitt�� tai uudistaa vientitoimintaa, En tied�",Kaikki
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,k4,Miss� vaiheessa yrityksesi on? Mik� on sinun yrityksellesi ajankohtaista nyt?,,Slider?,Monivalinta,"Olen kiinnostunut kasvusta, Haluan selvittaa miten yritykseni voi kasvaa ja kansainv�listy�, Suunnittelen kasvua ja kansainv�listymist�, Olen menossa markkinoille, K�yn kauppaa, Haluan laajentua ja uudistua.",Kaikki
+,,,,,,,
+,,,,,,,
+,,,,,,,
+,k4.1,Mist� markkinoista olet kiinnostunut?,,,Monivalinta,Janne toimittaa listan markkinoista,Kaikki
+,k4.2,Mist� toimialoista olet kinnostunut?,,,Monivalinta,Janne toimittaa listan toimialoista,Kaikki
+,k4.3,Mist� ajankohtaisista aiheista olet kiinnostunut?,,,Monivalinta,Janne toimittaa listan ajankohtaisista aiheista,Kaikki
+,k4.4,Mist� Business Finlandin tai Team Finlandin palveluista olette ensisijaisesti kiinnostunut?,,,Monivalinta,"Kansainv�listymispalvelut, Tuotteiden ja palveluiden kehitt�minen (T&K), Energiatuki",Kaikki
+,k4.5,Kerro vapaasti mik� on tarpeesi (max 500 merkki�)?,,,Text,,Kaikki
+,,,,,,,
+,,,,,,,
