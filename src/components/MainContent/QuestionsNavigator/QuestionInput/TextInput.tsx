@@ -6,6 +6,7 @@ interface TextInputProps {
   question: QuestionItem;
   language: string;
   answers: {[key: string]: any};
+  // eslint-disable-next-line no-unused-vars
   setAnswer: (questionId: string, answer: any) => void;
 }
 
@@ -68,9 +69,7 @@ const TextInput: React.FC<TextInputProps> = ({
       />
       {error && (
         <div className='text-red-500 mt-2'>
-          {language === 'fi'
-            ? 'Virheellinen syöte, sen on oltava 1234567-8'
-            : 'Invalid input, it needs to be 1234567-8'}
+          {language === 'fi' ? 'Virheellinen syöte' : 'Invalid input'}
         </div>
       )}
       {notFound && (

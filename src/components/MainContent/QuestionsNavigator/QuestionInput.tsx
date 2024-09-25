@@ -1,6 +1,5 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import Slider from '@mui/material/Slider';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
 import ChoiceInput from './QuestionInput/ChoiceInput';
