@@ -30,8 +30,35 @@ const questions: QuestionItem[] = [
       en: '^[0-9]{7}-[0-9]$',
       fi: '^[0-9]{7}-[0-9]$',
     },
-    maxLength: 15,
+    maxLength: 9,
   },
+  {
+    id: 'k1.0',
+    question: {
+      en: 'Please correct your company basic data',
+      fi: 'Korjaa yrityksen perustiedot',
+    },
+    condition: 'If answer to k1 = 0',
+    tooltip: {
+      en: '',
+      fi: '',
+    },
+    syntaxPlaceholder: {
+      en: '',
+      fi: '',
+    },
+    answerType: 'singleChoice',
+    answerOptions: {
+      en: 'Yes, No',
+      fi: 'Kyllä, Ei',
+    },
+    targetAudience: 'Everyone',
+    errorAnswer: {
+      en: '',
+      fi: '',
+    },
+  },
+
   {
     id: 'k1.1',
     question: {

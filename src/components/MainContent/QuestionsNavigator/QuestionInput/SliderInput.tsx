@@ -1,11 +1,12 @@
-import React from 'react';
+import {QuestionItem} from '@/app/types';
 import Slider from '@mui/material/Slider';
-import { QuestionItem } from '@/app/types';
+import React from 'react';
 
 interface SliderInputProps {
   question: QuestionItem;
   language: string;
   sliderValue: number;
+  // eslint-disable-next-line no-unused-vars
   handleSliderChange: (value: number) => void;
 }
 

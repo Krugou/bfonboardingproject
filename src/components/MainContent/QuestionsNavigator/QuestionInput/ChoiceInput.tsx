@@ -6,7 +6,9 @@ interface ChoiceInputProps {
   language: string;
   selectedAnswer: string | null;
   selectedAnswers: string[];
+  // eslint-disable-next-line no-unused-vars
   handleSingleChoiceClick: (option: string) => void;
+  // eslint-disable-next-line no-unused-vars
   handleMultiChoiceClick: (option: string) => void;
 }
 
