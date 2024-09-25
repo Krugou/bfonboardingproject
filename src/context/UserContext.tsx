@@ -1,3 +1,4 @@
+import {stringify} from 'querystring';
 import React, {createContext, useContext, useState} from 'react';
 
 interface UserContextType {
@@ -22,6 +23,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       ...prevAnswers,
       [questionId]: answer,
     }));
+    console.log(JSON.stringify(answers, null, 2));
   };
   const [language, setLanguage] = useState('en');
 

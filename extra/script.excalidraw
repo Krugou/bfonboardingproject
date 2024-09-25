@@ -1,0 +1,346 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://marketplace.visualstudio.com/items?itemName=pomdtr.excalidraw-editor",
+  "elements": [
+    {
+      "id": "1bwntkP4Cg8UaeIlWr4YW",
+      "type": "rectangle",
+      "x": 279,
+      "y": 296.75,
+      "width": 373,
+      "height": 269,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 349933384,
+      "version": 49,
+      "versionNonce": 1718068552,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "x-ZgJxDgYShQUVr5zpBKZ"
+        },
+        {
+          "id": "eTfNcD7-PFM1r1yyonKo3",
+          "type": "arrow"
+        },
+        {
+          "id": "5TksgaCdOQUDYHbKoRoZb",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1727259454250,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "x-ZgJxDgYShQUVr5zpBKZ",
+      "type": "text",
+      "x": 331.23011779785156,
+      "y": 418.75,
+      "width": 268.5397644042969,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1568276024,
+      "version": 22,
+      "versionNonce": 742225224,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1727259425333,
+      "link": null,
+      "locked": false,
+      "text": "Mikä on yrityksen Y-tunnus?",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "baseline": 18,
+      "containerId": "1bwntkP4Cg8UaeIlWr4YW",
+      "originalText": "Mikä on yrityksen Y-tunnus?",
+      "lineHeight": 1.25
+    },
+    {
+      "id": "eTfNcD7-PFM1r1yyonKo3",
+      "type": "arrow",
+      "x": 665.6666666666665,
+      "y": 339.11640491140196,
+      "width": 455.3333333333335,
+      "height": 26.391497120741406,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 561435192,
+      "version": 252,
+      "versionNonce": 1797554744,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1727259504449,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          455.3333333333335,
+          -26.391497120741406
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "1bwntkP4Cg8UaeIlWr4YW",
+        "focus": -0.5551573372198096,
+        "gap": 13.666666666666515
+      },
+      "endBinding": {
+        "elementId": "NHQhOWrsRCnGTEGDQNnTR",
+        "focus": 0.23677618126942693,
+        "gap": 13.500000000000114
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "id": "bMxAg2A7JprMbQptYmKd_",
+      "type": "rectangle",
+      "x": 962.4166666666667,
+      "y": 1120.7083333333335,
+      "width": 523.75,
+      "height": 347.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "tn3fKpoS-R6gId8gTO317"
+      ],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 142892104,
+      "version": 190,
+      "versionNonce": 1905764664,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "6fq84-bdyty-rakArO79o"
+        },
+        {
+          "id": "5TksgaCdOQUDYHbKoRoZb",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1727259460320,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "6fq84-bdyty-rakArO79o",
+      "type": "text",
+      "x": 1114.061747233073,
+      "y": 1281.9583333333335,
+      "width": 220.4598388671875,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [
+        "tn3fKpoS-R6gId8gTO317"
+      ],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1542123080,
+      "version": 102,
+      "versionNonce": 762090552,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1727259460320,
+      "link": null,
+      "locked": false,
+      "text": "emme voi antaa tukea",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "baseline": 18,
+      "containerId": "bMxAg2A7JprMbQptYmKd_",
+      "originalText": "emme voi antaa tukea",
+      "lineHeight": 1.25
+    },
+    {
+      "id": "5TksgaCdOQUDYHbKoRoZb",
+      "type": "arrow",
+      "x": 593.7778502516245,
+      "y": 568.25,
+      "width": 416.44838873914375,
+      "height": 548.7083333333335,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2060580408,
+      "version": 200,
+      "versionNonce": 1287174968,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1727259460320,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          416.44838873914375,
+          548.7083333333335
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "1bwntkP4Cg8UaeIlWr4YW",
+        "focus": -0.08540088037486929,
+        "gap": 2.5
+      },
+      "endBinding": {
+        "elementId": "bMxAg2A7JprMbQptYmKd_",
+        "focus": -0.20152609673252644,
+        "gap": 3.75
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow"
+    },
+    {
+      "id": "NHQhOWrsRCnGTEGDQNnTR",
+      "type": "rectangle",
+      "x": 1134.5,
+      "y": 183.625,
+      "width": 481.66666666666674,
+      "height": 308.33333333333337,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1891573304,
+      "version": 56,
+      "versionNonce": 1413929016,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "eTfNcD7-PFM1r1yyonKo3",
+          "type": "arrow"
+        },
+        {
+          "type": "text",
+          "id": "FJoMhqBsCceiu3v_AqVmU"
+        }
+      ],
+      "updated": 1727259517144,
+      "link": null,
+      "locked": false
+    },
+    {
+      "id": "FJoMhqBsCceiu3v_AqVmU",
+      "type": "text",
+      "x": 1257.6434453328452,
+      "y": 325.2916666666667,
+      "width": 235.37977600097656,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 760819784,
+      "version": 43,
+      "versionNonce": 948079416,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1727259528376,
+      "link": null,
+      "locked": false,
+      "text": "Korjaa yrityksesi tiedot",
+      "fontSize": 20,
+      "fontFamily": 1,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "baseline": 18,
+      "containerId": "NHQhOWrsRCnGTEGDQNnTR",
+      "originalText": "Korjaa yrityksesi tiedot",
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "gridSize": null,
+    "viewBackgroundColor": "#ffffff"
+  },
+  "files": {}
+}
