@@ -1,4 +1,3 @@
-import {stringify} from 'querystring';
 import React, {createContext, useContext, useState} from 'react';
 
 interface UserContextType {
