@@ -31,12 +31,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 }) => {
   const {userInfo, setAnswer} = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<{[key: string]: string}>(
-    {},
-  );
-  const [selectedAnswers, setSelectedAnswers] = useState<{
-    [key: string]: string[];
-  }>({});
+
   const {language} = useUserContext();
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(
     null,
@@ -47,10 +42,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       const answer = userInfo.questionAnswers[question.id];
       if (question.answerType === 'slider') {
         setSliderValue(answer);
-      } else if (question.answerType === 'singleChoice') {
-        setSelectedAnswer(answer);
-      } else if (question.answerType === 'multiChoice') {
-        setSelectedAnswers(answer);
       }
     }
   }, [userInfo.questionAnswers, question]);
