@@ -1,9 +1,10 @@
 import {useUserContext} from '@/context/UserContext';
+import questions from '@/data/mockdata';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
 
 const Header = () => {
-  const {setLanguage, language} = useUserContext();
+  const {setLanguage, language, currentQuestion} = useUserContext();
 
   return (
     <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>
@@ -14,11 +15,16 @@ const Header = () => {
         </p>
       </div>
       {process.env.NODE_ENV === 'development' && (
-        <div className='flex justify-center items-center'>
-          <p className='w-10 mx-2 text-white font-bold'>
+        <div className='flex w-full justify-center items-center'>
+          <p className='mx-2 text-white font-bold'>
             {language === 'fi'
               ? 'Paikallinen kehitysympäristö'
               : 'Local Development Environment'}
+          </p>
+          <p
+            className='mx-2 text-white font-bold'
+            title={questions[currentQuestion - 1].question[language]}>
+            {questions[currentQuestion - 1].id}
           </p>
         </div>
       )}

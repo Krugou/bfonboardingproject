@@ -17,6 +17,7 @@ const TextInput: React.FC<TextInputProps> = ({
   setAnswer,
 }) => {
   const [inputValue, setInputValue] = useState<string>('');
+  const [charCount, setCharCount] = useState<number>(0);
   const [error, setError] = useState<boolean>(false);
   const [notFound, setNotFound] = useState<boolean>(false);
   const [found, setFound] = useState<boolean>(false);
@@ -24,6 +25,7 @@ const TextInput: React.FC<TextInputProps> = ({
   useEffect(() => {
     if (answers[question.id]) {
       setInputValue(answers[question.id]);
+      setCharCount(answers[question.id].length);
     }
   }, [answers, question.id]);
 
@@ -36,8 +38,10 @@ const TextInput: React.FC<TextInputProps> = ({
       return;
     }
     setInputValue(value);
+    setCharCount(value.length);
     if (!question.validationRegex) {
       setAnswer(question.id, value);
+
       return;
     }
     const regex = new RegExp(question.validationRegex[language]);
@@ -66,7 +70,12 @@ const TextInput: React.FC<TextInputProps> = ({
         onChange={handleChange}
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
         placeholder={question.syntaxPlaceholder[language]}
+        maxLength={question.maxLength}
       />
+      <div className='mt-2 text-gray-600 text-sm'>
+        {charCount}/{question.maxLength}{' '}
+        {language === 'fi' ? 'merkkiä' : 'characters'}
+      </div>
       {error && (
         <div className='text-red-500 mt-2'>
           {language === 'fi' ? 'Virheellinen syöte' : 'Invalid input'}

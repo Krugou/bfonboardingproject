@@ -16,13 +16,17 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
 }) => {
   const handleReset = () => {
     setCurrentStep(1);
+    setCurrentQuestion(1);
   };
-  const {language} = useUserContext();
+  const {language, setCurrentQuestion} = useUserContext();
   return (
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
       <button
         className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
-        onClick={() => setCurrentStep(currentStep - 1)}
+        onClick={() => {
+          setCurrentStep(currentStep - 1);
+          setCurrentQuestion(currentStep - 1);
+        }}
         disabled={currentStep === 1}>
         {language === 'fi' ? 'Edellinen' : 'Previous'}
       </button>
@@ -38,7 +42,10 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
           </div>
           <button
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
-            onClick={() => setCurrentStep(currentStep + 1)}
+            onClick={() => {
+              setCurrentStep(currentStep + 1);
+              setCurrentQuestion(currentStep + 1);
+            }}
             disabled={currentStep === questions.length}>
             {language === 'fi' ? 'Seuraava' : 'Next'}
           </button>

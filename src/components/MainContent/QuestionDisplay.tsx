@@ -14,7 +14,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   currentStep,
   questions,
 }) => {
-  const {language, answers} = useUserContext();
+  const {language, userInfo} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<any>(null);
 
@@ -27,18 +27,18 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   }, [language]);
 
   useEffect(() => {
-    const companyInfo = fetchCompanyInfo(answers['q1']);
+    const companyInfo = fetchCompanyInfo(userInfo.questionAnswers['k1']);
     setCompanyInfo(companyInfo);
 
     const currentQuestion = questions[currentStep - 1];
-    if (currentQuestion?.id === 'q2') {
-      const businessId = answers['q1'];
+    if (currentQuestion?.id === 'k2') {
+      const businessId = userInfo.questionAnswers['k1'];
 
       if (businessId) {
         fetchCompanyInfo(businessId);
       }
     }
-  }, [currentStep, questions, answers]);
+  }, [currentStep, questions, userInfo.questionAnswers]);
 
   const [showTooltip, setShowTooltip] = useState(false);
   return (

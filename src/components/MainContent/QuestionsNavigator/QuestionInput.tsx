@@ -2,10 +2,11 @@ import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
+import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
-import TextInput from './QuestionInput/TextInput';  
 import SpecialInput from './QuestionInput/SpecialInput';
+import TextInput from './QuestionInput/TextInput';
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
@@ -28,18 +29,22 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
   setCurrentStep,
   currentStep,
 }) => {
-  const {answers, setAnswer} = useUserContext();
+  const {userInfo, setAnswer} = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
-  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
+  const [selectedAnswer, setSelectedAnswer] = useState<{[key: string]: string}>(
+    {},
+  );
+  const [selectedAnswers, setSelectedAnswers] = useState<{
+    [key: string]: string[];
+  }>({});
   const {language} = useUserContext();
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(
     null,
   );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
   useEffect(() => {
-    if (answers[question.id]) {
-      const answer = answers[question.id];
+    if (userInfo.questionAnswers[question.id]) {
+      const answer = userInfo.questionAnswers[question.id];
       if (question.answerType === 'slider') {
         setSliderValue(answer);
       } else if (question.answerType === 'singleChoice') {
@@ -48,7 +53,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
         setSelectedAnswers(answer);
       }
     }
-  }, [answers, question]);
+  }, [userInfo.questionAnswers, question]);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -144,18 +149,33 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
   };
 
   const handleSingleChoiceClick = (option: string) => {
-    setSelectedAnswer(option);
-    setAnswer(question.id, option);
+    try {
+      setAnswer(question.id, option);
+    } catch (error) {
+      console.error(
+        `Error setting single choice answer for question ${question.id}:`,
+        error,
+      );
+      toast.error('Error setting single choice answer');
+    }
   };
 
   const handleMultiChoiceClick = (option: string) => {
-    setSelectedAnswers((prevSelected) => {
-      const newSelected = prevSelected.includes(option)
-        ? prevSelected.filter((item) => item !== option)
-        : [...prevSelected, option];
+    try {
+      const prevSelected = userInfo.questionAnswers as {
+        [key: string]: string[];
+      };
+      const newSelected = prevSelected[question.id]?.includes(option)
+        ? prevSelected[question.id].filter((item: string) => item !== option)
+        : [...(prevSelected[question.id] || []), option];
       setAnswer(question.id, newSelected);
-      return newSelected;
-    });
+    } catch (error) {
+      console.error(
+        `Error setting multi-choice answer for question ${question.id}:`,
+        error,
+      );
+      toast.error('Error setting multi-choice answer');
+    }
   };
 
   const handleSliderChange = (value: number) => {
@@ -189,7 +209,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
           <SpecialInput
             question={question}
             language={language}
-            answers={answers}
+            answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
         );
@@ -199,7 +219,16 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
           <TextInput
             question={question}
             language={language}
-            answers={answers}
+            answers={userInfo.questionAnswers}
+            setAnswer={setAnswer}
+          />
+        );
+      case 'directTextArea':
+        return (
+          <AreaInput
+            question={question}
+            language={language}
+            answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
         );
@@ -217,8 +246,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
           <ChoiceInput
             question={question}
             language={language}
-            selectedAnswer={selectedAnswer}
-            selectedAnswers={selectedAnswers}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
           />
@@ -229,8 +256,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
           <ChoiceInput
             question={question}
             language={language}
-            selectedAnswer={selectedAnswer}
-            selectedAnswers={selectedAnswers}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
           />
@@ -245,7 +270,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       <div className='w-full'>{renderInput()}</div>
       {listeningMode && (
         <div className=' p-2 m-2 border rounded-xl'>
-          <p className=' text-xl font-bold text-bf-brand-primary'>
+          <p className=' text-base font-bold text-bf-brand-primary'>
             {language === 'fi' ? 'Kuulin Komennon: ' : 'I heard Command: '}
             {transcriptContent}
           </p>

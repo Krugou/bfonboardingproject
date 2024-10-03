@@ -7,9 +7,9 @@ interface BFStepperProps {
 }
 
 const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
-  const {answers} = useUserContext();
+  const {userInfo} = useUserContext();
   const answeredCount = questions.filter(
-    (q) => answers[q.id] !== undefined,
+    (q) => userInfo.questionAnswers[q.id] !== undefined,
   ).length;
   const progressPercentage = (answeredCount / questions.length) * 100;
 
