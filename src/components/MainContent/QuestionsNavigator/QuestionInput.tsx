@@ -4,7 +4,8 @@ import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
-import TextInput from './QuestionInput/TextInput';
+import TextInput from './QuestionInput/TextInput';  
+import SpecialInput from './QuestionInput/SpecialInput';
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
@@ -183,6 +184,16 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 
   const renderInput = () => {
     switch (question.answerType) {
+      case 'specialInput':
+        return (
+          <SpecialInput
+            question={question}
+            language={language}
+            answers={answers}
+            setAnswer={setAnswer}
+          />
+        );
+
       case 'directInput':
         return (
           <TextInput
