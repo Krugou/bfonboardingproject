@@ -1,7 +1,5 @@
-import {QuestionItem} from '@/app/types';
-import {fetchCompanyInfo} from '@/hooks/api';
-import React, {useEffect, useState} from 'react';
-
+import React, {useState} from 'react';
+import {QuestionItem} from '../../../../app/types';
 interface SpecialInputProps {
   question: QuestionItem;
   language: string;
@@ -16,76 +14,82 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
   answers,
   setAnswer,
 }) => {
-  const [inputValue, setInputValue] = useState<string>('');
-  const [error, setError] = useState<boolean>(false);
-  const [notFound, setNotFound] = useState<boolean>(false);
-  const [found, setFound] = useState<boolean>(false);
+  const [industry, setIndustry] = useState<string>('');
+  const [address, setAddress] = useState<string>('');
+  const [numberOfEmployees, setNumberOfEmployees] = useState<string>('');
+  const [wwwAddress, setWwwAddress] = useState<string>('');
 
-  useEffect(() => {
-    if (answers[question.id]) {
-      setInputValue(answers[question.id]);
-    }
-  }, [answers, question.id]);
-
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setError(false);
-    setNotFound(false);
-    setFound(false);
-    const value = e.target.value;
-    if (question.maxLength && value.length > question.maxLength) {
-      return;
-    }
-    setInputValue(value);
-    if (!question.validationRegex) {
-      setAnswer(question.id, value);
-      return;
-    }
-    const regex = new RegExp(question.validationRegex[language]);
-    if (regex instanceof RegExp && !regex.test(value)) {
-      setError(true);
-    } else {
-      const companyInfo = await fetchCompanyInfo(value);
-      if (companyInfo) {
-        setError(false);
-        setFound(true);
-        setAnswer(question.id, value);
-      } else {
-        setNotFound(true);
-      }
-    }
+  const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setIndustry(e.target.value);
+    setAnswer(question.id, {
+      ...answers[question.id],
+      industry: e.target.value,
+    });
   };
 
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value);
+    setAnswer(question.id, {
+      ...answers[question.id],
+      address: e.target.value,
+    });
+  };
+
+  const handleNumberOfEmployeesChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setNumberOfEmployees(e.target.value);
+    setAnswer(question.id, {
+      ...answers[question.id],
+      numberOfEmployees: e.target.value,
+    });
+  };
+
+  const handleWwwAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWwwAddress(e.target.value);
+    setAnswer(question.id, {
+      ...answers[question.id],
+      wwwAddress: e.target.value,
+    });
+  };
+  const industryOptions = ['Technology', 'Finance', 'Healthcare', 'Education'];
   return (
-    <div className='p-2 border rounded-xl m-1 flex flex-col justify-center items-center w-full'>
+    <div className='p-2 border gap-2 rounded-xl m-1 flex flex-col justify-center items-center w-full'>
       <label className='mb-2 text-gray-700 text-center'>
         {question.question[language]}
       </label>
+      <select
+        value={industry}
+        onChange={handleIndustryChange}
+        className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'>
+        <option value=''>Select Industry</option>
+        {industryOptions.map((option, index) => (
+          <option key={index} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
       <input
         type='text'
-        value={inputValue}
-        onChange={handleChange}
+        value={address}
+        onChange={handleAddressChange}
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
-        placeholder={question.syntaxPlaceholder[language]}
+        placeholder='Company Address'
       />
-      {error && (
-        <div className='text-red-500 mt-2'>
-          {language === 'fi' ? 'Virheellinen syöte' : 'Invalid input'}
-        </div>
-      )}
-      {notFound && (
-        <div className='text-red-500 mt-2'>
-          {language === 'fi'
-            ? 'Y-tunnusta ei löytynyt, tarkista syöte'
-            : 'Business ID not found, check the input'}
-        </div>
-      )}
-      {found && (
-        <div className='text-green-500 mt-2'>
-          {language === 'fi'
-            ? 'Y-tunnus löytyi, jatketaan'
-            : 'Business ID found, continue'}
-        </div>
-      )}
+      <input
+        type='text'
+        value={numberOfEmployees}
+        onChange={handleNumberOfEmployeesChange}
+        className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
+        placeholder='Number of Employees'
+      />
+      <input
+        type='text'
+        value={wwwAddress}
+        onChange={handleWwwAddressChange}
+        className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
+        placeholder='Website Address'
+      />
     </div>
   );
 };
