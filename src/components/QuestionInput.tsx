@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 interface Question {
   question: string;
@@ -11,7 +11,7 @@ interface QuestionInputProps {
   question: Question;
 }
 
-const QuestionInput: React.FC<QuestionInputProps> = ({ question }) => {
+const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
@@ -46,6 +46,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ question }) => {
             <div className='ml-4 p-2 text-red-500'>No options provided</div>
           );
         }
+        // eslint-disable-next-line
         const [min, max] = question.answerOptions.split(',').map(Number);
         return (
           <div className='flex items-center'>
@@ -62,7 +63,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ question }) => {
         );
       case 'singleChoice':
         if (!question.answerOptions) {
-          return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
+          return (
+            <div className='ml-4 p-2 text-red-500'>No options provided</div>
+          );
         }
         return (
           <div className='ml-4'>
@@ -82,7 +85,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({ question }) => {
         );
       case 'multiChoice':
         if (!question.answerOptions) {
-          return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
+          return (
+            <div className='ml-4 p-2 text-red-500'>No options provided</div>
+          );
         }
         return (
           <div className='ml-4'>

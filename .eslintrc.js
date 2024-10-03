@@ -11,7 +11,7 @@ module.exports = {
   ],
   settings: {
     react: {
-      version: 'detect', // Automatically detect the react version
+      version: 'detect',
     },
   },
   ignorePatterns: ['**/build/**', '**/node_modules/**'],
