@@ -17,12 +17,12 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   questions,
   setCurrentStep,
 }) => {
-  const {answers} = useUserContext();
+  const {userInfo} = useUserContext();
   const {language} = useUserContext();
   if (!open) return null;
 
   const answeredQuestions = questions.filter(
-    (q) => answers[q.id] !== undefined,
+    (q) => userInfo.questionAnswers[q.id] !== undefined,
   );
 
   return (
@@ -42,7 +42,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
                     {q.question[language]}
                   </span>
                   <span className='ml-4 text-gray-600 border border-black p-4 rounded-xl'>
-                    {answers[q.id]}
+                    {userInfo.questionAnswers[q.id]}
                   </span>
                   <button
                     className='ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'

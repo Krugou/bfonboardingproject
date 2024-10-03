@@ -14,12 +14,12 @@ const Stepper: React.FC<StepperProps> = ({
   currentStep,
   setCurrentStep,
 }) => {
-  const {answers} = useUserContext();
+  const {userInfo} = useUserContext();
   const {language} = useUserContext();
   return (
     <div className='flex flex-wrap justify-between items-center w-full max-w-3xl mx-auto px-4'>
       {questions.map((step, i) => {
-        const isAnswered = answers[step.id] !== undefined;
+        const isAnswered = userInfo.questionAnswers[step.id] !== undefined;
         const isSkipped = !isAnswered && i + 1 < currentStep;
         const shortenedQuestion =
           step.question[language].length > 10

@@ -1,4 +1,8 @@
 import {QuestionItem} from '@/app/types';
+const yesAndNo = {
+  en: 'Yes# No',
+  fi: 'Kyllä# Ei',
+};
 
 const questions: QuestionItem[] = [
   {
@@ -33,7 +37,7 @@ const questions: QuestionItem[] = [
     maxLength: 9,
   },
   {
-    id: 'k1.0',
+    id: 'k1.1',
     question: {
       en: 'Please correct your company basic data',
       fi: 'Korjaa yrityksen perustiedot',
@@ -48,10 +52,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Everyone',
     errorAnswer: {
       en: '',
@@ -59,7 +60,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
-    id: 'k1.1',
+    id: 'k1.2',
     question: {
       en: 'Please correct your company basic data',
       fi: 'Korjaa yrityksen perustiedot',
@@ -74,10 +75,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'specialInput',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Everyone',
     errorAnswer: {
       en: '',
@@ -86,7 +84,7 @@ const questions: QuestionItem[] = [
   },
 
   {
-    id: 'k1.1',
+    id: 'k1.3',
     question: {
       en: 'Do you plan to recruit staff in the next year?',
       fi: 'Onko yritykseen tarkoitus rekrytoida henkilökuntaa seuraavan vuoden aikana?',
@@ -101,10 +99,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Everyone',
     errorAnswer: {
       en: '',
@@ -128,8 +123,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'singleChoice',
     answerOptions: {
-      en: 'Less than €30,000, €30,000 - €200,000, €200,000 - €1M, More than €1M',
-      fi: 'Alle 30 000€, 30 000 - 200 000€, 200 000 - 1M€, Yli 1M€',
+      en: 'Less than €30,000# €30,000 - €200,000# €200,000 - €1M# More than €1M',
+      fi: 'Alle 30 000€# 30 000 - 200 000€# 200 000 - 1M€# Yli 1M€',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -153,10 +148,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Under 5 years (Start)',
     errorAnswer: {
       en: '',
@@ -179,10 +171,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Under 5 years (Start)',
 
     errorAnswer: {
@@ -206,10 +195,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Under 5 years (Start)',
     errorAnswer: {
       en: '',
@@ -258,10 +244,7 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Yes, No',
-      fi: 'Kyllä, Ei',
-    },
+    answerOptions: yesAndNo,
     targetAudience: 'Everyone',
     errorAnswer: {
       en: '',
@@ -285,8 +268,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'No, Yes (domestic and international markets), Yes (only international markets)',
-      fi: 'Ei, Kyllä (koti- ja kansainvälisillä markkinoilla), Kyllä (ainoastaan kansainvälisillä markkinoilla)',
+      en: 'No# Yes (domestic and international markets)# Yes (only international markets)',
+      fi: 'Ei# Kyllä (koti- ja kansainvälisillä markkinoilla)# Kyllä (ainoastaan kansainvälisillä markkinoilla)',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -311,8 +294,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'No, Yes (strengthening current markets), Yes (opening new markets)',
-      fi: 'Ei, Kyllä (nykymarkkinoita vahvistamalla), Kyllä (uusia markkinoita avaamalla)',
+      en: 'No# Yes (strengthening current markets)# Yes (opening new markets)',
+      fi: 'Ei# Kyllä (nykymarkkinoita vahvistamalla)# Kyllä (uusia markkinoita avaamalla)',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -337,8 +320,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'Through research and development (e.g., developing new products and services), Strengthening international sales, Looking for ways to develop or renew export activities, I don’t know',
-      fi: 'Tutkimus- ja kehitystyöllä (esim. uusia tuotteita ja palveluita kehittämällä), Vahvistamalla kansainvälistä myyntiä, Etsimme tapoja kehittää tai uudistaa vientitoimintaa, En tiedä',
+      en: 'Through research and development (e.g., developing new products and services)# Strengthening international sales# Looking for ways to develop or renew export activities# I don’t know',
+      fi: 'Tutkimus- ja kehitystyöllä (esim. uusia tuotteita ja palveluita kehittämällä)# Vahvistamalla kansainvälistä myyntiä# Etsimme tapoja kehittää tai uudistaa vientitoimintaa# En tiedä',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -363,8 +346,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'I am interested in growth, I want to find out how my company can grow and internationalize, I am planning growth and internationalization, I am entering the market, I am trading, I want to expand and renew.',
-      fi: 'Olen kiinnostunut kasvusta, Haluan selvittää miten yritykseni voi kasvaa ja kansainvälistyä, Suunnittelen kasvua ja kansainvälistymistä, Olen menossa markkinoille, Käyn kauppaa, Haluan laajentua ja uudistua.',
+      en: 'I am interested in growth# I want to find out how my company can grow and internationalize# I am planning growth and internationalization, I am entering the market, I am trading, I want to expand and renew.',
+      fi: 'Olen kiinnostunut kasvusta# Haluan selvittää miten yritykseni voi kasvaa ja kansainvälistyä# Suunnittelen kasvua ja kansainvälistymistä# Olen menossa markkinoille# Käyn kauppaa# Haluan laajentua ja uudistua.',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -372,87 +355,87 @@ const questions: QuestionItem[] = [
       fi: '',
     },
   },
-  {
-    id: 'k4.1',
-    question: {
-      en: 'Which markets are you interested in?',
-      fi: 'Mistä markkinoista olet kiinnostunut?',
-    },
-    condition: '',
-    tooltip: {
-      en: '',
-      fi: '',
-    },
-    syntaxPlaceholder: {
-      en: '',
-      fi: '',
-    },
-    answerType: 'multiChoice',
-    answerOptions: {
-      en: 'Janne will provide a list of markets',
-      fi: 'Janne toimittaa listan markkinoista',
-    },
-    targetAudience: 'Everyone',
-    errorAnswer: {
-      en: '',
-      fi: '',
-    },
-  },
-  {
-    id: 'k4.2',
-    question: {
-      en: 'Which industries are you interested in?',
-      fi: 'Mistä toimialoista olet kiinnostunut?',
-    },
-    condition: '',
-    tooltip: {
-      en: '',
-      fi: '',
-    },
-    syntaxPlaceholder: {
-      en: '',
-      fi: '',
-    },
-    answerType: 'multiChoice',
-    answerOptions: {
-      en: 'Janne will provide a list of industries',
-      fi: 'Janne toimittaa listan toimialoista',
-    },
-    targetAudience: 'Everyone',
-    errorAnswer: {
-      en: '',
-      fi: '',
-    },
-  },
-  {
-    id: 'k4.3',
-    question: {
-      en: 'Which current topics are you interested in?',
-      fi: 'Mistä ajankohtaisista aiheista olet kiinnostunut?',
-    },
-    condition: '',
-    tooltip: {
-      en: '',
-      fi: '',
-    },
-    syntaxPlaceholder: {
-      en: '',
-      fi: '',
-    },
-    answerType: 'singleChoice',
-    answerOptions: {
-      en: 'Janne will provide a list of current topics',
-      fi: 'Janne toimittaa listan ajankohtaisista aiheista',
-    },
-    targetAudience: 'Everyone',
-    errorAnswer: {
-      en: '',
-      fi: '',
-    },
-  },
+  // {
+  //   id: 'k5',
+  //   question: {
+  //     en: 'Which markets are you interested in?',
+  //     fi: 'Mistä markkinoista olet kiinnostunut?',
+  //   },
+  //   condition: '',
+  //   tooltip: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   syntaxPlaceholder: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   answerType: 'multiChoice',
+  //   answerOptions: {
+  //     en: 'Janne will provide a list of markets',
+  //     fi: 'Janne toimittaa listan markkinoista',
+  //   },
+  //   targetAudience: 'Everyone',
+  //   errorAnswer: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  // },
+  // {
+  //   id: 'k6',
+  //   question: {
+  //     en: 'Which industries are you interested in?',
+  //     fi: 'Mistä toimialoista olet kiinnostunut?',
+  //   },
+  //   condition: '',
+  //   tooltip: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   syntaxPlaceholder: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   answerType: 'multiChoice',
+  //   answerOptions: {
+  //     en: 'Janne will provide a list of industries',
+  //     fi: 'Janne toimittaa listan toimialoista',
+  //   },
+  //   targetAudience: 'Everyone',
+  //   errorAnswer: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  // },
+  // {
+  //   id: 'k7',
+  //   question: {
+  //     en: 'Which current topics are you interested in?',
+  //     fi: 'Mistä ajankohtaisista aiheista olet kiinnostunut?',
+  //   },
+  //   condition: '',
+  //   tooltip: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   syntaxPlaceholder: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  //   answerType: 'singleChoice',
+  //   answerOptions: {
+  //     en: 'Janne will provide a list of current topics',
+  //     fi: 'Janne toimittaa listan ajankohtaisista aiheista',
+  //   },
+  //   targetAudience: 'Everyone',
+  //   errorAnswer: {
+  //     en: '',
+  //     fi: '',
+  //   },
+  // },
 
   {
-    id: 'k4.4',
+    id: 'k8',
     question: {
       en: 'Which Business Finland or Team Finland services are you primarily interested in?',
       fi: 'Mistä Business Finlandin tai Team Finlandin palveluista olette ensisijaisesti kiinnostunut?',
@@ -468,8 +451,8 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'Internationalization services, Product and service development (R&D), Energy support',
-      fi: 'Kansainvälistymispalvelut, Tuotteiden ja palveluiden kehittäminen (T&K), Energiatuki',
+      en: 'Internationalization services# Product and service development (R&D)# Energy support',
+      fi: 'Kansainvälistymispalvelut# Tuotteiden ja palveluiden kehittäminen (T&K)# Energiatuki',
     },
     targetAudience: 'Everyone',
     errorAnswer: {
@@ -478,7 +461,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
-    id: 'k4.5',
+    id: 'k9',
     question: {
       en: 'Please freely describe your needs (max 500 characters)',
       fi: 'Kerro vapaasti mikä on tarpeesi (max 500 merkkiä)?',

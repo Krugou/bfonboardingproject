@@ -21,7 +21,7 @@ const SliderInput: React.FC<SliderInputProps> = ({
   }
 
   const [min, max, step, unit] = question.answerOptions[language]
-    .split(',')
+    .split('#')
     .map(Number);
 
   return (
