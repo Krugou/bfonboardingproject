@@ -59,7 +59,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
-    id: 'k1.0',
+    id: 'k1.1',
     question: {
       en: 'Please correct your company basic data',
       fi: 'Korjaa yrityksen perustiedot',
