@@ -475,7 +475,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'directTextArea',
     answerOptions: {
       en: '',
       fi: '',

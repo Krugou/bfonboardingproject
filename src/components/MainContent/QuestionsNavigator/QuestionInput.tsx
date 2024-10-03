@@ -2,6 +2,7 @@ import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
+import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
 import SpecialInput from './QuestionInput/SpecialInput';
@@ -216,6 +217,15 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       case 'directInput':
         return (
           <TextInput
+            question={question}
+            language={language}
+            answers={userInfo.questionAnswers}
+            setAnswer={setAnswer}
+          />
+        );
+      case 'directTextArea':
+        return (
+          <AreaInput
             question={question}
             language={language}
             answers={userInfo.questionAnswers}
