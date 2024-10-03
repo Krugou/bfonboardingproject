@@ -58,6 +58,32 @@ const questions: QuestionItem[] = [
       fi: '',
     },
   },
+  {
+    id: 'k1.0',
+    question: {
+      en: 'Please correct your company basic data',
+      fi: 'Korjaa yrityksen perustiedot',
+    },
+    condition: 'If answer to k1 = 0',
+    tooltip: {
+      en: '',
+      fi: '',
+    },
+    syntaxPlaceholder: {
+      en: '',
+      fi: '',
+    },
+    answerType: 'specialInput',
+    answerOptions: {
+      en: 'Yes, No',
+      fi: 'Kyllä, Ei',
+    },
+    targetAudience: 'Everyone',
+    errorAnswer: {
+      en: '',
+      fi: '',
+    },
+  },
 
   {
     id: 'k1.1',
