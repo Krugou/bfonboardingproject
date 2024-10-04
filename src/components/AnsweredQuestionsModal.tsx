@@ -35,7 +35,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
           <button
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
             onClick={onClose}>
-            Close
+            {language === 'fi' ? 'Sulje' : 'Close'}
           </button>
         </div>
 
