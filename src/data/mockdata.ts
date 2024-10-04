@@ -39,8 +39,8 @@ const questions: QuestionItem[] = [
   {
     id: 'k1.1',
     question: {
-      en: 'Please correct your company basic data',
-      fi: 'Korjaa yrityksen perustiedot',
+      en: 'Is the business information correct?',
+      fi: 'Onko yrityksen perustiedot oikein?',
     },
     condition: 'If answer to k1 = 0',
     tooltip: {
@@ -346,7 +346,7 @@ const questions: QuestionItem[] = [
     },
     answerType: 'multiChoice',
     answerOptions: {
-      en: 'I am interested in growth# I want to find out how my company can grow and internationalize# I am planning growth and internationalization, I am entering the market, I am trading, I want to expand and renew.',
+      en: 'I am interested in growth# I want to find out how my company can grow and internationalize# I am planning growth and internationalization# I am entering the market# I am trading# I want to expand and renew.'
       fi: 'Olen kiinnostunut kasvusta# Haluan selvittää miten yritykseni voi kasvaa ja kansainvälistyä# Suunnittelen kasvua ja kansainvälistymistä# Olen menossa markkinoille# Käyn kauppaa# Haluan laajentua ja uudistua.',
     },
     targetAudience: 'Everyone',
