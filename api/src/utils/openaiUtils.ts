@@ -1,4 +1,4 @@
-import { config } from 'dotenv';
+import {config} from 'dotenv';
 import OpenAI from 'openai';
 
 config();
@@ -14,7 +14,7 @@ const openai = new OpenAI({
 });
 
 interface OpenAIRequest {
-  messages: Array<{ role: string; content: string }>;
+  messages: Array<{role: string; content: string}>;
   model: string;
 }
 
@@ -24,7 +24,7 @@ interface OpenAIResponse {
   created: number;
   model: string;
   choices: Array<{
-    message: { role: string; content: string };
+    message: {role: string; content: string};
     finish_reason: string;
   }>;
 }
@@ -33,9 +33,13 @@ export const fetchOpenAIResponse = async (
   request: OpenAIRequest,
 ): Promise<OpenAIResponse> => {
   try {
-    const completion = await openai.chat.completions.create(request);
-    return completion;
+    // @ts-ignore
+    return await openai.chat.completions.create(request);
   } catch (error) {
-    throw new Error(`Failed to fetch OpenAI response: ${error.message}`);
+    if (error instanceof Error) {
+      throw new Error(`Failed to fetch OpenAI response: ${error.message}`);
+    } else {
+      throw new Error('Failed to fetch OpenAI response: Unknown error');
+    }
   }
 };
