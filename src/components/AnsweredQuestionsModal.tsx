@@ -27,13 +27,21 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 
   return (
     <div className='fixed inset-0 bg-gray-600  bg-opacity-50 flex justify-center items-center'>
-      <div className='bg-white rounded-lg p-6 w-full xl:w-2/3'>
-        <h2 className='text-xl font-bold mb-4'>
-          {!language ? 'Answered Questions' : 'Vastatut kysymykset'}
-        </h2>
-        <div className='mb-4'>
+      <div className='bg-white rounded-lg p-6 w-full  xl:w-2/3'>
+        <div className='flex justify-between'>
+          <h2 className='text-xl font-bold mb-4'>
+            {!language ? 'Answered Questions' : 'Vastatut kysymykset'}
+          </h2>
+          <button
+            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+            onClick={onClose}>
+            Close
+          </button>
+        </div>
+
+        <div className='container p-2'>
           {answeredQuestions.length > 0 ? (
-            <ul className='list-disc list-inside'>
+            <ul className='list-disc h-96 overflow-y-auto list-inside'>
               {answeredQuestions?.map((q, index) => {
                 if (q.id === 'k1.2') {
                   return (
@@ -109,11 +117,6 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
             </p>
           )}
         </div>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-          onClick={onClose}>
-          Close
-        </button>
       </div>
     </div>
   );
