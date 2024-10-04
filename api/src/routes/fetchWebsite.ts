@@ -1,13 +1,22 @@
+import {config} from 'dotenv';
 import {Request, Response, Router} from 'express';
 import fetch from 'node-fetch';
-import {fetchOpenAIResponse} from '../utils/openaiUtils.js';
+import {fetchOpenAIResponse} from '../utils/openaiUtils';
+
+config();
+
 const router = Router();
+const BF_INNO_PASSWORD = process.env.BFINNO_PASSWORD;
 
-router.get('/fetch-website', async (req: Request, res: Response) => {
-  const url = req.query.url as string;
+router.post('/fetch-website', async (req: Request, res: Response) => {
+  const {password, url} = req.body;
 
-  if (!url) {
-    return res.status(400).json({error: 'URL is required'});
+  if (!password || !url) {
+    return res.status(400).json({error: 'Password and URL are required'});
+  }
+
+  if (password !== BF_INNO_PASSWORD) {
+    return res.status(403).json({error: 'Invalid password'});
   }
 
   try {
@@ -22,7 +31,7 @@ router.get('/fetch-website', async (req: Request, res: Response) => {
       messages: [
         {
           role: 'system',
-          content: `Summarize the following content in json format with industry, address, number of employees, www-address: ${data}`,
+          content: `Summarize the following content in JSON format with industry, address, number of employees, www-address and add more data in similar way: ${data}`,
         },
       ],
       model: 'gpt-4o', // Ensure the model parameter is provided
@@ -33,10 +42,16 @@ router.get('/fetch-website', async (req: Request, res: Response) => {
     const jsonEndIndex = summaryText.lastIndexOf('}') + 1;
     const jsonString = summaryText.substring(jsonStartIndex, jsonEndIndex);
     const summaryJson = JSON.parse(jsonString);
-    res.status(200).json({summaryJson});
+
+    res.status(200).json(summaryJson);
   } catch (error) {
-    console.error(`Error fetching URL: ${url}`, error);
-    res.status(500).json({error: 'Failed to fetch the website content'});
+    if (error instanceof Error) {
+      console.error(`Error fetching URL: ${url}`, error.message);
+      res.status(500).json({error: error.message});
+    } else {
+      console.error(`Error fetching URL: ${url}`, error);
+      res.status(500).json({error: 'Failed to fetch the website content'});
+    }
   }
 });
 
