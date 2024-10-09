@@ -1,14 +1,14 @@
 import { QuestionItem } from '@/app/types';
 import { useUserContext } from '@/context/UserContext';
 import React from 'react';
-import AnswersTable from './AnswersTable';
+import AnswersTable from './AnswersTables';
 
 interface AnsweredQuestionsModalProps {
   open: boolean;
   onClose: () => void;
   questions: QuestionItem[];
   currentStep: number;
-  // eslint-disable-next-line no-unused-vars
+
   setCurrentStep: (step: number) => void;
 }
 
@@ -22,7 +22,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 
   if (!open) return null;
 
-  // Filter to get only answered questions
+ 
   const answeredQuestions = questions.filter(
     (q) => userInfo.questionAnswers[q.id] !== undefined
   );

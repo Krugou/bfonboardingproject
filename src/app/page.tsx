@@ -2,9 +2,9 @@
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
-import {UserProvider} from '@/context/UserContext';
-import React, {useState} from 'react';
-import {Bounce, ToastContainer} from 'react-toastify';
+import { UserProvider } from '@/context/UserContext';
+import React, { useState } from 'react';
+import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import questions from '../data/mockdata';
 
@@ -13,12 +13,9 @@ const Home = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  
+  const toggleModal = () => {
+    setModalOpen((prev) => !prev);
   };
 
   return (
@@ -43,15 +40,15 @@ const Home = () => {
           setListeningMode={setListeningMode}
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
-          handleOpenModal={handleOpenModal}
+          handleOpenModal={toggleModal}
           questions={questions}
         />
         <AnsweredQuestionsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={toggleModal}
           questions={questions}
           currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
+          setCurrentStep={setCurrentStep} 
         />
       </div>
     </UserProvider>
