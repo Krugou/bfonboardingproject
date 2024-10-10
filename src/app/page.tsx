@@ -16,6 +16,10 @@ const Home = () => {
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
+  let isDarkmode = false;
+  if (typeof window !== 'undefined') {
+    isDarkmode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
 
   return (
     <UserProvider>
@@ -29,7 +33,7 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme='dark'
+        theme={isDarkmode ? 'dark' : 'light'}
         transition={Bounce}
       />
       <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
@@ -47,6 +51,7 @@ const Home = () => {
           onClose={toggleModal}
           questions={questions}
           currentStep={currentStep}
+          setCurrentStep={setCurrentStep}
         />
       </div>
     </UserProvider>
