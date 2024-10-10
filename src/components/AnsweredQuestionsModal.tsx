@@ -1,5 +1,5 @@
-import { QuestionItem } from '@/app/types';
-import { useUserContext } from '@/context/UserContext';
+import {QuestionItem} from '@/app/types';
+import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 import AnswersTable from './AnswersTables';
 
@@ -8,23 +8,19 @@ interface AnsweredQuestionsModalProps {
   onClose: () => void;
   questions: QuestionItem[];
   currentStep: number;
-
-  setCurrentStep: (step: number) => void;
 }
 
 const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   open,
   onClose,
   questions,
-  setCurrentStep,
 }) => {
-  const { userInfo, language } = useUserContext();
+  const {userInfo, language} = useUserContext();
 
   if (!open) return null;
 
- 
   const answeredQuestions = questions.filter(
-    (q) => userInfo.questionAnswers[q.id] !== undefined
+    (q) => userInfo.questionAnswers[q.id] !== undefined,
   );
 
   return (
@@ -37,8 +33,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
           </h2>
           <button
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-            onClick={onClose}
-          >
+            onClick={onClose}>
             {language === 'fi' ? 'Sulje' : 'Close'}
           </button>
         </div>
