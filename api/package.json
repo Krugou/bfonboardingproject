@@ -1,0 +1,29 @@
+{
+  "name": "apibfinno",
+  "version": "1.0.0",
+  "description": "api for bfinno",
+  "main": "main.js",
+  "scripts": {
+    "start": "npm run tscW",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "apidev": "npm i && concurrently \"tsc --watch\" \"nodemon --delay 1s bfinno/main.js\"",
+    "dev": "npm i && concurrently \"tsc --watch\" \"nodemon --delay 1s bfinno/main.js\" \"cd .. && npm run start\"",
+    "tsc": "tsc",
+    "tscW": "tsc --watch"
+  },
+  "author": "bfinno",
+  "license": "ISC",
+  "dependencies": {
+    "@types/cors": "^2.8.17",
+    "concurrently": "^8.2.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemon": "^3.1.4",
+    "openai": "^4.67.1",
+    "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21"
+  }
+}

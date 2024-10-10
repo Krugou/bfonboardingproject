@@ -117,14 +117,14 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     }
     if (question.answerType === 'singleChoice') {
       const option = question.answerOptions?.[language]
-        ?.split(',')
+        ?.split('#')
         .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
       if (option) {
         handleSingleChoiceClick(option.trim());
       }
     } else if (question.answerType === 'multiChoice') {
       const option = question.answerOptions?.[language]
-        .split(',')
+        .split('#')
         .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
       if (option) {
         handleMultiChoiceClick(option.trim());
@@ -136,7 +136,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       }
     } else if (question.answerType === 'directInput') {
       setAnswer(question.id, command);
-    }
+  } else if (question.answerType === 'directTextArea') {
+    setAnswer(question.id, command);
+  }
   };
 
   const handleSingleChoiceClick = (option: string) => {

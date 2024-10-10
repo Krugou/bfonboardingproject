@@ -1,7 +1,7 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import {fetchCompanyInfo} from '@/hooks/api';
-import {speakTooltip} from '@/utils/speakTooltip';
+import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';

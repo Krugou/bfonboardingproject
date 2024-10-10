@@ -1,15 +1,15 @@
-export const speakTooltip = (
-  tooltip: string,
+export const speakContent = (
+  content: string,
   languageSelection: string,
   toast: any,
 ) => {
-  if (!tooltip) {
-    console.error('Tooltip is empty or undefined');
-    toast.error('Tooltip is empty or undefined');
+  if (!content) {
+    console.error('Content is empty or undefined');
+    toast.error('Content is empty or undefined');
     return;
   }
 
-  const utterance = new SpeechSynthesisUtterance(tooltip);
+  const utterance = new SpeechSynthesisUtterance(content);
   utterance.lang = languageSelection;
 
   utterance.onstart = () => {
