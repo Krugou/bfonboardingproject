@@ -56,8 +56,10 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
               onClick={() =>
-                speakTooltip(
-                  questions[currentStep - 1].tooltip[language],
+                speakContent(
+                  questions[currentStep - 1].tooltip[language] +
+                    ' ' +
+                    questions[currentStep - 1].tooltip[language],
                   languageSelection,
                   toast,
                 )
