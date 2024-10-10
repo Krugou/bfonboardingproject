@@ -13,12 +13,8 @@ const Home = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  const toggleModal = () => {
+    setModalOpen((prev) => !prev);
   };
 
   return (
@@ -43,15 +39,14 @@ const Home = () => {
           setListeningMode={setListeningMode}
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
-          handleOpenModal={handleOpenModal}
+          handleOpenModal={toggleModal}
           questions={questions}
         />
         <AnsweredQuestionsModal
           open={modalOpen}
-          onClose={handleCloseModal}
+          onClose={toggleModal}
           questions={questions}
           currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
         />
       </div>
     </UserProvider>
