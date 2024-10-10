@@ -74,7 +74,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
               title={questions[currentStep - 1].tooltip[language]}>
               {questions[currentStep - 1].question[language]}
             </h2>
-            {questions[currentStep - 1].id === 'q2' &&
+            {questions[currentStep - 1].id === 'k2' &&
               companyInfo &&
               currentStep === 2 && (
                 <div className='mt-4 font-bold text-bf-brand-primary'>

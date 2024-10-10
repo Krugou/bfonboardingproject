@@ -5,7 +5,7 @@ import React from 'react';
 interface AnswersTableProps {
   questions: QuestionItem[];
   // eslint-disable-next-line no-unused-vars
-  setCurrentStep?: (step: number) => void; // Optional if you want navigation
+  setCurrentStep: (step: number) => void;
 }
 
 const AnswersTable: React.FC<AnswersTableProps> = ({
@@ -48,17 +48,34 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
                     {q.question[language]}
                   </td>
                   <td className='border border-gray-300 px-4 py-2'>
-                    {typeof userInfo.questionAnswers[q.id] === 'object'
-                      ? JSON.stringify(userInfo.questionAnswers[q.id], null, 2)
-                      : userInfo.questionAnswers[q.id]}
+                    {Array.isArray(userInfo.questionAnswers[q.id]) ? (
+                      <ul>
+                        {userInfo.questionAnswers[q.id].map(
+                          (item: any, index: number) => (
+                            <li key={index}>{item}</li>
+                          ),
+                        )}
+                      </ul>
+                    ) : typeof userInfo.questionAnswers[q.id] === 'object' ? (
+                      <ul>
+                        {Object.entries(userInfo.questionAnswers[q.id]).map(
+                          ([key, value]) => (
+                            <li key={key}>
+                              {/* @ts-ignore */}
+                              {key}: {value}
+                            </li>
+                          ),
+                        )}
+                      </ul>
+                    ) : (
+                      userInfo.questionAnswers[q.id]
+                    )}
                   </td>
                   <td className='border border-gray-300 px-4 py-2'>
                     <button
                       className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
                       onClick={() => {
-                        if (setCurrentStep) {
-                          setCurrentStep(currentStep);
-                        }
+                        setCurrentStep(currentStep);
                       }}>
                       {language === 'fi'
                         ? 'Palaa tähän kysymykseen'
@@ -70,9 +87,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
             })
           ) : (
             <tr>
-              <td
-                colSpan={setCurrentStep ? 3 : 2}
-                className='border border-gray-300 px-4 py-2 text-center'>
+              <td className='border border-gray-300 px-4 py-2 text-center'>
                 {language === 'fi' ? 'Ei vastauksia' : 'No answers available'}
               </td>
             </tr>
