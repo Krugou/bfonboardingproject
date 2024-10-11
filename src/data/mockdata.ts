@@ -355,84 +355,84 @@ const questions: QuestionItem[] = [
       fi: '',
     },
   },
-  // {
-  //   id: 'k5',
-  //   question: {
-  //     en: 'Which markets are you interested in?',
-  //     fi: 'Mistä markkinoista olet kiinnostunut?',
-  //   },
-  //   condition: '',
-  //   tooltip: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   syntaxPlaceholder: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   answerType: 'multiChoice',
-  //   answerOptions: {
-  //     en: 'Janne will provide a list of markets',
-  //     fi: 'Janne toimittaa listan markkinoista',
-  //   },
-  //   targetAudience: 'Everyone',
-  //   errorAnswer: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  // },
-  // {
-  //   id: 'k6',
-  //   question: {
-  //     en: 'Which industries are you interested in?',
-  //     fi: 'Mistä toimialoista olet kiinnostunut?',
-  //   },
-  //   condition: '',
-  //   tooltip: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   syntaxPlaceholder: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   answerType: 'multiChoice',
-  //   answerOptions: {
-  //     en: 'Janne will provide a list of industries',
-  //     fi: 'Janne toimittaa listan toimialoista',
-  //   },
-  //   targetAudience: 'Everyone',
-  //   errorAnswer: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  // },
-  // {
-  //   id: 'k7',
-  //   question: {
-  //     en: 'Which current topics are you interested in?',
-  //     fi: 'Mistä ajankohtaisista aiheista olet kiinnostunut?',
-  //   },
-  //   condition: '',
-  //   tooltip: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   syntaxPlaceholder: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  //   answerType: 'singleChoice',
-  //   answerOptions: {
-  //     en: 'Janne will provide a list of current topics',
-  //     fi: 'Janne toimittaa listan ajankohtaisista aiheista',
-  //   },
-  //   targetAudience: 'Everyone',
-  //   errorAnswer: {
-  //     en: '',
-  //     fi: '',
-  //   },
-  // },
+  {
+    id: 'k5',
+    question: {
+      en: 'Which markets are you interested in?',
+      fi: 'Mistä markkinoista olet kiinnostunut?',
+    },
+    condition: '',
+    tooltip: {
+      en: '',
+      fi: '',
+    },
+    syntaxPlaceholder: {
+      en: '',
+      fi: '',
+    },
+    answerType: 'multiChoice',
+    answerOptions: {
+      en: "Afghanistan#Åland Islands#Albania#Algeria#American Samoa#Andorra#Angola#Anguilla#Antarctica#Antigua and Barbuda#Argentina#Armenia#Aruba#Australia#Austria#Azerbaijan#Bahamas#Bahrain#Bangladesh#Barbados#Belarus#Belgium#Belize#Benin#Bermuda#Bhutan#Bolivia (Plurinational State of)#Bonaire, Sint Eustatius and Saba#Bosnia and Herzegovina#Botswana#Bouvet Island#Brazil#British Indian Ocean Territory#Brunei Darussalam#Bulgaria#Burkina Faso#Burundi#Cabo Verde#Cambodia#Cameroon#Canada#Cayman Islands#Central African Republic#Chad#Chile#China#Christmas Island#Cocos (Keeling) Islands#Colombia#Comoros#Congo#Congo (Democratic Republic of the)#Cook Islands#Costa Rica#Croatia#Cuba#Curaçao#Cyprus#Czech Republic#Denmark#Djibouti#Dominica#Dominican Republic#Ecuador#Egypt#El Salvador#Equatorial Guinea#Eritrea#Estonia#Ethiopia#Falkland Islands (Malvinas)#Faroe Islands#Fiji#Finland#France#French Guiana#French Polynesia#French Southern Territories#Gabon#Gambia#Georgia#Germany#Ghana#Gibraltar#Greece#Greenland#Grenada#Guadeloupe#Guam#Guatemala#Guernsey#Guinea#Guinea-Bissau#Guyana#Haiti#Heard Island and McDonald Islands#Honduras#Hong Kong#Hungary#Iceland#India#Indonesia#Iran (Islamic Republic of)#Iraq#Ireland#Isle of Man#Israel#Italy#Ivory Coast#Jamaica#Japan#Jersey#Jordan#Kazakhstan#Kenya#Kiribati#Korea (Democratic People's Republic of)#Korea (Republic of)#Kuwait#Kyrgyzstan#Lao People's Democratic Republic#Latvia#Lebanon#Lesotho#Liberia#Libya#Liechtenstein#Lithuania#Luxembourg#Macao#Madagascar#Malawi#Malaysia#Maldives#Mali#Malta#Marshall Islands#Martinique#Mauritania#Mauritius#Mayotte#Mexico#Micronesia (Federated States of)#Moldova (Republic of)#Monaco#Mongolia#Montenegro#Montserrat#Morocco#Mozambique#Myanmar#Namibia#Nauru#Nepal#Netherlands#New Caledonia#New Zealand#Nicaragua#Niger#Nigeria#Niue#Norfolk Island#North Macedonia#Northern Mariana Islands#Norway#Oman#Pakistan#Palau#Palestine, State of#Panama#Papua New Guinea#Paraguay#Peru#Philippines#Pitcairn#Poland#Portugal#Puerto Rico#Qatar#Republic of Kosovo#Réunion#Romania#Russian Federation#Rwanda#Saint Barthélemy#Saint Helena, Ascension and Tristan da Cunha#Saint Kitts and Nevis#Saint Lucia#Saint Martin (French part)#Saint Pierre and Miquelon#Saint Vincent and the Grenadines#Samoa#San Marino#Sao Tome and Principe#Saudi Arabia#Senegal#Serbia#Seychelles#Sierra Leone#Singapore#Sint Maarten (Dutch part)#Slovakia#Slovenia#Solomon Islands#Somalia#South Africa#South Georgia and the South Sandwich Islands#South Sudan#Spain#Sri Lanka#Sudan#Suriname#Svalbard and Jan Mayen#Swaziland#Sweden#Switzerland#Syrian Arab Republic#Taiwan#Tajikistan#Tanzania, United Republic of#Thailand#Timor-Leste#Togo#Tokelau#Tonga#Trinidad and Tobago#Tunisia#Turkey#Turkmenistan#Turks and Caicos Islands#Tuvalu#Uganda#Ukraine#United Arab Emirates#United Kingdom of Great Britain and Northern Ireland#United States Minor Outlying Islands#United States of America#Uruguay#Uzbekistan#Vanuatu#Vatican City State#Venezuela (Bolivarian Republic of)#Viet Nam#Virgin Islands (British)#Virgin Islands (U.S.)#Wallis and Futuna#Western Sahara#Yemen#Zambia#Zimbabwe",
+      fi: 'Afganistan#Ahvenanmaa#Albania#Algeria#Amerikan Samoa#Andorra#Angola#Anguilla#Etelämanner#Antigua ja Barbuda#Argentiina#Armenia#Aruba#Australia#Itävalta#Azerbaidžan#Bahama#Bahrain#Bangladesh#Barbados#Valko-Venäjä#Belgia#Belize#Benin#Bermuda#Bhutan#Bolivia (monikansallinen valtio)#Bonaire, Sint Eustatius ja Saba#Bosnia ja Hertsegovina#Botswana#Bouvetin saari#Brasilia#Brittiläinen Intian valtameren alue#Brunei Darussalam#Bulgaria#Burkina Faso#Burundi#Cabo Verde#Kambodža#Kamerun#Kanada#Caymansaaret#Keski-Afrikan tasavalta#Tšad#Chile#Kiina#Joulusaari#Kookossaaret (Keeling-saaret)#Kolumbia#Komorit#Kongo#Kongo (Kongon demokraattinen tasavalta)#Cookinsaaret#Costa Rica#Kroatia#Kuuba#Curaçao#Kypros#Tšekin tasavalta#Tanska#Djibouti#Dominica#Dominikaaninen tasavalta#Ecuador#Egypti#El Salvador#Päiväntasaajan Guinea#Eritrea#Viro#Etiopia#Falklandinsaaret (Malvinas)#Färsaaret#Fidži#Suomi#Ranska#Ranskan Guayana#Ranskan Polynesia#Ranskan eteläiset alueet#Gabon#Gambia#Georgia#Saksa#Ghana#Gibraltar#Kreikka#Grönlanti#Grenada#Guadeloupe#Guam#Guatemala#Guernsey#Guinea#Guinea-Bissau#Guyana#Haiti#Heardin saari ja McDonaldin saaret#Honduras#Hongkong#Unkari#Islanti#Intia#Indonesia#Iran (islamilainen tasavalta)#Irak#Irlanti#Mansaari#Israel#Italia#Norsunluurannikko#Jamaika#Japani#Jersey#Jordania#Kazakstan#Kenia#Kiribati#Korea (Korean demokraattinen kansantasavalta)#Korea (Korean tasavalta)#Kuwait#Kirgisia#Laosin demokraattinen kansantasavalta#Latvia#Libanon#Lesotho#Liberia#Libya#Liechtenstein#Liettua#Luxemburg#Macao#Madagaskar#Malawi#Malesia#Malediivit#Mali#Malta#Marshallinsaaret#Martinique#Mauritania#Mauritius#Mayotte#Meksiko#Mikronesia (liittovaltio)#Moldova (tasavalta)#Monaco#Mongolia#Montenegro#Montserrat#Marokko#Mosambik#Myanmar#Namibia#Nauru#Nepal#Alankomaat#Uusi-Kaledonia#Uusi-Seelanti#Nicaragua#Niger#Nigeria#Niue#Norfolkin saari#Pohjois-Makedonia#Pohjois-Mariaanit#Norja#Oman#Pakistan#Palau#Palestiinan valtio#Panama#Papua-Uusi-Guinea#Paraguay#Peru#Filippiinit#Pitcairn#Puola#Portugali#Puerto Rico#Qatar#Kosovon tasavalta#Réunion#Romania#Venäjän federaatio#Ruanda#Saint Barthélemy#Saint Helena, Ascension ja Tristan da Cunha#Saint Kitts ja Nevis#Saint Lucia#Saint Martin (Ranskan osa)#Saint Pierre ja Miquelon#Saint Vincent ja Grenadiinit#Samoa#San Marino#Sao Tome ja Principe#Saudi-Arabia#Senegal#Serbia#Seychellit#Sierra Leone#Singapore#Sint Maarten (Alankomaiden osa)#Slovakia#Slovenia#Salomonsaaret#Somalia#Etelä-Afrikka#Etelä-Georgia ja Eteläiset Sandwichsaaret#Etelä-Sudan#Espanja#Sri Lanka#Sudan#Suriname#Svalbard ja Jan Mayen#Swazimaa#Ruotsi#Sveitsi#Syyrian arabitasavalta#Taiwan#Tadžikistan#Tansania, Yhdistynyt tasavalta#Thaimaa#Itä-Timor#Togo#Tokelau#Tonga#Trinidad ja Tobago#Tunisia#Turkki#Turkmenistan#Turks- ja Caicossaaret#Tuvalu#Uganda#Ukraina#Yhdistyneet arabiemiirikunnat#Ison-Britannian ja Pohjois-Irlannin yhdistynyt kuningaskunta#Yhdysvallat Pienet syrjäiset saaret#Amerikan yhdysvallat#Uruguay#Uzbekistan#Vanuatu#Vatikaanivaltio#Venezuela (Bolivarilainen tasavalta)#Vietnam#Neitsytsaaret (Britannia)#Neitsytsaaret (Yhdysvallat)#Wallis ja Futuna#Länsi-Sahara#Jemen#Sambia#Zimbabwe',
+    },
+    targetAudience: 'Everyone',
+    errorAnswer: {
+      en: '',
+      fi: '',
+    },
+  },
+  {
+    id: 'k6',
+    question: {
+      en: 'Which industries are you interested in?',
+      fi: 'Mistä toimialoista olet kiinnostunut?',
+    },
+    condition: '',
+    tooltip: {
+      en: '',
+      fi: '',
+    },
+    syntaxPlaceholder: {
+      en: '',
+      fi: '',
+    },
+    answerType: 'multiChoice',
+    answerOptions: {
+      en: 'Bioeconomy and Chemical Industry#Communication and Mobility#Consumer Brands#Electronics and Electrical Engineering#Energy and Built Environment#Food#Games and Immersive Games#Health and Well-being#Maritime#Metal and Machinery#Software and Data#Other',
+      fi: 'Biotalous ja kemianteollisuus#Viestintä ja liikkuvuus#Kuluttajabrändit#Elektroniikka ja sähkötekniikka#Energia ja rakennettu ympäristö#Elintarvikkeet#Pelit ja immersiiviset pelit#Terveys ja hyvinvointi#Merenkulku#Metalli ja koneet#Ohjelmistot ja data#Muut',
+    },
+    targetAudience: 'Everyone',
+    errorAnswer: {
+      en: '',
+      fi: '',
+    },
+  },
+  {
+    id: 'k7',
+    question: {
+      en: 'Which current topics are you interested in?',
+      fi: 'Mistä ajankohtaisista aiheista olet kiinnostunut?',
+    },
+    condition: '',
+    tooltip: {
+      en: '',
+      fi: '',
+    },
+    syntaxPlaceholder: {
+      en: '',
+      fi: '',
+    },
+    answerType: 'multiChoice',
+    answerOptions: {
+      en: 'Arctic#EU#Horizon Europe#NATO#UN#Sustainable Development#Low Carbon#Renewal#Megatrends and Future#Ecosystems and Value Chains#Partners and Networks#Recruitment#Research, Development, and Innovation#Piloting#Technology#Data Economy#Digitalization#Space#Creative Economy#Funding#Sales and Marketing#Sales Leads#Internationalization#Country Information#Emerging Markets#Export Rules and Regulations#Export Trade Finance and Credit Risks#Trade Policy',
+      fi: 'Arktisuus#EU#Horisontti Eurooppa#NATO#YK#Kestäväkehitys#Vähähiilisyys#Uudistuminen#Megatrendit ja tulevaisuus#Ekosysteemit ja arvoketjut#Kumppanit ja verkostot#Rekrytointi#Tutkimus, tuotekehitys ja innovaatiot#Pilotointi#Teknologia#Datatalous#Digitalisaatio#Avaruus#Luova talous#Rahoitus#Myynti ja markkinointi#Myyntiliidit#Kansainvälistyminen#Maatieto#Kehittyvät markkinat#Vientiä koskevat säännöt ja määräykset#Vientikaupan rahoitus ja luottoriskit#Kauppapolitiikka',
+    },
+    targetAudience: 'Everyone',
+    errorAnswer: {
+      en: '',
+      fi: '',
+    },
+  },
 
   {
     id: 'k8',

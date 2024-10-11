@@ -31,7 +31,7 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
             ? ' Valitse yksi vaihtoehto:'
             : ' Select one option:'}
         </div>
-        <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
+        <div className='flex flex-wrap justify-center w-full   max-h-96 overflow-y-auto'>
           {options.map((option, index) => (
             <button
               key={index}
@@ -57,7 +57,7 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
             ? 'Valitse yksi tai useampi vaihtoehto'
             : 'Select one or more options from below'}
         </div>
-        <div className='flex flex-wrap justify-center w-full sm:w-3/4 lg:w-1/2'>
+        <div className='flex flex-wrap justify-center w-full  max-h-96 overflow-y-auto'>
           {options.map((option, index) => (
             <button
               key={index}
