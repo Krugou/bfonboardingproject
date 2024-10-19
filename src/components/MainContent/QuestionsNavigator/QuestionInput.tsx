@@ -7,22 +7,23 @@ import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
 import SpecialInput from './QuestionInput/SpecialInput';
 import TextInput from './QuestionInput/TextInput';
+
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
-  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   currentStep: number;
 }
+
 interface SpeechRecognition {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
-  // eslint-disable-next-line no-unused-vars
   onresult: (event: any) => void;
   start: () => void;
   stop: () => void;
 }
+
 const QuestionInput: React.FC<QuestionInputProps> = ({
   question,
   listeningMode,
@@ -31,12 +32,12 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 }) => {
   const {userInfo, setAnswer} = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
-
   const {language} = useUserContext();
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(
     null,
   );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
+
   useEffect(() => {
     if (userInfo.questionAnswers[question.id]) {
       const answer = userInfo.questionAnswers[question.id];
@@ -48,7 +49,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 
   useEffect(() => {
     const SpeechRecognition =
-      // @ts-ignore
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognition) {
@@ -136,9 +136,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       }
     } else if (question.answerType === 'directInput') {
       setAnswer(question.id, command);
-  } else if (question.answerType === 'directTextArea') {
-    setAnswer(question.id, command);
-  }
+    } else if (question.answerType === 'directTextArea') {
+      setAnswer(question.id, command);
+    }
   };
 
   const handleSingleChoiceClick = (option: string) => {
@@ -175,6 +175,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     setSliderValue(value);
     setAnswer(question.id, value);
   };
+
   useEffect(() => {
     if (listeningMode) {
       startListening();
