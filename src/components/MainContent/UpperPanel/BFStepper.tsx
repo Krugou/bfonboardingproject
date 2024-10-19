@@ -20,9 +20,9 @@ const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
           className='absolute top-0 left-0 h-full bg-gradient-to-r from-bf-gradient-1 via-bf-gradient-2 to-bf-gradient-3'
           style={{width: `${progressPercentage}%`}}></div>
       </div>
-      {/* <div className='flex justify-between mt-2'>
+      <div className='flex justify-between mt-2'>
         {questions.map((step, i) => {
-          const isAnswered = answers[step.id] !== undefined;
+          const isAnswered = userInfo.questionAnswers[step.id] !== undefined;
           const titleText =
             language === 'fi'
               ? `Klikkaa siirtyäksesi kysymykseen: ${step.question[language]}`
@@ -39,7 +39,7 @@ const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
             </div>
           );
         })}
-      </div> */}
+      </div>
     </div>
   );
 };

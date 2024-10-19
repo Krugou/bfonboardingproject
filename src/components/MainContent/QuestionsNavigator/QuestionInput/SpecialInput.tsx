@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import {QuestionItem} from '../../../../app/types';
 interface SpecialInputProps {
   question: QuestionItem;
@@ -19,12 +19,26 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
   const [numberOfEmployees, setNumberOfEmployees] = useState<string>('');
   const [wwwAddress, setWwwAddress] = useState<string>('');
 
+  const industryRef = useRef<HTMLSelectElement>(null);
+  const addressRef = useRef<HTMLInputElement>(null);
+  const numberOfEmployeesRef = useRef<HTMLInputElement>(null);
+  const wwwAddressRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (industryRef.current) {
+      industryRef.current.focus();
+    }
+  }, []);
+
   const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setIndustry(e.target.value);
     setAnswer(question.id, {
       ...answers[question.id],
       industry: e.target.value,
     });
+    if (addressRef.current) {
+      addressRef.current.focus();
+    }
   };
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +47,9 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
       ...answers[question.id],
       address: e.target.value,
     });
+    if (numberOfEmployeesRef.current) {
+      numberOfEmployeesRef.current.focus();
+    }
   };
 
   const handleNumberOfEmployeesChange = (
@@ -43,6 +60,9 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
       ...answers[question.id],
       numberOfEmployees: e.target.value,
     });
+    if (wwwAddressRef.current) {
+      wwwAddressRef.current.focus();
+    }
   };
 
   const handleWwwAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,13 +72,16 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
       wwwAddress: e.target.value,
     });
   };
+
   const industryOptions = ['Technology', 'Finance', 'Healthcare', 'Education'];
+
   return (
     <div className='p-2 border gap-2 rounded-xl m-1 flex flex-col justify-center items-center w-full'>
       <label className='mb-2 text-gray-700 text-center'>
         {question.question[language]}
       </label>
       <select
+        ref={industryRef}
         value={industry}
         onChange={handleIndustryChange}
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'>
@@ -70,6 +93,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
         ))}
       </select>
       <input
+        ref={addressRef}
         type='text'
         value={address}
         onChange={handleAddressChange}
@@ -77,6 +101,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
         placeholder='Company Address'
       />
       <input
+        ref={numberOfEmployeesRef}
         type='text'
         value={numberOfEmployees}
         onChange={handleNumberOfEmployeesChange}
@@ -84,6 +109,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
         placeholder='Number of Employees'
       />
       <input
+        ref={wwwAddressRef}
         type='text'
         value={wwwAddress}
         onChange={handleWwwAddressChange}

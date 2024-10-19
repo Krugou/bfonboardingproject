@@ -1,6 +1,6 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {toast} from 'react-toastify';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
@@ -45,6 +45,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     null,
   );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     if (userInfo.questionAnswers[question.id]) {
@@ -98,6 +99,12 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       toast.error('SpeechRecognition is not supported in this browser.');
     }
   }, [language]);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
 
   const handleVoiceCommand = (command: string) => {
     if (language === 'fi') {
@@ -223,6 +230,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
             language={language}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
+            ref={inputRef}
           />
         );
       case 'directTextArea':
@@ -232,6 +240,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
             language={language}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
+            ref={inputRef}
           />
         );
       case 'slider':

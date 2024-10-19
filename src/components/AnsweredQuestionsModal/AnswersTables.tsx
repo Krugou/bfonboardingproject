@@ -76,7 +76,8 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
                       className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
                       onClick={() => {
                         setCurrentStep(currentStep);
-                      }}>
+                      }}
+                      aria-label={`Go back to question ${currentStep}`}>
                       {language === 'fi'
                         ? 'Palaa tähän kysymykseen'
                         : 'Go Back to this Question'}

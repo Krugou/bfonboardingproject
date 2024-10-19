@@ -1,6 +1,6 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 import AnswersTable from './AnsweredQuestionsModal/AnswersTables';
 
 interface AnsweredQuestionsModalProps {
@@ -19,6 +19,13 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   setCurrentStep,
 }) => {
   const {userInfo, language} = useUserContext();
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (open && closeButtonRef.current) {
+      closeButtonRef.current.focus();
+    }
+  }, [open]);
 
   if (!open) return null;
 
@@ -35,8 +42,10 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
             {language === 'fi' ? 'Vastatut kysymykset' : 'Answered Questions'}
           </h2>
           <button
+            ref={closeButtonRef}
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-            onClick={onClose}>
+            onClick={onClose}
+            aria-label='Close answered questions modal'>
             {language === 'fi' ? 'Sulje' : 'Close'}
           </button>
         </div>
