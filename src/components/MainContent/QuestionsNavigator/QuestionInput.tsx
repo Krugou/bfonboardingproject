@@ -24,6 +24,14 @@ interface SpeechRecognition {
   stop: () => void;
 }
 
+/**
+ * QuestionInput component that handles different types of question inputs.
+ * It supports direct input, text area input, slider input, single choice, multi-choice, and special input.
+ * It also supports voice commands for navigation and answering questions.
+ *
+ * @param {QuestionInputProps} props - The props for the QuestionInput component.
+ * @returns {JSX.Element} The rendered QuestionInput component.
+ */
 const QuestionInput: React.FC<QuestionInputProps> = ({
   question,
   listeningMode,
