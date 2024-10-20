@@ -21,7 +21,7 @@ $packageFiles = Get-ChildItem -Path . -Filter package.json -Recurse -File | Wher
 foreach ($packageFile in $packageFiles) {
     # Navigate to the directory containing the package.json file
     Set-Location $packageFile.DirectoryName
-    
+
     Write-Host "Updating packages in $packageFile..."
 
     # Get the package names from the dependencies and devDependencies sections
@@ -34,7 +34,7 @@ foreach ($packageFile in $packageFiles) {
             continue
         }
         Write-Host "Updating $packageName to the latest version..."
-        npm install $packageName@latest
+        npm install $packageName@latest --force
 }
 
     # Navigate back to the original directory

@@ -18,7 +18,8 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({
           isDisabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={onClick}
-        disabled={isDisabled}>
+        disabled={isDisabled}
+        aria-label='Open history modal'>
         {language === 'fi' ? 'Historia' : 'History'}
       </button>
     </div>

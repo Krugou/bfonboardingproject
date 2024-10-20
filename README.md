@@ -210,3 +210,245 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 ---
 
 This documentation provides an overview of the project structure, key components, and configuration. For more detailed information, refer to the code and comments within the project.
+
+## Detailed Setup Instructions
+
+To set up the development environment, follow these steps:
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/your-username/business-finland-onboarding-portal.git
+   cd business-finland-onboarding-portal
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**:
+   Create a `.env` file in the root directory and add the necessary environment variables. For example:
+   ```plaintext
+   BFINNO_PASSWORD=your_password
+   OPENAI_API_KEY=your_openai_api_key
+   ```
+
+4. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+5. **Open the application**:
+   Open [http://localhost:3008](http://localhost:3008) with your browser to see the result.
+
+## Usage Examples
+
+### Fetching Company Information
+
+To fetch company information, use the `fetchCompanyInfo` function from the `src/hooks/api.ts` file. Here's an example:
+
+```tsx
+import {fetchCompanyInfo} from '@/hooks/api';
+
+const companyId = '1234567-8';
+const companyInfo = await fetchCompanyInfo(companyId);
+
+console.log('Company Info:', companyInfo);
+```
+
+### Interacting with the Onboarding Portal
+
+The onboarding portal provides a series of questions for users to answer. Here's an example of how to interact with the portal:
+
+```tsx
+import React, {useState} from 'react';
+import MainContent from '@/components/MainContent';
+import {QuestionItem} from '@/app/types';
+
+const questions: QuestionItem[] = [
+  {
+    id: 'q1',
+    question: {en: 'What is your company name?', fi: 'Mikä on yrityksesi nimi?'},
+    answerType: 'directInput',
+    answerOptions: {en: '', fi: ''},
+  },
+  // Add more questions as needed
+];
+
+const OnboardingPortal: React.FC = () => {
+  const [currentStep, setCurrentStep] = useState(1);
+
+  return (
+    <MainContent
+      listeningMode={false}
+      setListeningMode={() => {}}
+      currentStep={currentStep}
+      setCurrentStep={setCurrentStep}
+      handleOpenModal={() => {}}
+      questions={questions}
+    />
+  );
+};
+
+export default OnboardingPortal;
+```
+
+## API Documentation
+
+### Available Endpoints
+
+#### `POST /fetch-website`
+
+Fetches website content and returns a summary in JSON format.
+
+- **Request Body**:
+  ```json
+  {
+    "password": "your_password",
+    "url": "http://example.com"
+  }
+  ```
+
+- **Response**:
+  ```json
+  {
+    "industry": "Technology",
+    "address": "123 Main St",
+    "numberOfEmployees": 50,
+    "wwwAddress": "http://example.com"
+  }
+  ```
+
+## Running Tests
+
+### Unit Tests
+
+To run the unit tests, use the following command:
+
+```bash
+npm run test
+```
+
+### Integration Tests
+
+To run the integration tests, use the following command:
+
+```bash
+npm run test:integration
+```
+
+### Component Tests
+
+To run the component tests, use the following command:
+
+```bash
+npm run test:component
+```
+
+## Code Structure and Conventions
+
+### Code Structure
+
+The project follows a modular structure with separate directories for components, context, data, hooks, and utils. Each directory contains related files to keep the code organized and maintainable.
+
+### Coding Conventions
+
+- Use TypeScript for type safety and better code maintainability.
+- Follow the ESLint and Prettier configurations for consistent code formatting.
+- Add comments to explain the purpose and functionality of each function and component.
+
+## Contribution Guidelines
+
+We welcome contributions to the project! To contribute, follow these steps:
+
+1. **Fork the repository**:
+   Click the "Fork" button at the top right corner of the repository page.
+
+2. **Clone the forked repository**:
+   ```bash
+   git clone https://github.com/your-username/business-finland-onboarding-portal.git
+   cd business-finland-onboarding-portal
+   ```
+
+3. **Create a new branch**:
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+4. **Make your changes**:
+   Implement your changes and ensure that the code follows the project's coding conventions.
+
+5. **Commit your changes**:
+   ```bash
+   git add .
+   git commit -m "Add feature: your feature description"
+   ```
+
+6. **Push your changes**:
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+7. **Create a pull request**:
+   Open a pull request from your forked repository to the main repository. Provide a clear description of your changes and any relevant information.
+
+## Deployment Instructions
+
+### Development Environment
+
+To deploy the application to a development environment, follow these steps:
+
+1. **Set up the development environment**:
+   Follow the detailed setup instructions mentioned earlier to set up the development environment.
+
+2. **Start the development server**:
+   ```bash
+   npm run dev
+   ```
+
+3. **Access the application**:
+   Open [http://localhost:3008](http://localhost:3008) with your browser to see the result.
+
+### Staging Environment
+
+To deploy the application to a staging environment, follow these steps:
+
+1. **Set up the staging environment**:
+   Ensure that the necessary environment variables are configured for the staging environment.
+
+2. **Build the application**:
+   ```bash
+   npm run build
+   ```
+
+3. **Start the staging server**:
+   ```bash
+   npm start
+   ```
+
+4. **Access the application**:
+   Open the staging environment URL with your browser to see the result.
+
+### Production Environment
+
+To deploy the application to a production environment, follow these steps:
+
+1. **Set up the production environment**:
+   Ensure that the necessary environment variables are configured for the production environment.
+
+2. **Build the application**:
+   ```bash
+   npm run build
+   ```
+
+3. **Start the production server**:
+   ```bash
+   npm start
+   ```
+
+4. **Access the application**:
+   Open the production environment URL with your browser to see the result.
+
+## License Information
+
+This project is licensed under the [MIT License](LICENSE). By contributing to this project, you agree to abide by the terms and conditions of the license.

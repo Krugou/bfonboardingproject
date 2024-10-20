@@ -36,6 +36,10 @@ const SliderInput: React.FC<SliderInputProps> = ({
         onChange={(e, value) => handleSliderChange(value as number)}
         valueLabelDisplay='auto'
         marks
+        aria-label={question.question[language]}
+        aria-valuenow={sliderValue}
+        aria-valuemin={min}
+        aria-valuemax={max}
       />
       <span className='mt-2 sm:mt-0 sm:ml-4 text-lg'>
         {sliderValue} {unit && unit}

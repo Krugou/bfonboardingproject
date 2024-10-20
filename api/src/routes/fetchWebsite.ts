@@ -2,6 +2,7 @@ import {config} from 'dotenv';
 import {Request, Response, Router} from 'express';
 import fetch from 'node-fetch';
 import {fetchOpenAIResponse} from '../utils/openaiUtils';
+import { InvalidPasswordError, MissingParameterError, FetchURLError, OpenAIError } from '../utils/customErrors';
 
 config();
 
@@ -22,11 +23,10 @@ router.post('/fetch-website', async (req: Request, res: Response) => {
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`Failed to fetch the URL: ${response.statusText}`);
+      throw new FetchURLError(`Failed to fetch the URL: ${response.statusText}`);
     }
     const data = await response.text();
 
-    // Ensure the model parameter is correctly included
     const openAIRequest = {
       messages: [
         {
@@ -34,7 +34,7 @@ router.post('/fetch-website', async (req: Request, res: Response) => {
           content: `Summarize the following content in JSON format with industry, address, number of employees, www-address and add more data in similar way: ${data}`,
         },
       ],
-      model: 'gpt-4o', // Ensure the model parameter is provided
+      model: 'gpt-4o',
     };
     const openAIResponse = await fetchOpenAIResponse(openAIRequest);
     const summaryText = openAIResponse.choices[0].message.content;
@@ -45,11 +45,14 @@ router.post('/fetch-website', async (req: Request, res: Response) => {
 
     res.status(200).json(summaryJson);
   } catch (error) {
-    if (error instanceof Error) {
-      console.error(`Error fetching URL: ${url}`, error.message);
+    if (error instanceof FetchURLError || error instanceof OpenAIError) {
+      console.error(`Error: ${error.message}`);
       res.status(500).json({error: error.message});
+    } else if (error instanceof Error) {
+      console.error(`Unexpected error: ${error.message}`);
+      res.status(500).json({error: 'An unexpected error occurred'});
     } else {
-      console.error(`Error fetching URL: ${url}`, error);
+      console.error(`Unknown error: ${error}`);
       res.status(500).json({error: 'Failed to fetch the website content'});
     }
   }

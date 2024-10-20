@@ -1,4 +1,4 @@
-const doFetch = async (url: string) => {
+const doFetch = async (url: string): Promise<any> => {
   try {
     const response = await fetch(url, {
       method: 'GET',
@@ -13,7 +13,18 @@ const doFetch = async (url: string) => {
     throw error;
   }
 };
-const fetchCompanyInfo = async (businessId: string) => {
+
+interface CompanyInfo {
+  businessId: string;
+  name: string;
+  address: string;
+  website: string;
+  mainBusinessLine: string;
+}
+
+const fetchCompanyInfo = async (
+  businessId: string,
+): Promise<CompanyInfo | undefined> => {
   try {
     const data = await doFetch(
       `https://avoindata.prh.fi/opendata-ytj-api/v3/companies?businessId=${businessId}`,

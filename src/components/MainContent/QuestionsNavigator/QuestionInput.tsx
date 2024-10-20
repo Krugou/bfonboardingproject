@@ -1,28 +1,37 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {toast} from 'react-toastify';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
 import SpecialInput from './QuestionInput/SpecialInput';
 import TextInput from './QuestionInput/TextInput';
+
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
-  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   currentStep: number;
 }
+
 interface SpeechRecognition {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
-  // eslint-disable-next-line no-unused-vars
   onresult: (event: any) => void;
   start: () => void;
   stop: () => void;
 }
+
+/**
+ * QuestionInput component that handles different types of question inputs.
+ * It supports direct input, text area input, slider input, single choice, multi-choice, and special input.
+ * It also supports voice commands for navigation and answering questions.
+ *
+ * @param {QuestionInputProps} props - The props for the QuestionInput component.
+ * @returns {JSX.Element} The rendered QuestionInput component.
+ */
 const QuestionInput: React.FC<QuestionInputProps> = ({
   question,
   listeningMode,
@@ -31,12 +40,13 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 }) => {
   const {userInfo, setAnswer} = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
-
   const {language} = useUserContext();
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(
     null,
   );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+
   useEffect(() => {
     if (userInfo.questionAnswers[question.id]) {
       const answer = userInfo.questionAnswers[question.id];
@@ -91,6 +101,12 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     }
   }, [language]);
 
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   const handleVoiceCommand = (command: string) => {
     if (language === 'fi') {
       if (command.toLowerCase() === 'seuraava') {
@@ -136,9 +152,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       }
     } else if (question.answerType === 'directInput') {
       setAnswer(question.id, command);
-  } else if (question.answerType === 'directTextArea') {
-    setAnswer(question.id, command);
-  }
+    } else if (question.answerType === 'directTextArea') {
+      setAnswer(question.id, command);
+    }
   };
 
   const handleSingleChoiceClick = (option: string) => {
@@ -175,6 +191,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     setSliderValue(value);
     setAnswer(question.id, value);
   };
+
   useEffect(() => {
     if (listeningMode) {
       startListening();

@@ -25,7 +25,7 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
 
   if (question.answerType === 'singleChoice') {
     return (
-      <div className='ml-4 p-2 flex flex-col justify-center items-center w-full'>
+      <div className='ml-4 p-2 flex flex-col justify-center items-center w-full' role='group'>
         <div className='mb-2 text-gray-700 text-center'>
           {language === 'fi'
             ? ' Valitse yksi vaihtoehto:'
@@ -40,7 +40,9 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
                   ? 'bg-green-500 text-white'
                   : 'border-gray-300'
               } w-full sm:w-auto text-sm sm:text-lg`}
-              onClick={() => handleSingleChoiceClick(option.trim())}>
+              onClick={() => handleSingleChoiceClick(option.trim())}
+              aria-label={`Select ${option.trim()}`}
+              role='button'>
               {option.trim()}
             </button>
           ))}
@@ -51,7 +53,7 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
 
   if (question.answerType === 'multiChoice') {
     return (
-      <div className='p-2 ml-4 w-full flex flex-col justify-center items-center'>
+      <div className='p-2 ml-4 w-full flex flex-col justify-center items-center' role='group'>
         <div className='mb-2 text-gray-700 text-center'>
           {language === 'fi'
             ? 'Valitse yksi tai useampi vaihtoehto'
@@ -66,7 +68,9 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
                   ? 'bg-green-500 text-white'
                   : 'border-gray-300'
               } w-full sm:w-auto text-sm sm:text-lg`}
-              onClick={() => handleMultiChoiceClick(option.trim())}>
+              onClick={() => handleMultiChoiceClick(option.trim())}
+              aria-label={`Select ${option.trim()}`}
+              role='button'>
               {option.trim()}
             </button>
           ))}

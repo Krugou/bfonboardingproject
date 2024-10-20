@@ -7,7 +7,7 @@ const Header = () => {
   const {setLanguage, language, currentQuestion} = useUserContext();
 
   return (
-    <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>
+    <header className={`bg-bf-brand-primary flex justify-between h-20 w-full `}>
       <div>
         <p className='w-10 mx-2 text-white font-bold'>
           {' '}
@@ -34,12 +34,14 @@ const Header = () => {
           size={32}
           onClick={() => setLanguage('fi')}
           className='cursor-pointer'
+          aria-label='Select Finnish language'
         />
         <FlagIcon
           code='GB'
           size={32}
           onClick={() => setLanguage('en')}
           className='cursor-pointer'
+          aria-label='Select English language'
         />
       </div>
     </header>

@@ -71,25 +71,30 @@ const TextInput: React.FC<TextInputProps> = ({
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
         placeholder={question.syntaxPlaceholder[language]}
         maxLength={question.maxLength}
+        aria-label={question.question[language]}
+        aria-invalid={error}
+        aria-describedby={
+          error ? 'error-message' : found ? 'success-message' : ''
+        }
       />
       <div className='mt-2 text-gray-600 text-sm'>
         {charCount}/{question.maxLength}{' '}
         {language === 'fi' ? 'merkkiä' : 'characters'}
       </div>
       {error && (
-        <div className='text-red-500 mt-2'>
+        <div id='error-message' className='text-red-500 mt-2'>
           {language === 'fi' ? 'Virheellinen syöte' : 'Invalid input'}
         </div>
       )}
       {notFound && (
-        <div className='text-red-500 mt-2'>
+        <div id='error-message' className='text-red-500 mt-2'>
           {language === 'fi'
             ? 'Y-tunnusta ei löytynyt, tarkista syöte'
             : 'Business ID not found, check the input'}
         </div>
       )}
       {found && (
-        <div className='text-green-500 mt-2'>
+        <div id='success-message' className='text-green-500 mt-2'>
           {language === 'fi'
             ? 'Y-tunnus löytyi, jatketaan'
             : 'Business ID found, continue'}
