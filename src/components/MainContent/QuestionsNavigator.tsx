@@ -1,10 +1,12 @@
-import React, { useEffect } from 'react';
-import { useUserContext } from '../../context/UserContext';
+import React, {useEffect} from 'react';
+import {useUserContext} from '../../context/UserContext';
 import questions from '../../data/mockdata';
 import QuestionInput from './QuestionsNavigator/QuestionInput';
 
 interface QuestionNavigatorProps {
   currentStep: number;
+
+  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   listeningMode: boolean;
 }
@@ -19,15 +21,23 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
     setCurrentQuestion(1);
   };
 
-  const { language, setCurrentQuestion } = useUserContext();
+  const {language, setCurrentQuestion} = useUserContext();
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') {
-        setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
-        setCurrentQuestion((prevStep) => Math.min(prevStep + 1, questions.length));
+        // @ts-ignore
+        setCurrentStep((prevStep: number) =>
+          Math.min(prevStep + 1, questions.length),
+        );
+        // @ts-ignore
+        setCurrentQuestion((prevStep) =>
+          Math.min(prevStep + 1, questions.length),
+        );
       } else if (event.key === 'ArrowLeft') {
+        // @ts-ignore
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+        // @ts-ignore
         setCurrentQuestion((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
@@ -46,8 +56,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
           setCurrentStep(currentStep - 1);
           setCurrentQuestion(currentStep - 1);
         }}
-        disabled={currentStep === 1}
-      >
+        disabled={currentStep === 1}>
         {language === 'fi' ? 'Edellinen' : 'Previous'}
       </button>
       {currentStep <= questions.length ? (
@@ -66,16 +75,14 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
               setCurrentStep(currentStep + 1);
               setCurrentQuestion(currentStep + 1);
             }}
-            disabled={currentStep === questions.length}
-          >
+            disabled={currentStep === questions.length}>
             {language === 'fi' ? 'Seuraava' : 'Next'}
           </button>
         </>
       ) : (
         <button
           className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
-          onClick={handleReset}
-        >
+          onClick={handleReset}>
           {language === 'fi' ? 'Nollaa' : 'Reset'}
         </button>
       )}

@@ -73,7 +73,9 @@ const TextInput: React.FC<TextInputProps> = ({
         maxLength={question.maxLength}
         aria-label={question.question[language]}
         aria-invalid={error}
-        aria-describedby={error ? 'error-message' : found ? 'success-message' : ''}
+        aria-describedby={
+          error ? 'error-message' : found ? 'success-message' : ''
+        }
       />
       <div className='mt-2 text-gray-600 text-sm'>
         {charCount}/{question.maxLength}{' '}

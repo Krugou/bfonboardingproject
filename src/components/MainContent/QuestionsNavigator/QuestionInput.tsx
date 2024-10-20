@@ -1,6 +1,6 @@
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {toast} from 'react-toastify';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
@@ -58,6 +58,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
 
   useEffect(() => {
     const SpeechRecognition =
+      // @ts-ignore
       window.SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognition) {
@@ -230,7 +231,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
             language={language}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
-            ref={inputRef}
           />
         );
       case 'directTextArea':
@@ -240,7 +240,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
             language={language}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
-            ref={inputRef}
           />
         );
       case 'slider':
