@@ -1,5 +1,5 @@
 import {QuestionItem} from '@/app/types';
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import QuestionDisplay from './MainContent/QuestionDisplay';
 import QuestionsNavigator from './MainContent/QuestionsNavigator';
 import UpperPanel from './MainContent/UpperPanel';
@@ -9,8 +9,10 @@ import UpperPanel from './MainContent/UpperPanel';
  */
 interface MainContentProps {
   listeningMode: boolean;
+  // eslint-disable-next-line no-unused-vars
   setListeningMode: (mode: boolean) => void;
   currentStep: number;
+  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   handleOpenModal: () => void;
   questions: QuestionItem[];
