@@ -36,12 +36,6 @@ const AdminPanel: React.FC = () => {
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsDarkmode(window.matchMedia('(prefers-color-scheme: dark)').matches);
-    }
-  }, []);
-
-  useEffect(() => {
     const docRef = doc(db, 'questions', 'questions');
 
     const unsubscribe = onSnapshot(
