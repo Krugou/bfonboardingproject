@@ -46,9 +46,6 @@ const Home = () => {
     setModalOpen((prev) => !prev);
   };
   let isDarkmode = false;
-  if (typeof window !== 'undefined') {
-    isDarkmode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  }
 
   return (
     <UserProvider>
