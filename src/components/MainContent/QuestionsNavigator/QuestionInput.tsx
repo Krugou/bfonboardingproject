@@ -11,6 +11,7 @@ import TextInput from './QuestionInput/TextInput';
 interface QuestionInputProps {
   question: QuestionItem;
   listeningMode: boolean;
+  // eslint-disable-next-line no-unused-vars
   setCurrentStep: (step: number) => void;
   currentStep: number;
 }
@@ -19,6 +20,7 @@ interface SpeechRecognition {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
+  // eslint-disable-next-line no-unused-vars
   onresult: (event: any) => void;
   start: () => void;
   stop: () => void;
