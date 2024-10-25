@@ -1,8 +1,8 @@
 import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
+import Link from 'next/link';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
-
 const Header = () => {
   const {setLanguage, language, currentQuestion} = useUserContext();
 
@@ -29,6 +29,11 @@ const Header = () => {
         </div>
       )}
       <div className='flex justify-center gap-4 items-center mx-4'>
+        <Link
+          href='/admin'
+          className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
+          {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
+        </Link>
         <FlagIcon
           code='FI'
           size={32}
