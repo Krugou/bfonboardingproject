@@ -105,6 +105,7 @@ const AdminPanel: React.FC = () => {
         setEditingQuestion({
           ...editingQuestion,
           [field]: {
+            //@ts-ignore
             ...editingQuestion[field as keyof Question],
             [subfield]: value,
           },
