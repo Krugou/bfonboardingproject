@@ -34,7 +34,7 @@ const AdminPanel: React.FC = () => {
   const [isDarkmode, setIsDarkmode] = useState(false);
   const [language, setLanguage] = useState<'en' | 'fi'>('en');
   const [editingQuestion, setEditingQuestion] = useState<Question | null>(null);
-
+  setIsDarkmode(window.matchMedia('(prefers-color-scheme: dark)').matches);
   useEffect(() => {
     const docRef = doc(db, 'questions', 'questions');
 
