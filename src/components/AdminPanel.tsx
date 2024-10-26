@@ -1,7 +1,7 @@
 import {QuestionItem} from '@/app/types';
 import {UserProvider} from '@/context/UserContext';
 import {db} from '@/utils/firebase';
-import {doc, onSnapshot, setDoc} from 'firebase/firestore';
+import {addDoc, collection, doc, onSnapshot, setDoc} from 'firebase/firestore';
 import React, {useEffect, useState} from 'react';
 import {Bounce, ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -61,8 +61,11 @@ const AdminPanel: React.FC = () => {
         q.id === editingQuestion.id ? editingQuestion : q,
       );
       const docRef = doc(db, 'questions', 'questions');
+      const backupRef = collection(db, 'questionsBackup');
+      const timestamp = new Date().toISOString();
       try {
         await setDoc(docRef, {questions: updatedQuestions});
+        await addDoc(backupRef, {questions: updatedQuestions, timestamp});
         toast.success('Question updated successfully');
         setEditingQuestion(null);
       } catch (error) {
