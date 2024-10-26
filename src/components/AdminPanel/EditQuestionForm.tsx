@@ -1,23 +1,30 @@
 import React from 'react';
-import { QuestionItem } from '../../app/types';
+import {QuestionItem} from '../../app/types';
 
 interface EditQuestionFormProps {
   editingQuestion: QuestionItem;
   // eslint-disable-next-line no-unused-vars
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  handleChange: (
+    // eslint-disable-next-line no-unused-vars
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => void;
   handleSave: () => void;
+  handleCancel: () => void;
 }
 
 const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
   editingQuestion,
   handleChange,
   handleSave,
+  handleCancel,
 }) => {
   return (
     <div className='mt-4'>
       <h2 className='text-xl font-bold mb-2'>Edit Question</h2>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='question-en'>Question (English)</label>
+        <label className='block text-gray-700' htmlFor='question-en'>
+          Question (English)
+        </label>
         <textarea
           id='question-en'
           name='question.en'
@@ -29,7 +36,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='question-fi'>Question (Finnish)</label>
+        <label className='block text-gray-700' htmlFor='question-fi'>
+          Question (Finnish)
+        </label>
         <textarea
           id='question-fi'
           name='question.fi'
@@ -41,7 +50,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='answerType'>Answer Type</label>
+        <label className='block text-gray-700' htmlFor='answerType'>
+          Answer Type
+        </label>
         <input
           id='answerType'
           name='answerType'
@@ -53,7 +64,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='answerOptions-en'>Answer Options (English)</label>
+        <label className='block text-gray-700' htmlFor='answerOptions-en'>
+          Answer Options (English)
+        </label>
         <input
           id='answerOptions-en'
           name='answerOptions.en'
@@ -65,7 +78,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='answerOptions-fi'>Answer Options (Finnish)</label>
+        <label className='block text-gray-700' htmlFor='answerOptions-fi'>
+          Answer Options (Finnish)
+        </label>
         <input
           id='answerOptions-fi'
           name='answerOptions.fi'
@@ -77,7 +92,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='condition'>Condition</label>
+        <label className='block text-gray-700' htmlFor='condition'>
+          Condition
+        </label>
         <input
           id='condition'
           name='condition'
@@ -89,7 +106,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='errorAnswer-en'>Error Message (English)</label>
+        <label className='block text-gray-700' htmlFor='errorAnswer-en'>
+          Error Message (English)
+        </label>
         <input
           id='errorAnswer-en'
           name='errorAnswer.en'
@@ -101,7 +120,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='errorAnswer-fi'>Error Message (Finnish)</label>
+        <label className='block text-gray-700' htmlFor='errorAnswer-fi'>
+          Error Message (Finnish)
+        </label>
         <input
           id='errorAnswer-fi'
           name='errorAnswer.fi'
@@ -113,7 +134,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='syntaxPlaceholder-en'>Syntax Placeholder (English)</label>
+        <label className='block text-gray-700' htmlFor='syntaxPlaceholder-en'>
+          Syntax Placeholder (English)
+        </label>
         <input
           id='syntaxPlaceholder-en'
           name='syntaxPlaceholder.en'
@@ -125,7 +148,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='syntaxPlaceholder-fi'>Syntax Placeholder (Finnish)</label>
+        <label className='block text-gray-700' htmlFor='syntaxPlaceholder-fi'>
+          Syntax Placeholder (Finnish)
+        </label>
         <input
           id='syntaxPlaceholder-fi'
           name='syntaxPlaceholder.fi'
@@ -137,7 +162,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='targetAudience'>Target Audience</label>
+        <label className='block text-gray-700' htmlFor='targetAudience'>
+          Target Audience
+        </label>
         <input
           id='targetAudience'
           name='targetAudience'
@@ -149,7 +176,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='tooltip-en'>Tooltip (English)</label>
+        <label className='block text-gray-700' htmlFor='tooltip-en'>
+          Tooltip (English)
+        </label>
         <input
           id='tooltip-en'
           name='tooltip.en'
@@ -161,7 +190,9 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
         />
       </div>
       <div className='mb-2'>
-        <label className='block text-gray-700' htmlFor='tooltip-fi'>Tooltip (Finnish)</label>
+        <label className='block text-gray-700' htmlFor='tooltip-fi'>
+          Tooltip (Finnish)
+        </label>
         <input
           id='tooltip-fi'
           name='tooltip.fi'
@@ -172,12 +203,20 @@ const EditQuestionForm: React.FC<EditQuestionFormProps> = ({
           placeholder='Enter the tooltip in Finnish'
         />
       </div>
-      <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={handleSave}
-      >
-        Save
-      </button>
+      <div className='flex justify-center items-center'>
+        <div className='flex w-1/2 justify-between gap-4'>
+          <button
+            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+            onClick={handleCancel}>
+            Cancel
+          </button>
+          <button
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+            onClick={handleSave}>
+            Save
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

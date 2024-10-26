@@ -51,6 +51,9 @@ const AdminPanel: React.FC = () => {
   const handleEdit = (question: QuestionItem) => {
     setEditingQuestion(question);
   };
+  const handleCancel = () => {
+    setEditingQuestion(null);
+  };
 
   const handleSave = async () => {
     if (editingQuestion) {
@@ -127,6 +130,7 @@ const AdminPanel: React.FC = () => {
           <EditQuestionForm
             editingQuestion={editingQuestion}
             handleChange={handleChange}
+            handleCancel={handleCancel}
             handleSave={handleSave}
           />
         )}

@@ -39,6 +39,7 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
                   onClick={() => handleEdit(question)}>
                   Edit
                 </button>
+
               </td>
             </tr>
           ))}

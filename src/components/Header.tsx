@@ -1,14 +1,10 @@
 import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
-import Link from 'next/link';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
 const Header = () => {
   const {setLanguage, language, currentQuestion} = useUserContext();
-  const handleAdminClick = (
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-  ) => {
-    e.preventDefault();
+  const handleAdminClick = () => {
     const password = prompt('Please enter the admin password:');
     if (password === 'businessfinland') {
       window.location.href = '/admin';
@@ -39,13 +35,11 @@ const Header = () => {
         </div>
       )}
       <div className='flex justify-center gap-4 items-center mx-4'>
-        <Link href='/admin'>
-          <a
-            onClick={handleAdminClick}
-            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
-            {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
-          </a>
-        </Link>
+        <button
+          onClick={handleAdminClick}
+          className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
+          {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
+        </button>
         <FlagIcon
           code='FI'
           size={32}
