@@ -27,12 +27,8 @@ foreach ($packageFile in $packageFiles) {
     # Get the package names from the dependencies and devDependencies sections
     $packageNames = (Get-Content -Path $packageFile.Name | ConvertFrom-Json).PSObject.Properties.Name | Where-Object { $_ -eq 'dependencies' -or $_ -eq 'devDependencies' } | ForEach-Object { (Get-Content -Path $packageFile.Name | ConvertFrom-Json).$_ | Get-Member -MemberType NoteProperty | ForEach-Object { $_.Name } }
 
-    # Update each package to the latest version, skipping "eslint"
+    # Update each package to the latest version,
     foreach ($packageName in $packageNames) {
-        if ($packageName -eq 'eslint') {
-            Write-Host "Skipping update for $packageName..."
-            continue
-        }
         Write-Host "Updating $packageName to the latest version..."
         npm install $packageName@latest --force
 }

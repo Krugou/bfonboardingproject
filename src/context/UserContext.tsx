@@ -2,16 +2,24 @@ import React, {createContext, useContext, useState} from 'react';
 
 interface UserContextType {
   userInfo: {
+    email: string;
     questionAnswers: Record<string, any>;
+    lastLogin?: Date;
+    createdAt: Date;
   };
-  // eslint-disable-next-line no-unused-vars
+  setUserInfo: React.Dispatch<
+    React.SetStateAction<{
+      email: string;
+      questionAnswers: Record<string, any>;
+      lastLogin?: Date;
+      createdAt: Date;
+    }>
+  >;
+  currentQuestion: number;
+  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
   setAnswer: (questionId: string, answer: any) => void;
   language: string;
-  // eslint-disable-next-line no-unused-vars
-  setLanguage: (language: string) => void;
-  currentQuestion: number;
-  // eslint-disable-next-line no-unused-vars
-  setCurrentQuestion: (questionId: number) => void;
+  setLanguage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -21,13 +29,18 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 }) => {
   const [language, setLanguage] = useState('en');
   const [userInfo, setUserInfo] = useState<{
+    email: string;
     questionAnswers: Record<string, any>;
+    lastLogin?: Date;
+    createdAt: Date;
   }>({
+    email: '',
     questionAnswers: {},
+    createdAt: new Date(),
   });
   const [currentQuestion, setCurrentQuestion] = useState(1);
+
   const setAnswer = (questionId: string, answer: any) => {
-    console.log('🚀 ~ setAnswer ~ answer:', answer);
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       questionAnswers: {
@@ -35,13 +48,13 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         [questionId]: answer,
       },
     }));
-    console.log(JSON.stringify(userInfo, null, 2));
   };
 
   return (
     <UserContext.Provider
       value={{
         userInfo,
+        setUserInfo,
         currentQuestion,
         setCurrentQuestion,
         setAnswer,

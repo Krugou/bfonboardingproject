@@ -7,7 +7,6 @@ import {db} from '@/utils/firebase';
 import {doc, onSnapshot} from 'firebase/firestore';
 import React, {useEffect, useState} from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {

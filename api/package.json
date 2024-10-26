@@ -20,12 +20,12 @@
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "nodemon": "^3.1.7",
-    "openai": "^4.68.1",
+    "openai": "^4.68.4",
     "typescript": "^5.6.3"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.13",
+    "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5"
   }
