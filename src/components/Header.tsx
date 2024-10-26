@@ -1,6 +1,6 @@
 import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
 const Header = () => {
