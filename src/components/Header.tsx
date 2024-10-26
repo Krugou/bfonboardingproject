@@ -1,13 +1,15 @@
 import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
+import {useRouter} from 'next/router';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
 const Header = () => {
   const {setLanguage, language, currentQuestion} = useUserContext();
+  const router = useRouter();
   const handleAdminClick = () => {
     const password = prompt('Please enter the admin password:');
     if (password === 'businessfinland') {
-      window.location.href = '/admin';
+      router.push('/admin');
     } else {
       alert('Incorrect password. Access denied.');
     }
