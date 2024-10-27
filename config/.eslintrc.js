@@ -32,6 +32,6 @@ module.exports = {
   },
   plugins: ['react'],
   rules: {
-    // Add your custom rules here
+
   },
 };
