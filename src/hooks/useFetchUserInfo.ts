@@ -10,16 +10,20 @@ const useFetchUserInfo = () => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        // User is signed in, fetch user info from Firestore
-        const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
-        if (accountDoc.exists()) {
-          const accountData = accountDoc.data();
-          setUserInfo({
-            email: accountData.email ?? 'default@example.com',
-            questionAnswers: accountData.questionAnswers,
-            lastLogin: accountData.lastLogin?.toDate(),
-            createdAt: accountData.createdAt.toDate(),
-          });
+        try {
+          // User is signed in, fetch user info from Firestore
+          const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
+          if (accountDoc.exists()) {
+            const accountData = accountDoc.data();
+            setUserInfo({
+              email: accountData.email ?? 'default@example.com',
+              questionAnswers: accountData.questionAnswers,
+              lastLogin: accountData.lastLogin?.toDate(),
+              createdAt: accountData.createdAt.toDate(),
+            });
+          }
+        } catch (error) {
+          console.error('Error fetching user info: ', error);
         }
       } else {
         // User is signed out, clear user info
