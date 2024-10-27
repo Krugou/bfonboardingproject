@@ -1,12 +1,12 @@
 'use client';
 
 import AccountInfo from '@/components/AccountInfo';
-import {UserProvider} from '@/context/UserContext';
+import {useUserContext, UserProvider} from '@/context/UserContext';
 import React from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
 
 const AccountPage: React.FC = () => {
-  let isDarkmode = false;
+  const {isDarkmode} = useUserContext();
   return (
     <UserProvider>
       <ToastContainer

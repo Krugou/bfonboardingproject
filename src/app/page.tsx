@@ -2,7 +2,7 @@
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
-import {UserProvider} from '@/context/UserContext';
+import {useUserContext, UserProvider} from '@/context/UserContext';
 import {db} from '@/utils/firebase';
 import {doc, onSnapshot} from 'firebase/firestore';
 import React, {useEffect, useState} from 'react';
@@ -14,6 +14,8 @@ const Home = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const [questions, setQuestions] = useState<any>([]);
+  const {isDarkmode} = useUserContext();
+
   useEffect(() => {
     const docRef = doc(db, 'questions', 'questions');
 
@@ -44,7 +46,6 @@ const Home = () => {
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
-  let isDarkmode = false;
 
   return (
     <UserProvider>

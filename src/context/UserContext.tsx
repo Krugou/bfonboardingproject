@@ -23,6 +23,8 @@ interface UserContextType {
   setAnswer: (questionId: string, answer: any) => void;
   language: string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
+  isDarkmode: boolean;
+  setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -38,6 +40,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     createdAt: Date;
   } | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
+  const [isDarkmode, setIsDarkmode] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -89,6 +92,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setAnswer,
         language,
         setLanguage,
+        isDarkmode,
+        setIsDarkmode,
       }}>
       {children}
     </UserContext.Provider>
