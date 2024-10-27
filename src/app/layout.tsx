@@ -4,6 +4,8 @@ import React from 'react';
 import Favicon from './favicon.webp';
 import './globals.css';
 import { UserProvider } from '@/context/UserContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const finlandica = localFont({
   src: './Finlandica/Finlandica-VariableFont_wght.ttf',
@@ -29,6 +31,7 @@ const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
     <body className={finlandica.className}>
       <UserProvider>
+        <ToastContainer />
         {children}
       </UserProvider>
     </body>

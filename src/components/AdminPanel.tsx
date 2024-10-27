@@ -1,9 +1,8 @@
 import {QuestionItem} from '@/app/types';
-import {UserProvider} from '@/context/UserContext';
 import {db} from '@/utils/firebase';
 import {addDoc, collection, doc, onSnapshot, setDoc} from 'firebase/firestore';
 import React, {useEffect, useState} from 'react';
-import {Bounce, ToastContainer, toast} from 'react-toastify';
+import {Bounce, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EditQuestionForm from './AdminPanel/EditQuestionForm';
 import QuestionsTable from './AdminPanel/QuestionsTable';
