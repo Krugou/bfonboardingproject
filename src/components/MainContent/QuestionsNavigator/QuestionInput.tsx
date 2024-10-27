@@ -104,7 +104,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     } else {
       toast.error('SpeechRecognition is not supported in this browser.');
     }
-  }, [language]);
+  }, [language, handleVoiceCommand]);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -203,7 +203,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     } else {
       stopListening();
     }
-  }, [listeningMode]);
+  }, [listeningMode, startListening, stopListening]);
 
   const startListening = () => {
     if (recognition) {
