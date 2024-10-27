@@ -1,11 +1,13 @@
+import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
 import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
 const Header = () => {
-  const {setLanguage, language, currentQuestion} = useUserContext();
+  const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
   const router = useRouter();
+  const [isLoginVisible, setIsLoginVisible] = React.useState(false);
   const handleAdminClick = () => {
     const password = prompt('Please enter the admin password:');
     if (password === 'businessfinland') {
@@ -42,6 +44,30 @@ const Header = () => {
           className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
           {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
         </button>
+        {/* make button to show modal Loginregistermodal */}
+        {/*  if userinfo is there hide following */}
+        {userInfo.email ? (
+          <button
+            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
+            onClick={() => {
+              router.push('/account');
+            }}>
+            {language === 'fi' ? 'Oma tili' : 'My account'}
+          </button>
+        ) : (
+          <>
+            {' '}
+            <button
+              className='bg-white text-bf-brand-primary font-bold py-2 px-4  rounded-xl'
+              onClick={() => {
+                setIsLoginVisible(true);
+              }}>
+              {language === 'fi' ? 'Kirjaudu' : 'Login'}
+            </button>
+            <LoginRegisterModal isLoginVisible={isLoginVisible} />{' '}
+          </>
+        )}
+
         <FlagIcon
           code='FI'
           size={32}
