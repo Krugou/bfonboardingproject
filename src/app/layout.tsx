@@ -1,11 +1,12 @@
 import { UserProvider } from '@/context/UserContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
 import './globals.css';
+import { initializeAnalytics } from '@/utils/analytics';
 
 const finlandica = localFont({
   src: './Finlandica/Finlandica-VariableFont_wght.ttf',
@@ -27,15 +28,21 @@ export const metadata: Metadata = {
   icons: [{rel: 'icon', url: Favicon.src}],
 };
 // console.log('Website rendered in ' + process.env.NODE_ENV);
-const RootLayout = ({children}: {children: React.ReactNode}) => (
-  <html lang='en'>
-    <body className={finlandica.className}>
-      <UserProvider>
-        <ToastContainer />
-        {children}
-      </UserProvider>
-    </body>
-  </html>
-);
+const RootLayout = ({children}: {children: React.ReactNode}) => {
+  useEffect(() => {
+    initializeAnalytics();
+  }, []);
+
+  return (
+    <html lang='en'>
+      <body className={finlandica.className}>
+        <UserProvider>
+          <ToastContainer />
+          {children}
+        </UserProvider>
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;

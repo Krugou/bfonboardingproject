@@ -2,6 +2,7 @@ import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import React, {useEffect, useRef} from 'react';
 import AnswersTable from './AnsweredQuestionsModal/AnswersTables';
+import { logEvent } from '@/utils/analytics';
 
 interface AnsweredQuestionsModalProps {
   open: boolean;
@@ -32,6 +33,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
+        logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
       }
     };
 
@@ -73,7 +75,10 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
           <button
             ref={closeButtonRef}
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-            onClick={onClose}
+            onClick={() => {
+              onClose();
+              logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
+            }}
             aria-label='Close answered questions modal'>
             {language === 'fi' ? 'Sulje' : 'Close'}
           </button>

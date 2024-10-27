@@ -7,6 +7,7 @@ import {useRouter} from 'next/navigation';
 import React, {useEffect, useState} from 'react';
 import {FlagIcon} from 'react-flag-kit';
 import {toast} from 'react-toastify';
+import { logEvent } from '@/utils/analytics';
 
 const Header = () => {
   const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
@@ -86,6 +87,7 @@ const Header = () => {
               className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
               onClick={() => {
                 setIsLoginVisible(true);
+                logEvent('login_button_click');
               }}
               aria-label={language === 'fi' ? 'Kirjaudu' : 'Login'}
               role='button'>
@@ -98,7 +100,10 @@ const Header = () => {
         <FlagIcon
           code='FI'
           size={32}
-          onClick={() => setLanguage('fi')}
+          onClick={() => {
+            setLanguage('fi');
+            logEvent('language_selection', { language: 'fi' });
+          }}
           className='cursor-pointer'
           aria-label='Select Finnish language'
           role='button'
@@ -106,7 +111,10 @@ const Header = () => {
         <FlagIcon
           code='GB'
           size={32}
-          onClick={() => setLanguage('en')}
+          onClick={() => {
+            setLanguage('en');
+            logEvent('language_selection', { language: 'en' });
+          }}
           className='cursor-pointer'
           aria-label='Select English language'
           role='button'
