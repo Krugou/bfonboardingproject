@@ -7,8 +7,8 @@ import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
 import SpecialInput from './QuestionInput/SpecialInput';
 import TextInput from './QuestionInput/TextInput';
-import useSpeechRecognition from './QuestionInput/useSpeechRecognition';
-import useVoiceCommand from './QuestionInput/useVoiceCommand';
+import useSpeechRecognition from '../../../utils/useSpeechRecognition';
+import useVoiceCommand from '../../../utils/useVoiceCommand';
 
 interface QuestionInputProps {
   question: QuestionItem;
