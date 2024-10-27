@@ -21,9 +21,6 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   const {userInfo, language} = useUserContext();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-  if (!userInfo) {
-    return null; // or return a loading indicator or a message
-  }
 
   useEffect(() => {
     if (open && closeButtonRef.current) {
@@ -48,6 +45,10 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, [open, onClose]);
+
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   if (!open) return null;
 

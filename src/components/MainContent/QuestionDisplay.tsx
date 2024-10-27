@@ -1,10 +1,11 @@
-import {QuestionItem} from '@/app/types';
-import {useUserContext} from '@/context/UserContext';
-import {fetchCompanyInfo} from '@/hooks/api';
-import {speakContent} from '@/utils/speakContent';
+import { QuestionItem } from '@/app/types';
+import { useUserContext } from '@/context/UserContext';
+import { fetchCompanyInfo } from '@/hooks/api';
+import { speakContent } from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import React, {useEffect, useState} from 'react';
-import {toast} from 'react-toastify';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
+
 interface QuestionDisplayProps {
   currentStep: number;
   questions: QuestionItem[];
@@ -17,9 +18,6 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   const {language, userInfo} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<any>(null);
-  if (!userInfo) {
-    return null; // or return a loading indicator or a message
-  }
 
   useEffect(() => {
     if (language === 'fi') {
@@ -30,6 +28,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   }, [language]);
 
   useEffect(() => {
+    if (!userInfo) {
+      return;
+    }
     const companyInfo = fetchCompanyInfo(userInfo.questionAnswers['k1']);
     setCompanyInfo(companyInfo);
 
@@ -41,9 +42,13 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
         fetchCompanyInfo(businessId);
       }
     }
-  }, [currentStep, questions, userInfo.questionAnswers]);
+  }, [currentStep, questions]);
 
   const [showTooltip, setShowTooltip] = useState(false);
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
+
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10'>
       {currentStep <= questions.length ? (
