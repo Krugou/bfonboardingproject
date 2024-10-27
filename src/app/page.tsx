@@ -2,11 +2,11 @@
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
-import {useUserContext} from '@/context/UserContext';
-import React, {useState} from 'react';
-import {Bounce, ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useUserContext } from '@/context/UserContext';
 import { CircularProgress } from '@mui/material';
+import React, { useState } from 'react';
+import { Bounce, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
   const [listeningMode, setListeningMode] = useState(false);
@@ -27,13 +27,7 @@ const Home = () => {
     );
   }
 
-  if (!userInfo) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-2xl font-bold text-gray-700">Please login to start</p>
-      </div>
-    );
-  }
+
 
   return (
     <>
@@ -52,6 +46,13 @@ const Home = () => {
       />
       <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
         <Header />
+        {!userInfo && (
+          <div className="flex justify-center items-center h-screen">
+            <p className="text-2xl font-bold text-gray-700">Please login to start</p>
+          </div>
+            )}
+        {userInfo && (
+          <>
         <MainContent
           listeningMode={listeningMode}
           setListeningMode={setListeningMode}
@@ -66,7 +67,9 @@ const Home = () => {
           questions={questions}
           currentStep={currentStep}
           setCurrentStep={setCurrentStep}
-        />
+            />
+            </>
+      )}
       </div>
     </>
   );
