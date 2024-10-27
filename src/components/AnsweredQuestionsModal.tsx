@@ -20,6 +20,9 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 }) => {
   const {userInfo, language} = useUserContext();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   useEffect(() => {
     if (open && closeButtonRef.current) {

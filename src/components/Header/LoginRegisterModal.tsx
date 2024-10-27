@@ -25,72 +25,64 @@ const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    console.log('email', email);
 
     try {
       const signInMethods = await fetchSignInMethodsForEmail(auth, email);
 
+      let userCredential;
       if (isLogin || signInMethods.length > 0) {
         // Handle login
-        const userCredential = await signInWithEmailAndPassword(
+        userCredential = await signInWithEmailAndPassword(
           auth,
           email,
           password,
         );
-        const user = userCredential.user;
-
-        // Update last login
-        await setDoc(
-          doc(db, 'accounts', user.uid),
-          {
-            lastLogin: new Date(),
-          },
-          {merge: true},
-        );
-
-        // Check if account exists in Firestore
-        const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
-        if (accountDoc.exists()) {
-          const accountData = accountDoc.data();
-          setUserInfo({
-            email: accountData.email,
-            questionAnswers: accountData.questionAnswers,
-            lastLogin: accountData.lastLogin.toDate(),
-            createdAt: accountData.createdAt.toDate(),
-          });
-          toast.success('Logged in successfully');
-        } else {
-          // Create account in Firestore if it doesn't exist
-          const accountData = {
-            email: user.email,
-            questionAnswers: {},
-            createdAt: new Date(),
-            lastLogin: new Date(),
-          };
-          await setDoc(doc(db, 'accounts', user.uid), accountData);
-          // @ts-ignore
-          setUserInfo(accountData);
-          toast.success('Account created successfully');
-        }
+        toast.success('Logged in successfully');
       } else {
         // Handle register
-        const userCredential = await createUserWithEmailAndPassword(
+        userCredential = await createUserWithEmailAndPassword(
           auth,
           email,
           password,
         );
-        const user = userCredential.user;
+        toast.success('Registered successfully');
+        setIsLogin(true);
+      }
+
+      const user = userCredential.user;
+      console.log('🚀 ~ handleSubmit ~ user:', user);
+
+      // Check if account exists in Firestore
+      const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
+      if (accountDoc.exists()) {
+        const accountData = accountDoc.data();
+        console.log('🚀 ~ handleSubmit ~ accountData:', accountData);
+        setUserInfo({
+          email: accountData.email ?? 'default@example.com',
+          questionAnswers: accountData.questionAnswers,
+          lastLogin: accountData.lastLogin?.toDate(),
+          createdAt: accountData.createdAt.toDate(),
+        });
+      } else {
+        // Create account in Firestore if it doesn't exist
         const accountData = {
-          email: user.email,
+          email: user.email ?? 'default@example.com',
           questionAnswers: {},
           createdAt: new Date(),
           lastLogin: new Date(),
         };
         await setDoc(doc(db, 'accounts', user.uid), accountData);
-        // @ts-ignore
         setUserInfo(accountData);
-        toast.success('Registered successfully');
-        setIsLogin(true);
+        toast.success('Account created successfully');
       }
+
+      // Update last login
+      await setDoc(
+        doc(db, 'accounts', user.uid),
+        {lastLogin: new Date()},
+        {merge: true},
+      );
     } catch (error) {
       setError((error as Error).message);
       toast.error((error as Error).message);

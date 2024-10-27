@@ -98,47 +98,32 @@ const AdminPanel: React.FC = () => {
       }
     }
   };
-  let isDarkmode = false;
+
 
   return (
-    <UserProvider>
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme={isDarkmode ? 'dark' : 'light'}
-        transition={Bounce}
-      />
-      <div className='p-4'>
-        <h1 className='text-2xl font-bold mb-4'>Admin Panel</h1>
-        <button
-          className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4'
-          onClick={toggleLanguage}>
-          {language === 'en' ? 'Switch to Finnish' : 'Switch to English'}
-        </button>
-        {!editingQuestion && (
-          <QuestionsTable
-            questions={questions}
-            language={language}
-            handleEdit={handleEdit}
-          />
-        )}
-        {editingQuestion && (
-          <EditQuestionForm
-            editingQuestion={editingQuestion}
-            handleChange={handleChange}
-            handleCancel={handleCancel}
-            handleSave={handleSave}
-          />
-        )}
-      </div>
-    </UserProvider>
+    <div className='p-4'>
+      <h1 className='text-2xl font-bold mb-4'>Admin Panel</h1>
+      <button
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4'
+        onClick={toggleLanguage}>
+        {language === 'en' ? 'Switch to Finnish' : 'Switch to English'}
+      </button>
+      {!editingQuestion && (
+        <QuestionsTable
+          questions={questions}
+          language={language}
+          handleEdit={handleEdit}
+        />
+      )}
+      {editingQuestion && (
+        <EditQuestionForm
+          editingQuestion={editingQuestion}
+          handleChange={handleChange}
+          handleCancel={handleCancel}
+          handleSave={handleSave}
+        />
+      )}
+    </div>
   );
 };
 

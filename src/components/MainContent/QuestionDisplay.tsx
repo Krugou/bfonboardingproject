@@ -17,6 +17,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
   const {language, userInfo} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<any>(null);
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   useEffect(() => {
     if (language === 'fi') {

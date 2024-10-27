@@ -4,8 +4,10 @@ import questions from '@/data/mockdata';
 import {useRouter} from 'next/navigation';
 import React from 'react';
 import {FlagIcon} from 'react-flag-kit';
+import {toast} from 'react-toastify';
 const Header = () => {
   const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
+
   const router = useRouter();
   const [isLoginVisible, setIsLoginVisible] = React.useState(false);
   const handleAdminClick = () => {
@@ -16,6 +18,7 @@ const Header = () => {
       alert('Incorrect password. Access denied.');
     }
   };
+
   return (
     <header className={`bg-bf-brand-primary flex justify-between h-20 w-full `}>
       <div>
@@ -44,9 +47,8 @@ const Header = () => {
           className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
           {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
         </button>
-        {/* make button to show modal Loginregistermodal */}
-        {/*  if userinfo is there hide following */}
-        {userInfo.email ? (
+
+        {/* {userInfo.email ? (
           <button
             className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
             onClick={() => {
@@ -56,17 +58,16 @@ const Header = () => {
           </button>
         ) : (
           <>
-            {' '}
             <button
-              className='bg-white text-bf-brand-primary font-bold py-2 px-4  rounded-xl'
+              className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
               onClick={() => {
                 setIsLoginVisible(true);
               }}>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
-            <LoginRegisterModal isLoginVisible={isLoginVisible} />{' '}
+            <LoginRegisterModal isLoginVisible={isLoginVisible} />
           </>
-        )}
+        )} */}
 
         <FlagIcon
           code='FI'

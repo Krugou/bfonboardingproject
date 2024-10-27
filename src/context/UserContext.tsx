@@ -1,4 +1,7 @@
-import React, {createContext, useContext, useState} from 'react';
+import {auth, db} from '@/utils/firebase';
+import {onAuthStateChanged} from 'firebase/auth';
+import {doc, getDoc} from 'firebase/firestore';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 
 interface UserContextType {
   userInfo: {
@@ -6,14 +9,14 @@ interface UserContextType {
     questionAnswers: Record<string, any>;
     lastLogin?: Date;
     createdAt: Date;
-  };
+  } | null;
   setUserInfo: React.Dispatch<
     React.SetStateAction<{
       email: string;
       questionAnswers: Record<string, any>;
       lastLogin?: Date;
       createdAt: Date;
-    }>
+    } | null>
   >;
   currentQuestion: number;
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
@@ -33,18 +36,44 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     questionAnswers: Record<string, any>;
     lastLogin?: Date;
     createdAt: Date;
-  }>({
-    email: '',
-    questionAnswers: {},
-    createdAt: new Date(),
-  });
+  } | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      console.log('🚀 ~ unsubscribe ~ auth:', auth);
+      if (user) {
+        // User is signed in, fetch user info from Firestore
+        const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
+        if (accountDoc.exists()) {
+          const accountData = accountDoc.data();
+          setUserInfo({
+            email: accountData.email ?? 'default@example.com',
+            questionAnswers: accountData.questionAnswers,
+            lastLogin: accountData.lastLogin?.toDate(),
+            createdAt: accountData.createdAt.toDate(),
+          });
+        }
+      } else {
+        // User is signed out, clear user info
+        setUserInfo(null);
+      }
+    });
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+  useEffect(() => {
+    if (userInfo) {
+      console.log('userInfo', userInfo);
+    }
+  }, [userInfo]);
   const setAnswer = (questionId: string, answer: any) => {
+    // @ts-expect-error
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       questionAnswers: {
-        ...prevUserInfo.questionAnswers,
+        ...prevUserInfo?.questionAnswers,
         [questionId]: answer,
       },
     }));

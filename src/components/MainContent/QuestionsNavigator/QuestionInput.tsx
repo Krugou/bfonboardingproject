@@ -48,6 +48,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
   );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   useEffect(() => {
     if (userInfo.questionAnswers[question.id]) {
@@ -215,6 +218,9 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
   };
 
   const renderInput = () => {
+    if (!userInfo) {
+      return null;
+    }
     switch (question.answerType) {
       case 'specialInput':
         return (
