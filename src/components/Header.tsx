@@ -63,7 +63,9 @@ const Header = () => {
         {isAdmin && (
           <button
             onClick={handleAdminClick}
-            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'>
+            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'
+            aria-label={language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
+            role='button'>
             {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
           </button>
         )}
@@ -73,7 +75,9 @@ const Header = () => {
             className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
             onClick={() => {
               router.push('/account');
-            }}>
+            }}
+            aria-label={language === 'fi' ? 'Oma tili' : 'My account'}
+            role='button'>
             {language === 'fi' ? 'Oma tili' : 'My account'}
           </button>
         ) : (
@@ -82,7 +86,9 @@ const Header = () => {
               className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
               onClick={() => {
                 setIsLoginVisible(true);
-              }}>
+              }}
+              aria-label={language === 'fi' ? 'Kirjaudu' : 'Login'}
+              role='button'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
             <LoginRegisterModal isLoginVisible={isLoginVisible} />
@@ -95,6 +101,7 @@ const Header = () => {
           onClick={() => setLanguage('fi')}
           className='cursor-pointer'
           aria-label='Select Finnish language'
+          role='button'
         />
         <FlagIcon
           code='GB'
@@ -102,6 +109,7 @@ const Header = () => {
           onClick={() => setLanguage('en')}
           className='cursor-pointer'
           aria-label='Select English language'
+          role='button'
         />
       </div>
     </header>

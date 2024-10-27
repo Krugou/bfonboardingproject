@@ -6,19 +6,27 @@ import {useUserContext} from '@/context/UserContext';
 import React, {useState} from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CircularProgress } from '@mui/material';
 
 const Home = () => {
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
   const {isDarkmode, questions} = useUserContext();
+  const [loading, setLoading] = useState(true);
 
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
   if (!questions.length) {
-    return null;
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <CircularProgress />
+      </div>
+    );
   }
+
   return (
     <>
       <ToastContainer

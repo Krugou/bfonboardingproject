@@ -27,6 +27,10 @@ interface UserContextType {
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
   isDarkmode: boolean;
   setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
+  highContrast: boolean;
+  setHighContrast: React.Dispatch<React.SetStateAction<boolean>>;
+  fontSize: number;
+  setFontSize: React.Dispatch<React.SetStateAction<number>>;
   questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
 }
@@ -45,6 +49,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   } | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [isDarkmode, setIsDarkmode] = useState(false);
+  const [highContrast, setHighContrast] = useState(false);
+  const [fontSize, setFontSize] = useState(16);
   const [questions, setQuestions] = useState<any[]>([]);
 
   useEffect(() => {
@@ -133,6 +139,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setLanguage,
         isDarkmode,
         setIsDarkmode,
+        highContrast,
+        setHighContrast,
+        fontSize,
+        setFontSize,
         questions,
         setQuestions,
       }}>

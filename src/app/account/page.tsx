@@ -21,6 +21,8 @@ const AccountPage: React.FC = () => {
         pauseOnHover
         theme={isDarkmode ? 'dark' : 'light'}
         transition={Bounce}
+        role="alert"
+        aria-live="assertive"
       />
       <AccountInfo />
     </>

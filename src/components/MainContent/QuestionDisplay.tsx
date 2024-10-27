@@ -51,7 +51,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
           <div className='flex justify-end w-full items-center rounded-xl'>
             <button
               className='flex justify-center items-center border text-blue-500 hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6'
-              onClick={() => setShowTooltip(!showTooltip)}>
+              onClick={() => setShowTooltip(!showTooltip)}
+              aria-label={language === 'fi' ? 'Näytä tooltip' : 'Show tooltip'}
+              role='button'>
               <p className='text-xl'>i</p>
             </button>
             <button
@@ -67,14 +69,18 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                   toast,
                 )
               }
-              className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'>
+              className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'
+              aria-label={language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'}
+              role='button'>
               <VolumeUpIcon fontSize='large' />
             </button>
           </div>
           <div className='group'>
             <h2
               className='text-center w-full h-full font-bold text-lg sm:text-2xl md:text-3xl lg:text-4xl text-bf-brand-primary overflow-wrap break-word'
-              title={questions[currentStep - 1].tooltip[language]}>
+              title={questions[currentStep - 1].tooltip[language]}
+              tabIndex={0}
+              aria-live='polite'>
               {questions[currentStep - 1].question[language]}
             </h2>
             {questions[currentStep - 1].id === 'k2' &&
@@ -139,7 +145,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                 showTooltip
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100'
-              }`}>
+              }`}
+              tabIndex={0}
+              aria-live='polite'>
               {questions[currentStep - 1].tooltip[language]}
             </h3>
           </div>

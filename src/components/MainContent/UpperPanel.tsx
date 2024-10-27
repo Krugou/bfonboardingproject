@@ -25,9 +25,17 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
       <ListeningModeToggle
         listeningMode={listeningMode}
         setListeningMode={setListeningMode}
+        aria-label='Toggle listening mode'
+        role='switch'
+        aria-checked={listeningMode}
       />
       <BFStepper questions={questions} />
-      <HistoryButton currentStep={currentStep} onClick={handleOpenModal} />
+      <HistoryButton
+        currentStep={currentStep}
+        onClick={handleOpenModal}
+        aria-label='Open history modal'
+        role='button'
+      />
     </div>
   );
 };
