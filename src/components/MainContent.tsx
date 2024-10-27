@@ -59,6 +59,14 @@ const MainContent: React.FC<MainContentProps> = ({
     logEvent('page_view', { page: 'MainContent' });
   }, []);
 
+  if (!questions.length) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-2xl font-bold text-gray-700">Please login to start</p>
+      </div>
+    );
+  }
+
   return (
     <div className='flex flex-col justify-center items-center w-full h-full'>
       <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg max-h-min transition-all duration-500 ease-in-out transform hover:scale-105'>

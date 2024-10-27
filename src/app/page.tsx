@@ -12,7 +12,7 @@ const Home = () => {
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const {isDarkmode, questions} = useUserContext();
+  const {isDarkmode, questions, userInfo} = useUserContext();
   const [loading, setLoading] = useState(true);
 
   const toggleModal = () => {
@@ -23,6 +23,14 @@ const Home = () => {
     return (
       <div className="flex justify-center items-center h-screen">
         <CircularProgress />
+      </div>
+    );
+  }
+
+  if (!userInfo) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-2xl font-bold text-gray-700">Please login to start</p>
       </div>
     );
   }
