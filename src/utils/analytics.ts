@@ -1,4 +1,4 @@
-import { getAnalytics, logEvent as logGAEvent } from 'firebase/analytics';
+import { getAnalytics, logEvent as logGAEvent, isSupported } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -12,11 +12,14 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 
 export const initializeAnalytics = () => {
   if (typeof window !== 'undefined') {
-    getAnalytics(app);
+    isSupported().then((supported) => {
+      if (supported) {
+        getAnalytics(app);
+      }
+    });
   }
 };
 
