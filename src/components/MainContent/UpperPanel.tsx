@@ -1,4 +1,4 @@
-import {QuestionItem} from '@/app/types';
+import { QuestionItem } from '@/app/types';
 import React from 'react';
 import BFStepper from './UpperPanel/BFStepper';
 import HistoryButton from './UpperPanel/HistoryButton';
@@ -25,9 +25,17 @@ const UpperPanel: React.FC<UpperPanelProps> = ({
       <ListeningModeToggle
         listeningMode={listeningMode}
         setListeningMode={setListeningMode}
+        aria-label='Toggle listening mode'
+
+        aria-checked={listeningMode}
       />
       <BFStepper questions={questions} />
-      <HistoryButton currentStep={currentStep} onClick={handleOpenModal} />
+      <HistoryButton
+        currentStep={currentStep}
+        onClick={handleOpenModal}
+        aria-label='Open history modal'
+
+      />
     </div>
   );
 };

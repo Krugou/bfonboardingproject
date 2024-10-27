@@ -56,7 +56,7 @@ const MainContent: React.FC<MainContentProps> = ({
 
   return (
     <div className='flex flex-col justify-center items-center w-full h-full'>
-      <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg max-h-min'>
+      <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg max-h-min transition-all duration-500 ease-in-out transform hover:scale-105'>
         <UpperPanel
           listeningMode={listeningMode}
           setListeningMode={setListeningMode}

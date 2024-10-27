@@ -1,6 +1,9 @@
-import type {Metadata} from 'next';
+import { UserProvider } from '@/context/UserContext';
+import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
 import './globals.css';
 
@@ -26,7 +29,12 @@ export const metadata: Metadata = {
 // console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
-    <body className={finlandica.className}>{children}</body>
+    <body className={finlandica.className}>
+      <UserProvider>
+        <ToastContainer />
+        {children}
+      </UserProvider>
+    </body>
   </html>
 );
 

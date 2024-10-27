@@ -56,7 +56,9 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
           setCurrentStep(currentStep - 1);
           setCurrentQuestion(currentStep - 1);
         }}
-        disabled={currentStep === 1}>
+        disabled={currentStep === 1}
+        aria-label={language === 'fi' ? 'Edellinen' : 'Previous'}
+        role='button'>
         {language === 'fi' ? 'Edellinen' : 'Previous'}
       </button>
       {currentStep <= questions.length ? (
@@ -75,14 +77,18 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
               setCurrentStep(currentStep + 1);
               setCurrentQuestion(currentStep + 1);
             }}
-            disabled={currentStep === questions.length}>
+            disabled={currentStep === questions.length}
+            aria-label={language === 'fi' ? 'Seuraava' : 'Next'}
+            role='button'>
             {language === 'fi' ? 'Seuraava' : 'Next'}
           </button>
         </>
       ) : (
         <button
           className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
-          onClick={handleReset}>
+          onClick={handleReset}
+          aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
+          role='button'>
           {language === 'fi' ? 'Nollaa' : 'Reset'}
         </button>
       )}

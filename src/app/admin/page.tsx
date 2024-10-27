@@ -1,13 +1,15 @@
-// src/app/admin/page.tsx
 'use client';
 import AdminPanel from '@/components/AdminPanel';
+import {useUserContext} from '@/context/UserContext';
 import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
 
 const AdminPage: React.FC = () => {
+  const {isDarkmode} = useUserContext();
   return (
-    <div>
+    <>
       <AdminPanel />
-    </div>
+    </>
   );
 };
 

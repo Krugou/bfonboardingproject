@@ -13,6 +13,9 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
   setCurrentStep,
 }) => {
   const {userInfo, language} = useUserContext();
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   // Filter to get only answered questions
   const answeredQuestions = questions.filter(

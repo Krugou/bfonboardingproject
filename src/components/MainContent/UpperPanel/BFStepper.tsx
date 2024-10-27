@@ -8,6 +8,11 @@ interface BFStepperProps {
 
 const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
   const {userInfo} = useUserContext();
+
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
+
   const answeredCount = questions.filter(
     (q) => userInfo.questionAnswers[q.id] !== undefined,
   ).length;

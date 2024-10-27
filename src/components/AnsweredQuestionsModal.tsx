@@ -20,12 +20,34 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 }) => {
   const {userInfo, language} = useUserContext();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  if (!userInfo) {
+    return null; // or return a loading indicator or a message
+  }
 
   useEffect(() => {
     if (open && closeButtonRef.current) {
       closeButtonRef.current.focus();
     }
   }, [open]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    if (open) {
+      window.addEventListener('keydown', handleKeyDown);
+    } else {
+      window.removeEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [open, onClose]);
 
   if (!open) return null;
 
@@ -34,11 +56,17 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   );
 
   return (
-    <div className='fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center'>
+    <div
+      className='fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center'
+      role='dialog'
+      aria-modal='true'
+      aria-labelledby='answered-questions-modal-title'
+      ref={modalRef}
+      tabIndex={-1}>
       {/* actual content of the modal is below */}
       <div className='bg-white rounded-lg p-6 w-full xl:w-2/3'>
         <div className='flex justify-between items-center mb-4'>
-          <h2 className='text-xl font-bold'>
+          <h2 className='text-xl font-bold' id='answered-questions-modal-title'>
             {language === 'fi' ? 'Vastatut kysymykset' : 'Answered Questions'}
           </h2>
           <button

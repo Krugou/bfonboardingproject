@@ -1,5 +1,6 @@
-import {config} from 'dotenv';
+import { config } from 'dotenv';
 import express from 'express';
+import cors from 'cors';
 import fetchWebsiteRouter from './routes/fetchWebsite.js';
 import errorHandler from './middleware/errorHandler.js';
 
@@ -16,6 +17,9 @@ if (process.env.test === 'test') {
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+
+// Middleware to enable CORS
+app.use(cors());
 
 const startTime: Date = new Date();
 
