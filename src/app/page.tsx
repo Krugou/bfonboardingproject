@@ -1,6 +1,7 @@
 'use client';
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
+import LoadingElement from '@/components/LoadingElement';
 import MainContent from '@/components/MainContent';
 import { useUserContext } from '@/context/UserContext';
 import { CircularProgress } from '@mui/material';
@@ -47,7 +48,8 @@ const Home = () => {
       <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
         <Header />
         {!userInfo && (
-          <div className="flex justify-center items-center h-screen">
+          <div className="flex flex-col justify-center items-center h-screen">
+            <LoadingElement />
             <p className="text-2xl font-bold text-gray-700">Please login to start</p>
           </div>
             )}

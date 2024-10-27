@@ -2,14 +2,24 @@ import {useUserContext} from '@/context/UserContext';
 import useFetchUserInfo from '@/hooks/useFetchUserInfo';
 import {useRouter} from 'next/navigation';
 import React from 'react';
+import { signOut } from 'firebase/auth';
+import { auth } from '@/utils/firebase';
+import { toast } from 'react-toastify';
+
 const AccountInfo: React.FC = () => {
   const {userInfo, setUserInfo} = useUserContext();
   console.log('🚀 ~ userInfo:', userInfo);
   const router = useRouter();
   useFetchUserInfo();
-  const handleLogout = () => {
-    setUserInfo(null);
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      setUserInfo(null);
+      toast.success('Logged out successfully');
+      router.push('/');
+    } catch (error) {
+      toast.error('Failed to logout');
+    }
   };
 
   if (!userInfo) {

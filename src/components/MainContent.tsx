@@ -1,9 +1,10 @@
-import {QuestionItem} from '@/app/types';
-import React, {useEffect, useState} from 'react';
+import { QuestionItem } from '@/app/types';
+import { logEvent } from '@/utils/analytics';
+import React, { useEffect, useState } from 'react';
+import LoadingElement from './LoadingElement';
 import QuestionDisplay from './MainContent/QuestionDisplay';
 import QuestionsNavigator from './MainContent/QuestionsNavigator';
 import UpperPanel from './MainContent/UpperPanel';
-import { logEvent } from '@/utils/analytics';
 
 /**
  * Props for the MainContent component.
@@ -62,10 +63,12 @@ const MainContent: React.FC<MainContentProps> = ({
   if (!questions.length) {
     return (
       <div className="flex justify-center items-center h-screen">
+        <LoadingElement />
         <p className="text-2xl font-bold text-gray-700">Please login to start</p>
       </div>
     );
   }
+
 
   return (
     <div className='flex flex-col justify-center items-center w-full h-full'>
