@@ -48,7 +48,7 @@ const Header = () => {
           {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
         </button>
 
-        {/* {userInfo.email ? (
+        {userInfo ? (
           <button
             className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
             onClick={() => {
@@ -67,7 +67,7 @@ const Header = () => {
             </button>
             <LoginRegisterModal isLoginVisible={isLoginVisible} />
           </>
-        )} */}
+        )}
 
         <FlagIcon
           code='FI'

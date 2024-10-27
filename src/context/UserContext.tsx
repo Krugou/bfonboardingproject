@@ -2,7 +2,7 @@
 
 import {auth, db} from '@/utils/firebase';
 import {onAuthStateChanged} from 'firebase/auth';
-import {doc, getDoc} from 'firebase/firestore';
+import {doc, getDoc, onSnapshot} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
 interface UserContextType {
@@ -27,6 +27,8 @@ interface UserContextType {
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
   isDarkmode: boolean;
   setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
+  questions: any[];
+  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -43,6 +45,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   } | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [isDarkmode, setIsDarkmode] = useState(false);
+  const [questions, setQuestions] = useState<any[]>([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -68,11 +71,41 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
+
   useEffect(() => {
     if (userInfo) {
       console.log('userInfo', userInfo);
     }
   }, [userInfo]);
+
+  useEffect(() => {
+    const docRef = doc(db, 'questions', 'questions');
+
+    const unsubscribe = onSnapshot(
+      docRef,
+      (docSnap) => {
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const questionsData: any = data.questions.map(
+            (q: any, index: number) => ({
+              id: index.toString(),
+              ...q,
+            }),
+          );
+          setQuestions(questionsData);
+        } else {
+          console.error('No such document!');
+        }
+      },
+      (error) => {
+        console.error('Error fetching questions: ', error);
+      },
+    );
+
+    // Cleanup subscription on unmount
+    return () => unsubscribe();
+  }, []);
+
   const setAnswer = (questionId: string, answer: any) => {
     // @ts-expect-error
     setUserInfo((prevUserInfo) => ({
@@ -96,6 +129,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setLanguage,
         isDarkmode,
         setIsDarkmode,
+        questions,
+        setQuestions,
       }}>
       {children}
     </UserContext.Provider>

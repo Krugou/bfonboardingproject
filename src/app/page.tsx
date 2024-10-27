@@ -46,7 +46,9 @@ const Home = () => {
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
-
+  if (!questions.length) {
+    return null;
+  }
   return (
     <>
       <ToastContainer
