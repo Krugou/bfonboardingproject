@@ -1,6 +1,6 @@
 'use client';
 import AdminPanel from '@/components/AdminPanel';
-import {useUserContext, UserProvider} from '@/context/UserContext';
+import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,7 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminPage: React.FC = () => {
   const {isDarkmode} = useUserContext();
   return (
-    <UserProvider>
+    <>
       <ToastContainer
         position='top-right'
         autoClose={5000}
@@ -23,7 +23,7 @@ const AdminPage: React.FC = () => {
         transition={Bounce}
       />
       <AdminPanel />
-    </UserProvider>
+    </>
   );
 };
 

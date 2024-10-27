@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import React from 'react';
 import Favicon from './favicon.webp';
 import './globals.css';
+import { UserProvider } from '@/context/UserContext';
 
 const finlandica = localFont({
   src: './Finlandica/Finlandica-VariableFont_wght.ttf',
@@ -26,7 +27,11 @@ export const metadata: Metadata = {
 // console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => (
   <html lang='en'>
-    <body className={finlandica.className}>{children}</body>
+    <body className={finlandica.className}>
+      <UserProvider>
+        {children}
+      </UserProvider>
+    </body>
   </html>
 );
 

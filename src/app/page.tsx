@@ -2,7 +2,7 @@
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
-import {useUserContext, UserProvider} from '@/context/UserContext';
+import {useUserContext} from '@/context/UserContext';
 import {db} from '@/utils/firebase';
 import {doc, onSnapshot} from 'firebase/firestore';
 import React, {useEffect, useState} from 'react';
@@ -48,7 +48,7 @@ const Home = () => {
   };
 
   return (
-    <UserProvider>
+    <>
       <ToastContainer
         position='top-right'
         autoClose={5000}
@@ -80,7 +80,7 @@ const Home = () => {
           setCurrentStep={setCurrentStep}
         />
       </div>
-    </UserProvider>
+    </>
   );
 };
 
