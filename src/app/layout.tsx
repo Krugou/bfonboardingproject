@@ -1,3 +1,4 @@
+import GoogleStartup from '@/components/GoogleStartup';
 import { UserProvider } from '@/context/UserContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
@@ -13,7 +14,7 @@ const finlandica = localFont({
 export const metadata: Metadata = {
   title: 'Business Finland Onboarding Portal',
   description:
-    'Welcome to the Business Finland Onboarding Portal. This is where you complete the onboarding process.',
+    'Welcome to the Business Finland Onboarding Portal. This is where you complete the onboarding process. Get started by logging in.',
   openGraph: {
     images: [
       {
@@ -27,15 +28,20 @@ export const metadata: Metadata = {
   icons: [{rel: 'icon', url: Favicon.src}],
 };
 // console.log('Website rendered in ' + process.env.NODE_ENV);
-const RootLayout = ({children}: {children: React.ReactNode}) => (
-  <html lang='en'>
-    <body className={finlandica.className}>
-      <UserProvider>
-        <ToastContainer />
-        {children}
-      </UserProvider>
-    </body>
-  </html>
-);
+const RootLayout = ({children}: {children: React.ReactNode}) => {
+
+
+  return (
+    <html lang='en'>
+      <body className={finlandica.className}>
+        <UserProvider>
+          <GoogleStartup />
+          <ToastContainer />
+          {children}
+        </UserProvider>
+      </body>
+    </html>
+  );
+};
 
 export default RootLayout;
