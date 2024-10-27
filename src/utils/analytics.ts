@@ -1,4 +1,4 @@
-import { getAnalytics, logEvent as logGAEvent, isSupported } from 'firebase/analytics';
+import { getAnalytics, isSupported, logEvent as logGAEvent } from 'firebase/analytics';
 import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
@@ -25,6 +25,7 @@ export const initializeAnalytics = () => {
 
 export const logEvent = (eventName: string, eventParams?: { [key: string]: any }) => {
   if (typeof window !== 'undefined') {
+    const analytics = getAnalytics(app);
     logGAEvent(analytics, eventName, eventParams);
   }
 };
