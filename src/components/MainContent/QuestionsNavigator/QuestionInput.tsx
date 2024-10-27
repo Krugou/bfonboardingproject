@@ -1,7 +1,7 @@
-import {QuestionItem} from '@/app/types';
-import {useUserContext} from '@/context/UserContext';
-import React, {useEffect, useRef, useState} from 'react';
-import {toast} from 'react-toastify';
+import { QuestionItem } from '@/app/types';
+import { useUserContext } from '@/context/UserContext';
+import React, { useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
@@ -60,7 +60,55 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       }
     }
   }, [userInfo.questionAnswers, question]);
-
+  const handleVoiceCommand = (command: string) => {
+    if (language === 'fi') {
+      if (command.toLowerCase() === 'seuraava') {
+        setCurrentStep(currentStep + 1);
+        return;
+      } else if (command.toLowerCase() === 'edellinen') {
+        setCurrentStep(currentStep - 1);
+        return;
+      } else if (command.toLowerCase() === 'nollaa') {
+        setCurrentStep(1);
+        return;
+      }
+    } else {
+      if (command.toLowerCase() === 'next') {
+        setCurrentStep(currentStep + 1);
+        return;
+      } else if (command.toLowerCase() === 'previous') {
+        setCurrentStep(currentStep - 1);
+        return;
+      } else if (command.toLowerCase() === 'reset') {
+        setCurrentStep(1);
+        return;
+      }
+    }
+    if (question.answerType === 'singleChoice') {
+      const option = question.answerOptions?.[language]
+        ?.split('#')
+        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
+      if (option) {
+        handleSingleChoiceClick(option.trim());
+      }
+    } else if (question.answerType === 'multiChoice') {
+      const option = question.answerOptions?.[language]
+        .split('#')
+        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
+      if (option) {
+        handleMultiChoiceClick(option.trim());
+      }
+    } else if (question.answerType === 'slider') {
+      const value = parseInt(command, 10);
+      if (!isNaN(value) && value >= 0 && value <= 100) {
+        handleSliderChange(value);
+      }
+    } else if (question.answerType === 'directInput') {
+      setAnswer(question.id, command);
+    } else if (question.answerType === 'directTextArea') {
+      setAnswer(question.id, command);
+    }
+  };
   useEffect(() => {
     const SpeechRecognition =
       // @ts-ignore
@@ -112,55 +160,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     }
   }, []);
 
-  const handleVoiceCommand = (command: string) => {
-    if (language === 'fi') {
-      if (command.toLowerCase() === 'seuraava') {
-        setCurrentStep(currentStep + 1);
-        return;
-      } else if (command.toLowerCase() === 'edellinen') {
-        setCurrentStep(currentStep - 1);
-        return;
-      } else if (command.toLowerCase() === 'nollaa') {
-        setCurrentStep(1);
-        return;
-      }
-    } else {
-      if (command.toLowerCase() === 'next') {
-        setCurrentStep(currentStep + 1);
-        return;
-      } else if (command.toLowerCase() === 'previous') {
-        setCurrentStep(currentStep - 1);
-        return;
-      } else if (command.toLowerCase() === 'reset') {
-        setCurrentStep(1);
-        return;
-      }
-    }
-    if (question.answerType === 'singleChoice') {
-      const option = question.answerOptions?.[language]
-        ?.split('#')
-        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
-      if (option) {
-        handleSingleChoiceClick(option.trim());
-      }
-    } else if (question.answerType === 'multiChoice') {
-      const option = question.answerOptions?.[language]
-        .split('#')
-        .find((opt) => opt.trim().toLowerCase() === command.toLowerCase());
-      if (option) {
-        handleMultiChoiceClick(option.trim());
-      }
-    } else if (question.answerType === 'slider') {
-      const value = parseInt(command, 10);
-      if (!isNaN(value) && value >= 0 && value <= 100) {
-        handleSliderChange(value);
-      }
-    } else if (question.answerType === 'directInput') {
-      setAnswer(question.id, command);
-    } else if (question.answerType === 'directTextArea') {
-      setAnswer(question.id, command);
-    }
-  };
+
 
   const handleSingleChoiceClick = (option: string) => {
     try {
@@ -173,7 +173,17 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
       toast.error('Error setting single choice answer');
     }
   };
+  const startListening = () => {
+    if (recognition) {
+      recognition.start();
+    }
+  };
 
+  const stopListening = () => {
+    if (recognition) {
+      recognition.stop();
+    }
+  };
   const handleMultiChoiceClick = (option: string) => {
     try {
       const prevSelected = userInfo.questionAnswers as {
@@ -205,17 +215,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     }
   }, [listeningMode, startListening, stopListening]);
 
-  const startListening = () => {
-    if (recognition) {
-      recognition.start();
-    }
-  };
 
-  const stopListening = () => {
-    if (recognition) {
-      recognition.stop();
-    }
-  };
 
   const renderInput = () => {
     if (!userInfo) {
