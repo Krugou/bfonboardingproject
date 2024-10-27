@@ -3,9 +3,7 @@ import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import MainContent from '@/components/MainContent';
 import {useUserContext} from '@/context/UserContext';
-import {db} from '@/utils/firebase';
-import {doc, onSnapshot} from 'firebase/firestore';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,36 +11,8 @@ const Home = () => {
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const [questions, setQuestions] = useState<any>([]);
-  const {isDarkmode} = useUserContext();
+  const {isDarkmode, questions} = useUserContext();
 
-  useEffect(() => {
-    const docRef = doc(db, 'questions', 'questions');
-
-    const unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const questionsData: any = data.questions.map(
-            (q: any, index: number) => ({
-              id: index.toString(),
-              ...q,
-            }),
-          );
-          setQuestions(questionsData);
-        } else {
-          console.error('No such document!');
-        }
-      },
-      (error) => {
-        console.error('Error fetching questions: ', error);
-      },
-    );
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };

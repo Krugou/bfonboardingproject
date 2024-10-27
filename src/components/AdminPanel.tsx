@@ -1,47 +1,19 @@
 import {QuestionItem} from '@/app/types';
 import {db} from '@/utils/firebase';
-import {addDoc, collection, doc, onSnapshot, setDoc} from 'firebase/firestore';
-import React, {useEffect, useState} from 'react';
+import {addDoc, collection, doc, setDoc} from 'firebase/firestore';
+import React, {useState} from 'react';
 import {Bounce, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import EditQuestionForm from './AdminPanel/EditQuestionForm';
 import QuestionsTable from './AdminPanel/QuestionsTable';
+import {useUserContext} from '@/context/UserContext';
 
 const AdminPanel: React.FC = () => {
-  const [questions, setQuestions] = useState<QuestionItem[]>([]);
+  const {questions} = useUserContext();
   const [language, setLanguage] = useState<'en' | 'fi'>('en');
   const [editingQuestion, setEditingQuestion] = useState<QuestionItem | null>(
     null,
   );
-
-  useEffect(() => {
-    const docRef = doc(db, 'questions', 'questions');
-
-    const unsubscribe = onSnapshot(
-      docRef,
-      (docSnap) => {
-        if (docSnap.exists()) {
-          const data = docSnap.data();
-          const questionsData: QuestionItem[] = data.questions.map(
-            (q: any, index: number) => ({
-              id: index.toString(),
-              ...q,
-            }),
-          );
-          setQuestions(questionsData);
-        } else {
-          toast.error('No such document!');
-        }
-      },
-      (error) => {
-        toast.error('Failed to fetch questions');
-        console.error('Error fetching questions: ', error);
-      },
-    );
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
 
   const toggleLanguage = () => {
     setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'fi' : 'en'));
