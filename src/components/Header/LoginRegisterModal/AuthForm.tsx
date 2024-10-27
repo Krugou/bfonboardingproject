@@ -20,7 +20,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   toggleAuthMode,
 }) => {
   return (
-    <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75'>
+    <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10'>
       <div className='bg-white p-8 rounded-lg shadow-lg w-96'>
         <h2 className='text-2xl font-bold mb-4'>
           {isLogin ? 'Login' : 'Register'}

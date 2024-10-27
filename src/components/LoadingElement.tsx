@@ -3,7 +3,7 @@ import './LoadingElement.css'; // Assuming you have a CSS file for styles
 
 const LoadingElement = () => {
   return (
-    <div className="container">
+    <div className="container ">
       <div className="cloud front">
         <span className="left-front"></span>
         <span className="right-front"></span>

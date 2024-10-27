@@ -20,13 +20,7 @@ const Home = () => {
     setModalOpen((prev) => !prev);
   };
 
-  if (!questions.length) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <CircularProgress />
-      </div>
-    );
-  }
+
 
 
 
