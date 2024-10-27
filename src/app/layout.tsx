@@ -1,8 +1,8 @@
 import GoogleStartup from '@/components/GoogleStartup';
-import { UserProvider } from '@/context/UserContext';
+import { UserProvider, useUserContext } from '@/context/UserContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
@@ -29,7 +29,25 @@ export const metadata: Metadata = {
 };
 // console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => {
+  const { setLastInteractionTime } = useUserContext();
 
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      setLastInteractionTime(Date.now());
+    };
+
+    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+
+    events.forEach((event) =>
+      window.addEventListener(event, handleUserInteraction)
+    );
+
+    return () => {
+      events.forEach((event) =>
+        window.removeEventListener(event, handleUserInteraction)
+      );
+    };
+  }, [setLastInteractionTime]);
 
   return (
     <html lang='en'>

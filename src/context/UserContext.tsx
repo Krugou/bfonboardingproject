@@ -1,7 +1,7 @@
 'use client';
 
 import {auth, db} from '@/utils/firebase';
-import {onAuthStateChanged} from 'firebase/auth';
+import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {doc, getDoc, onSnapshot} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
@@ -33,6 +33,8 @@ interface UserContextType {
   setFontSize: React.Dispatch<React.SetStateAction<number>>;
   questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
+  lastInteractionTime: number;
+  setLastInteractionTime: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -52,6 +54,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [highContrast, setHighContrast] = useState(false);
   const [fontSize, setFontSize] = useState(16);
   const [questions, setQuestions] = useState<any[]>([]);
+  const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -127,6 +130,36 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     }));
   };
 
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      setLastInteractionTime(Date.now());
+    };
+
+    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+
+    events.forEach((event) =>
+      window.addEventListener(event, handleUserInteraction)
+    );
+
+    return () => {
+      events.forEach((event) =>
+        window.removeEventListener(event, handleUserInteraction)
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    const checkInactivity = () => {
+      if (Date.now() - lastInteractionTime > 3600000) {
+        signOut(auth);
+      }
+    };
+
+    const interval = setInterval(checkInactivity, 60000);
+
+    return () => clearInterval(interval);
+  }, [lastInteractionTime]);
+
   return (
     <UserContext.Provider
       value={{
@@ -145,6 +178,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setFontSize,
         questions,
         setQuestions,
+        lastInteractionTime,
+        setLastInteractionTime,
       }}>
       {children}
     </UserContext.Provider>
