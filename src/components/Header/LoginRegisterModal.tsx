@@ -8,7 +8,7 @@ import {
 import {doc, getDoc, setDoc} from 'firebase/firestore';
 import React, {useState} from 'react';
 import {toast} from 'react-toastify';
-import AuthForm from './LoginRegisterModal/AuthForm';
+import AuthForm from './AuthForm';
 interface LoginRegisterModalProps {
   isLoginVisible: boolean;
 }

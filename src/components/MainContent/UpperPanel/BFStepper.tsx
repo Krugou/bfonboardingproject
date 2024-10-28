@@ -1,13 +1,13 @@
-import {QuestionItem} from '@/app/types';
-import {useUserContext} from '@/context/UserContext';
+import { QuestionItem } from '@/app/types';
+import { useUserContext } from '@/context/UserContext';
 import React from 'react';
 
 interface BFStepperProps {
   questions: QuestionItem[];
 }
 
-const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
-  const {userInfo} = useUserContext();
+const BFStepper: React.FC<BFStepperProps> = ({ questions }) => {
+  const { userInfo } = useUserContext();
 
   if (!userInfo) {
     return null; // or return a loading indicator or a message
@@ -23,7 +23,7 @@ const BFStepper: React.FC<BFStepperProps> = ({questions}) => {
       <div className='relative w-full h-4 bg-bf-white rounded-full overflow-hidden'>
         <div
           className='absolute top-0 left-0 h-full bg-gradient-to-r from-bf-gradient-1 via-bf-gradient-2 to-bf-gradient-3'
-          style={{width: `${progressPercentage}%`}}></div>
+          style={{ width: `${progressPercentage}%` }}></div>
       </div>
     </div>
   );

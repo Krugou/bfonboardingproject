@@ -2,11 +2,11 @@ import { QuestionItem } from '@/app/types';
 import { useUserContext } from '@/context/UserContext';
 import React, { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
-import AreaInput from './QuestionInput/AreaInput';
-import ChoiceInput from './QuestionInput/ChoiceInput';
-import SliderInput from './QuestionInput/SliderInput';
-import SpecialInput from './QuestionInput/SpecialInput';
-import TextInput from './QuestionInput/TextInput';
+import AreaInput from './AreaInput';
+import ChoiceInput from './ChoiceInput';
+import SliderInput from './SliderInput';
+import SpecialInput from './SpecialInput';
+import TextInput from './TextInput';
 import useSpeechRecognition from '../../../utils/useSpeechRecognition';
 import useVoiceCommand from '../../../utils/useVoiceCommand';
 

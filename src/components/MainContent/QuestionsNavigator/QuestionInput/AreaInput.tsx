@@ -1,10 +1,10 @@
-import {QuestionItem} from '@/app/types';
-import React, {useEffect, useState} from 'react';
+import { QuestionItem } from '@/app/types';
+import React, { useEffect, useState } from 'react';
 
 interface AreaInputProps {
   question: QuestionItem;
   language: string;
-  answers: {[key: string]: any};
+  answers: { [key: string]: any };
   // eslint-disable-next-line no-unused-vars
   setAnswer: (questionId: string, answer: any) => void;
 }

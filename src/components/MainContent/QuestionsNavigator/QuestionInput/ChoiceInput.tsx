@@ -1,6 +1,7 @@
-import {QuestionItem} from '@/app/types';
-import {useUserContext} from '@/context/UserContext';
+import { QuestionItem } from '@/app/types';
+import { useUserContext } from '@/context/UserContext';
 import React from 'react';
+
 interface ChoiceInputProps {
   question: QuestionItem;
   language: string;
@@ -17,7 +18,7 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
   handleSingleChoiceClick,
   handleMultiChoiceClick,
 }) => {
-  const {userInfo} = useUserContext();
+  const { userInfo } = useUserContext();
   if (!question.answerOptions || !question.answerOptions[language]) {
     return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
   }
