@@ -1,28 +1,21 @@
-import {QuestionItem} from '@/app/types';
-import {useUserContext} from '@/context/UserContext';
-import React, {useEffect, useRef} from 'react';
-import AnswersTable from './AnsweredQuestionsModal/AnswersTables';
+import { useUserContext } from '@/context/UserContext';
 import { logEvent } from '@/utils/analytics';
+import React, { useEffect, useRef } from 'react';
+import AnswersTable from './AnswersTables';
 
 interface AnsweredQuestionsModalProps {
   open: boolean;
   onClose: () => void;
-  questions: QuestionItem[];
-  // eslint-disable-next-line no-unused-vars
-  setCurrentStep: (step: number) => void;
-  currentStep: number;
 }
 
 const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   open,
   onClose,
-  questions,
-  setCurrentStep,
 }) => {
   const {userInfo, language} = useUserContext();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const modalRef = useRef<HTMLDivElement>(null);
-
+  const {questions} = useUserContext();
   useEffect(() => {
     if (open && closeButtonRef.current) {
       closeButtonRef.current.focus();
@@ -87,8 +80,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
         <div className='container p-2'>
           {answeredQuestions.length > 0 ? (
             <AnswersTable
-              setCurrentStep={setCurrentStep}
-              questions={questions}
+
             />
           ) : (
             <p className='text-center'>

@@ -1,13 +1,13 @@
-import {useUserContext} from '@/context/UserContext';
-import {auth, db} from '@/utils/firebase';
+import { useUserContext } from '@/context/UserContext';
+import { auth, db } from '@/utils/firebase';
 import {
   createUserWithEmailAndPassword,
   fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-import {doc, getDoc, setDoc} from 'firebase/firestore';
-import React, {useState} from 'react';
-import {toast} from 'react-toastify';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import AuthForm from './LoginRegisterModal/AuthForm';
 interface LoginRegisterModalProps {
   isLoginVisible: boolean;

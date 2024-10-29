@@ -1,13 +1,13 @@
 import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
-import {useUserContext} from '@/context/UserContext';
+import { useUserContext } from '@/context/UserContext';
 import questions from '@/data/mockdata';
-import {db} from '@/utils/firebase';
-import {doc, getDoc} from 'firebase/firestore';
-import {useRouter} from 'next/navigation';
-import React, {useEffect, useState} from 'react';
-import {FlagIcon} from 'react-flag-kit';
-import {toast} from 'react-toastify';
 import { logEvent } from '@/utils/analytics';
+import { db } from '@/utils/firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { FlagIcon } from 'react-flag-kit';
+import { toast } from 'react-toastify';
 
 const Header = () => {
   const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
@@ -18,6 +18,8 @@ const Header = () => {
   const handleAdminClick = () => {
     router.push('/admin');
   };
+
+  const [adminCheckPerformed, setAdminCheckPerformed] = useState(false);
 
   useEffect(() => {
     const checkAdmin = async () => {
@@ -33,11 +35,14 @@ const Header = () => {
         } else {
           setIsAdmin(false);
         }
+        setAdminCheckPerformed(true);
       }
     };
 
-    checkAdmin();
-  }, [userInfo]);
+    if (!adminCheckPerformed && userInfo?.email) {
+      checkAdmin();
+    }
+  }, [userInfo, adminCheckPerformed]);
 
   return (
     <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>

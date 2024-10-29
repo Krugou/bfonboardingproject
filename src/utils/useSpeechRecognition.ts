@@ -10,7 +10,7 @@ interface SpeechRecognition {
   stop: () => void;
 }
 
-const useSpeechRecognition = (language: string, handleVoiceCommand: (command: string) => void) => {
+const useSpeechRecognition = (language: string, handleVoiceCommand: (command: string) => void, listeningMode: boolean) => {
   const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
   const [transcriptContent, setTranscriptContent] = useState<string>('');
 
@@ -45,6 +45,7 @@ const useSpeechRecognition = (language: string, handleVoiceCommand: (command: st
             handleVoiceCommand(transcript);
             setTranscriptContent(transcript);
             toast.success(`Transcript: ${transcript}`);
+            toast.info(listeningMode);
           } catch (error) {
             toast.error(`Error processing speech recognition result: ${error}`);
           }
@@ -70,6 +71,14 @@ const useSpeechRecognition = (language: string, handleVoiceCommand: (command: st
       recognition.stop();
     }
   }, [recognition]);
+
+  useEffect(() => {
+    if (listeningMode) {
+      startListening();
+    } else {
+      stopListening();
+    }
+  }, [listeningMode ]);
 
   return { recognition, transcriptContent, startListening, stopListening };
 };

@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {QuestionItem} from '../../../../app/types';
+import {QuestionItem} from '@/app/types';
 interface SpecialInputProps {
   question: QuestionItem;
   language: string;

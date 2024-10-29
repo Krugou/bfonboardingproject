@@ -3,7 +3,7 @@ import { UserProvider } from '@/context/UserContext';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
-import { ToastContainer } from 'react-toastify';
+import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
 import './globals.css';
@@ -36,7 +36,7 @@ const RootLayout = ({children}: {children: React.ReactNode}) => {
       <body className={finlandica.className}>
         <UserProvider>
           <GoogleStartup />
-          <ToastContainer />
+
           {children}
         </UserProvider>
       </body>

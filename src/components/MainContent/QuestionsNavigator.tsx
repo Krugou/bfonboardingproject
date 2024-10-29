@@ -1,28 +1,20 @@
-import React, {useEffect} from 'react';
-import {useUserContext} from '../../context/UserContext';
+import React, { useEffect } from 'react';
+import { useUserContext } from '../../context/UserContext';
 import questions from '../../data/mockdata';
 import QuestionInput from './QuestionsNavigator/QuestionInput';
-
 interface QuestionNavigatorProps {
-  currentStep: number;
 
-  // eslint-disable-next-line no-unused-vars
-  setCurrentStep: (step: number) => void;
-  listeningMode: boolean;
 }
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
-  currentStep,
-  setCurrentStep,
-  listeningMode,
+
 }) => {
+  const {language, setCurrentQuestion, setCurrentStep,currentStep,listeningMode} = useUserContext();
+
   const handleReset = () => {
     setCurrentStep(1);
     setCurrentQuestion(1);
   };
-
-  const {language, setCurrentQuestion} = useUserContext();
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight') {
@@ -66,9 +58,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
           <div className='w-full sm:w-3/4'>
             <QuestionInput
               question={questions[currentStep - 1]}
-              listeningMode={listeningMode}
-              currentStep={currentStep}
-              setCurrentStep={setCurrentStep}
+
             />
           </div>
           <button

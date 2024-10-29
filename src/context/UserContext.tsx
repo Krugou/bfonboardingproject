@@ -1,9 +1,9 @@
 'use client';
 
-import {auth, db} from '@/utils/firebase';
-import {onAuthStateChanged, signOut} from 'firebase/auth';
-import {doc, getDoc, onSnapshot} from 'firebase/firestore';
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import { auth, db } from '@/utils/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 interface UserContextType {
   userInfo: {
@@ -19,6 +19,7 @@ interface UserContextType {
       lastLogin?: Date;
       createdAt: Date;
     } | null>
+
   >;
   currentQuestion: number;
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
@@ -35,6 +36,10 @@ interface UserContextType {
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
   lastInteractionTime: number;
   setLastInteractionTime: React.Dispatch<React.SetStateAction<number>>;
+  listeningMode: boolean;
+  setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentStep: (step: number) => void;
+  currentStep: number;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -55,7 +60,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [fontSize, setFontSize] = useState(16);
   const [questions, setQuestions] = useState<any[]>([]);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
-
+  const [listeningMode, setListeningMode] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log('🚀 ~ unsubscribe ~ auth:', auth);
@@ -159,7 +165,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
     return () => clearInterval(interval);
   }, [lastInteractionTime]);
-
+  // console log listeningmode when it changes
+  useEffect(() => {
+    console.log('listeningMode', listeningMode);
+  }, [listeningMode]);
   return (
     <UserContext.Provider
       value={{
@@ -180,6 +189,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setQuestions,
         lastInteractionTime,
         setLastInteractionTime,
+        listeningMode,
+        setListeningMode,
+        setCurrentStep,
+        currentStep,
       }}>
       {children}
     </UserContext.Provider>

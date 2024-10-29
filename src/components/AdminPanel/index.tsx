@@ -1,12 +1,12 @@
-import {QuestionItem} from '@/app/types';
-import {db} from '@/utils/firebase';
-import {addDoc, collection, doc, setDoc} from 'firebase/firestore';
-import React, {useState} from 'react';
-import {Bounce, toast} from 'react-toastify';
+import { QuestionItem } from '@/app/types';
+import { useUserContext } from '@/context/UserContext';
+import { db } from '@/utils/firebase';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
+import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import EditQuestionForm from './AdminPanel/EditQuestionForm';
-import QuestionsTable from './AdminPanel/QuestionsTable';
-import {useUserContext} from '@/context/UserContext';
+import EditQuestionForm from './EditQuestionForm';
+import QuestionsTable from './QuestionsTable';
 
 const AdminPanel: React.FC = () => {
   const {questions} = useUserContext();

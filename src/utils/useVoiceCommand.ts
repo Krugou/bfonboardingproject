@@ -1,7 +1,7 @@
 import { useUserContext } from '@/context/UserContext';
 import { useCallback } from 'react';
 import { toast } from 'react-toastify';
-
+import useCommand from './useCommand';
 interface QuestionItem {
   id: string;
   answerType: string;
@@ -9,8 +9,8 @@ interface QuestionItem {
 }
 
 const useVoiceCommand = (question: QuestionItem, setCurrentStep: (step: number) => void, currentStep: number) => {
-  const { language, userInfo, setAnswer } = useUserContext();
-
+  const { language,  setAnswer } = useUserContext();
+  const { handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange } = useCommand(question);
   const handleVoiceCommand = useCallback((command: string) => {
     if (language === 'fi') {
       if (command.toLowerCase() === 'seuraava') {
@@ -59,44 +59,9 @@ const useVoiceCommand = (question: QuestionItem, setCurrentStep: (step: number) 
     }
   }, [language, setCurrentStep, currentStep, question, setAnswer]);
 
-  const handleSingleChoiceClick = useCallback((option: string) => {
-    try {
-      setAnswer(question.id, option);
-    } catch (error) {
-      console.error(
-        `Error setting single choice answer for question ${question.id}:`,
-        error,
-      );
-      toast.error('Error setting single choice answer');
-    }
-  }, [question.id, setAnswer]);
 
-  const handleMultiChoiceClick = useCallback((option: string) => {
-    if (!userInfo) {
-      return;
-    }
-    try {
-      const prevSelected = userInfo.questionAnswers as {
-        [key: string]: string[];
-      };
-      const newSelected = prevSelected[question.id]?.includes(option)
-        ? prevSelected[question.id].filter((item: string) => item !== option)
-        : [...(prevSelected[question.id] || []), option];
-      setAnswer(question.id, newSelected);
-    } catch (error) {
-      console.error(
-        `Error setting multi-choice answer for question ${question.id}:`,
-        error,
-      );
-      toast.error('Error setting multi-choice answer');
-    }
-  }, [question.id, setAnswer, userInfo]);
 
-  const handleSliderChange = useCallback((value: number) => {
-    setAnswer(question.id, value);
-  }, [question.id, setAnswer]);
-
-  return { handleVoiceCommand, handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange };
+  return { handleVoiceCommand };
 };
 
 export default useVoiceCommand;

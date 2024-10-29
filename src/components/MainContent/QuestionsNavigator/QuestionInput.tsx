@@ -1,35 +1,30 @@
 import { QuestionItem } from '@/app/types';
 import { useUserContext } from '@/context/UserContext';
+import useCommand from '@/utils/useCommand';
 import React, { useEffect, useRef, useState } from 'react';
-import { toast } from 'react-toastify';
+import useSpeechRecognition from '../../../utils/useSpeechRecognition';
+import useVoiceCommand from '../../../utils/useVoiceCommand';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import SliderInput from './QuestionInput/SliderInput';
 import SpecialInput from './QuestionInput/SpecialInput';
 import TextInput from './QuestionInput/TextInput';
-import useSpeechRecognition from './QuestionInput/useSpeechRecognition';
-import useVoiceCommand from './QuestionInput/useVoiceCommand';
 
 interface QuestionInputProps {
   question: QuestionItem;
-  listeningMode: boolean;
-  setCurrentStep: (step: number) => void;
-  currentStep: number;
 }
-
 const QuestionInput: React.FC<QuestionInputProps> = ({
   question,
-  listeningMode,
-  setCurrentStep,
-  currentStep,
+
 }) => {
-  const { userInfo, setAnswer } = useUserContext();
+  const { userInfo, setAnswer, setCurrentStep ,currentStep, listeningMode } = useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const { language } = useUserContext();
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
-  const { handleVoiceCommand, handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange } = useVoiceCommand(question, setCurrentStep, currentStep);
-  const { recognition, transcriptContent, startListening, stopListening } = useSpeechRecognition(language, handleVoiceCommand);
+  const { handleVoiceCommand,  } = useVoiceCommand(question, setCurrentStep, currentStep);
+  const { handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange } = useCommand(question);
+  const { recognition, transcriptContent, startListening, stopListening } = useSpeechRecognition(language, handleVoiceCommand, listeningMode);
 
   useEffect(() => {
     if (inputRef.current) {
@@ -37,13 +32,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     }
   }, []);
 
-  useEffect(() => {
-    if (listeningMode) {
-      startListening();
-    } else {
-      stopListening();
-    }
-  }, [listeningMode, startListening, stopListening]);
+
 
   useEffect(() => {
     if (userInfo && userInfo.questionAnswers[question.id]) {
