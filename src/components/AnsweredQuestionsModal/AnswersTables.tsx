@@ -3,16 +3,13 @@ import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 
 interface AnswersTableProps {
-  questions: QuestionItem[];
-  // eslint-disable-next-line no-unused-vars
-  setCurrentStep: (step: number) => void;
+
 }
 
 const AnswersTable: React.FC<AnswersTableProps> = ({
-  questions,
-  setCurrentStep,
+
 }) => {
-  const {userInfo, language} = useUserContext();
+  const {userInfo, language,questions,setCurrentStep} = useUserContext();
   if (!userInfo) {
     return null; // or return a loading indicator or a message
   }

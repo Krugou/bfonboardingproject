@@ -4,25 +4,17 @@ import Header from '@/components/Header';
 import LoadingElement from '@/components/LoadingElement';
 import MainContent from '@/components/MainContent';
 import { useUserContext } from '@/context/UserContext';
-import { CircularProgress } from '@mui/material';
 import React, { useState } from 'react';
 import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
-  const [listeningMode, setListeningMode] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
   const [modalOpen, setModalOpen] = useState(false);
-  const {isDarkmode, questions, userInfo} = useUserContext();
-  const [loading, setLoading] = useState(true);
+  const {userInfo} = useUserContext();
 
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
-
-
-
-
 
   return (
     <>
@@ -36,7 +28,7 @@ const Home = () => {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme={isDarkmode ? 'dark' : 'light'}
+        theme={'light'}
         transition={Bounce}
       />
       <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
@@ -50,19 +42,14 @@ const Home = () => {
         {userInfo && (
           <>
         <MainContent
-          listeningMode={listeningMode}
-          setListeningMode={setListeningMode}
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
+
+
           handleOpenModal={toggleModal}
-          questions={questions}
         />
         <AnsweredQuestionsModal
           open={modalOpen}
           onClose={toggleModal}
-          questions={questions}
-          currentStep={currentStep}
-          setCurrentStep={setCurrentStep}
+
             />
             </>
       )}

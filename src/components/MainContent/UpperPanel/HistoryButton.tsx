@@ -1,16 +1,14 @@
-import {useUserContext} from '@/context/UserContext';
+import { useUserContext } from '@/context/UserContext';
 import React from 'react';
 interface HistoryButtonProps {
-  currentStep: number;
   onClick: () => void;
 }
 
 const HistoryButton: React.FC<HistoryButtonProps> = ({
-  currentStep,
   onClick,
 }) => {
+  const {language,currentStep} = useUserContext();
   const isDisabled = currentStep === 1;
-  const {language} = useUserContext();
   return (
     <div className='flex justify-end w-1/3 h-full mb-4'>
       <button

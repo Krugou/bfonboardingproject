@@ -1,19 +1,16 @@
-import {useUserContext} from '@/context/UserContext';
+import { useUserContext } from '@/context/UserContext';
 import MicIcon from '@mui/icons-material/Mic';
 import MicOffIcon from '@mui/icons-material/MicOff';
 import React from 'react';
 
 interface ListeningModeToggleProps {
-  listeningMode: boolean;
-  // eslint-disable-next-line no-unused-vars
-  setListeningMode: (mode: boolean) => void;
+
 }
 
 const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({
-  listeningMode,
-  setListeningMode,
+
 }) => {
-  const {language} = useUserContext();
+  const {language ,listeningMode,setListeningMode} = useUserContext();
 
   const titleText = listeningMode
     ? language === 'fi'

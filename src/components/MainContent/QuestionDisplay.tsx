@@ -7,15 +7,10 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface QuestionDisplayProps {
-  currentStep: number;
-  questions: QuestionItem[];
 }
-
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
-  currentStep,
-  questions,
 }) => {
-  const {language, userInfo} = useUserContext();
+  const {language, userInfo, questions,currentStep} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<any>(null);
 
@@ -46,7 +41,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
 
   const [showTooltip, setShowTooltip] = useState(false);
   if (!userInfo) {
-    return null; // or return a loading indicator or a message
+    return null;
   }
 
   return (

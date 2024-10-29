@@ -3,11 +3,10 @@ import { useUserContext } from '@/context/UserContext';
 import React from 'react';
 
 interface BFStepperProps {
-  questions: QuestionItem[];
 }
 
-const BFStepper: React.FC<BFStepperProps> = ({ questions }) => {
-  const { userInfo } = useUserContext();
+const BFStepper: React.FC<BFStepperProps> = () => {
+  const { userInfo,questions } = useUserContext();
 
   if (!userInfo) {
     return null; // or return a loading indicator or a message
