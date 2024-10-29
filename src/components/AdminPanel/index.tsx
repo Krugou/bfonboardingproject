@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
 import { QuestionItem } from '@/app/types';
 import { useUserContext } from '@/context/UserContext';
 import { db } from '@/utils/firebase';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import React, { useState } from 'react';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import EditQuestionForm from './EditQuestionForm';
-import QuestionsTable from './QuestionsTable';
 import QuestionForm from './QuestionForm';
+import QuestionsTable from './QuestionsTable';
 
 const AdminPanel: React.FC = () => {
   const { questions, setQuestions } = useUserContext();
@@ -20,13 +19,23 @@ const AdminPanel: React.FC = () => {
   };
 
   const handleAdd = () => {
-    setCurrentQuestion({
+    const newQuestion: QuestionItem = {
       id: '',
       question: { en: '', fi: '' },
+      condition: '',
+      tooltip: { en: '', fi: '' },
+      syntaxPlaceholder: { en: '', fi: '' },
       answerType: '',
-      answerOptions: { en: '', fi: '' },
-    });
-    setIsEditing(false);
+      targetAudience: '',
+      errorAnswer: { en: '', fi: '' },
+      answerOptions: { en: '', fi: '' }, // Optional, can be omitted if not needed
+      optionalStepAnswer: { en: '', fi: '' }, // Optional, can be omitted if not needed
+      unit: '', // Optional, can be omitted if not needed
+      maxLength: 0, // Optional, can be omitted if not needed
+      validationRegex: { en: '', fi: '' }, // Optional, can be omitted if not needed
+    };
+    setCurrentQuestion(newQuestion);
+    setIsEditing(true);
   };
 
   const handleEdit = (question: QuestionItem) => {
@@ -56,13 +65,13 @@ const AdminPanel: React.FC = () => {
         await setDoc(docRef, {questions: updatedQuestions});
         await addDoc(backupRef, {questions: updatedQuestions, timestamp});
         toast.success('Question updated successfully');
-        setEditingQuestion(null);
       } catch (error) {
         toast.error('Failed to update question');
         console.error('Error updating question: ', error);
       }
       setQuestions(updatedQuestions);
       setCurrentQuestion(null);
+      setIsEditing(false);
     }
   };
 
@@ -88,7 +97,7 @@ const AdminPanel: React.FC = () => {
     }
   };
 
-  const moveQuestion = (index: number, direction: 'up' | 'down') => {
+  const moveQuestion = async (index: number, direction: 'up' | 'down') => {
     let newIndex = direction === 'up' ? index - 1 : index + 1;
     if (newIndex < 0 || newIndex >= questions.length) return;
     const updatedQuestions = [...questions];
@@ -101,7 +110,6 @@ const AdminPanel: React.FC = () => {
       await setDoc(docRef, {questions: updatedQuestions});
       await addDoc(backupRef, {questions: updatedQuestions, timestamp});
       toast.success('Question updated successfully');
-      setEditingQuestion(null);
     } catch (error) {
       toast.error('Failed to update question');
       console.error('Error updating question: ', error);
