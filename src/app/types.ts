@@ -31,4 +31,5 @@ export interface QuestionItem {
   unit?: string;
   maxLength?: number;
   validationRegex?: ValidationRegex;
+  locked?: boolean;
 }

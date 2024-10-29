@@ -1,13 +1,12 @@
 import { QuestionItem } from '@/app/types';
 import { useUserContext } from '@/context/UserContext';
 import { db } from '@/utils/firebase';
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, collection, doc, getDocs, orderBy, query, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import QuestionForm from './QuestionForm';
 import QuestionsTable from './QuestionsTable';
-
 const AdminPanel: React.FC = () => {
   const { questions, setQuestions } = useUserContext();
   const [language, setLanguage] = useState<'en' | 'fi'>('en');
@@ -116,7 +115,25 @@ const AdminPanel: React.FC = () => {
     }
     setQuestions(updatedQuestions);
   };
-
+  const handleRestore = async () => {
+    const backupRef = collection(db, 'questionsBackup');
+    const q = query(backupRef, orderBy('timestamp', 'desc'));
+    try {
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        const latestBackup = querySnapshot.docs[0].data();
+        setQuestions(latestBackup.questions);
+        const docRef = doc(db, 'questions', 'questions');
+        await setDoc(docRef, {questions: latestBackup.questions});
+        toast.success('Questions restored from backup');
+      } else {
+        toast.error('No backup found');
+      }
+    } catch (error) {
+      toast.error('Failed to restore questions from backup');
+      console.error('Error restoring questions from backup: ', error);
+    }
+  };
   return (
     <div className='p-4'>
       <h1 className='text-2xl font-bold mb-4'>Admin Panel</h1>
@@ -137,6 +154,11 @@ const AdminPanel: React.FC = () => {
             className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4'
             onClick={handleAdd}>
             Add Question
+          </button>
+          <button
+            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-4 ml-4'
+            onClick={handleRestore}>
+            Restore from Backup
           </button>
         </>
       )}
