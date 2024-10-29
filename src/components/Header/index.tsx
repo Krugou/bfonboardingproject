@@ -29,7 +29,6 @@ const Header = () => {
         if (adminDoc.exists()) {
           setTimeout(() => {
             toast.success('Admin rights confirmed, soldier!');
-            toast.info('You now have clearance to access the admin panel.');
           }, 1000);
           setIsAdmin(true);
         } else {
