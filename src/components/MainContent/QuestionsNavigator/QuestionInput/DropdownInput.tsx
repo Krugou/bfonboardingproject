@@ -1,6 +1,6 @@
+import { QuestionItem } from '@/app/types';
 import React from 'react';
 import Select from 'react-select';
-import { QuestionItem } from '@/app/types';
 
 interface DropdownInputProps {
   question: QuestionItem;
@@ -13,7 +13,13 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   language,
   handleDropdownChange,
 }) => {
-  const options = question.answerOptions[language]
+  const answerOptions = question.answerOptions?.[language] ?? '';
+
+  if (!answerOptions) {
+    return null;
+  }
+
+  const options = answerOptions
     .split('#')
     .map((option) => ({ value: option.trim(), label: option.trim() }));
 
