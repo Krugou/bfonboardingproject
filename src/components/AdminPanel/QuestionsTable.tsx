@@ -68,33 +68,36 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
               <td className='border px-4 py-2'>{question.answerType}</td>
               <td className='border px-4 py-2'>
               <button
-                  className={`mb-4 py-2 px-4 rounded ${question.locked ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'} text-white font-bold`}
+                  className={`mb-4 py-2 px-4 rounded text-white font-bold ${
+                    question.locked ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'
+                  }`}
                   onClick={() => toggleLock(index)}
                 >
                   {question.locked ? <LockOpenIcon /> : <LockIcon />}
                 </button>
-                {!question?.locked && ( <>
-                <button
-                  title='Edit question'
-                  className='bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded'
-                  onClick={() => handleEdit(question)}
-                >
-                  <EditIcon />
-                </button>
-                <button
-                  title='Move question up'
-                  className='ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded'
-                  onClick={() => moveQuestion(index, 'up')}
-                >
-                  <ArrowUpwardIcon />
-                </button>
-                <button
-                  title='Move question down'
-                  className='ml-2 bg-gray-500 hover:bg-gray-700 text-white font-bold py-1 px-2 rounded'
-                  onClick={() => moveQuestion(index, 'down')}
-                >
-                  <ArrowDownwardIcon />
-                  </button>
+                {!question.locked && (
+                  <>
+                    <button
+                      title='Edit question'
+                      className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4'
+                      onClick={() => handleEdit(question)}
+                    >
+                      <EditIcon />
+                    </button>
+                    <button
+                      title='Move question up'
+                      className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mb-4 ml-2'
+                      onClick={() => moveQuestion(index, 'up')}
+                    >
+                      <ArrowUpwardIcon />
+                    </button>
+                    <button
+                      title='Move question down'
+                      className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mb-4 ml-2'
+                      onClick={() => moveQuestion(index, 'down')}
+                    >
+                      <ArrowDownwardIcon />
+                    </button>
                   </>
                 )}
               </td>
