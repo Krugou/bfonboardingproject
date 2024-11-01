@@ -77,7 +77,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
           </button>
         </div>
 
-        <div className='container p-2'>
+        <div className=' p-2'>
           {answeredQuestions.length > 0 ? (
             <AnswersTable
 
