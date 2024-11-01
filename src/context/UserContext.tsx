@@ -134,7 +134,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
   const setAnswer = async (questionId: string, answer: any) => {
     //@ts-expect-error
-    setUserInfo((prevUserInfo) => ({
+    await setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       questionAnswers: {
         ...prevUserInfo?.questionAnswers,
