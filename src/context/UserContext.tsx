@@ -1,10 +1,9 @@
 'use client';
 
-import { auth, db } from '@/utils/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import React, { createContext, useContext, useEffect, useState } from 'react';
-
+import {auth, db} from '@/utils/firebase';
+import {onAuthStateChanged, signOut} from 'firebase/auth';
+import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 interface UserContextType {
   userInfo: {
     email: string;
@@ -19,7 +18,6 @@ interface UserContextType {
       lastLogin?: Date;
       createdAt: Date;
     } | null>
-
   >;
   currentQuestion: number;
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
@@ -125,7 +123,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     return () => unsubscribe();
   }, []);
 
-  const setAnswer = (questionId: string, answer: any) => {
+  const setAnswer = async (questionId: string, answer: any) => {
+    // Update local state
     // @ts-expect-error
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
@@ -134,6 +133,15 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         [questionId]: answer,
       },
     }));
+
+    // Save to Firebase
+    const user = auth.currentUser;
+    if (user) {
+      const accountRef = doc(db, 'accounts', user.uid);
+      await updateDoc(accountRef, {
+        [`questionAnswers.${questionId}`]: answer,
+      });
+    }
   };
 
   useEffect(() => {
@@ -144,12 +152,12 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
 
     events.forEach((event) =>
-      window.addEventListener(event, handleUserInteraction)
+      window.addEventListener(event, handleUserInteraction),
     );
 
     return () => {
       events.forEach((event) =>
-        window.removeEventListener(event, handleUserInteraction)
+        window.removeEventListener(event, handleUserInteraction),
       );
     };
   }, []);
