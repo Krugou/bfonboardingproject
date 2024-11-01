@@ -1,16 +1,14 @@
-import { QuestionItem } from '@/app/types';
-import { useUserContext } from '@/context/UserContext';
-import { fetchCompanyInfo } from '@/hooks/api';
-import { speakContent } from '@/utils/speakContent';
+import {QuestionItem} from '@/app/types';
+import {useUserContext} from '@/context/UserContext';
+import {fetchCompanyInfo} from '@/hooks/api';
+import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import React, { useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import React, {useEffect, useState} from 'react';
+import {toast} from 'react-toastify';
 
-interface QuestionDisplayProps {
-}
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
-}) => {
-  const {language, userInfo, questions,currentStep} = useUserContext();
+interface QuestionDisplayProps {}
+const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
+  const {language, userInfo, questions, currentStep} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<any>(null);
 
@@ -67,14 +65,12 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
                     questions[currentStep - 1].tooltip[language],
                   languageSelection,
                   toast,
-                )
-
-
-
-              }
-              }
+                );
+              }}
               className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'
-              aria-label={language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'}
+              aria-label={
+                language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
+              }
               role='button'>
               <VolumeUpIcon fontSize='large' />
             </button>
