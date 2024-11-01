@@ -35,6 +35,8 @@ const Home = () => {
         <Header />
         {!userInfo && (
           <div className="flex flex-col justify-center items-center h-screen">
+            <h2 className="text-6xl font-extrabold text-bf-brand-primary"  >BUSINESS FINLAND</h2>
+            <h4 className="text-4xl font-bold text-gray-700">Onboarding Portal</h4>
             <LoadingElement />
             <p className="text-2xl font-bold text-gray-700">Please login to start</p>
           </div>

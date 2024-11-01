@@ -8,6 +8,7 @@ interface AuthFormProps {
   setPassword: (password: string) => void;
   handleSubmit: (e: React.FormEvent) => void;
   toggleAuthMode: () => void;
+  onClose: () => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({
@@ -18,13 +19,25 @@ const AuthForm: React.FC<AuthFormProps> = ({
   setPassword,
   handleSubmit,
   toggleAuthMode,
+  onClose,
 }) => {
   return (
-    <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10'>
-      <div className='bg-white p-8 rounded-lg shadow-lg w-96'>
+    <div className='fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-10'  onClick={onClose}>
+      <div className='bg-white p-8 rounded-lg shadow-lg w-96' onClick={(e) => e.stopPropagation()}>
+        <div className='flex justify-between w-full'>
         <h2 className='text-2xl font-bold mb-4'>
           {isLogin ? 'Login' : 'Register'}
         </h2>
+      <button
+          type='button'
+          onClick={onClose}
+          className='text-gray-500 text-2xl  hover:shadow-2xl hover:bg-bf-brand-primary rounded-full h-10 w-10  hover:text-white '
+          aria-label='Close modal'
+        >
+          &times;
+        </button>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className='mb-4'>
             <label
