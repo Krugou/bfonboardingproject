@@ -2,6 +2,25 @@
 
 This project is designed to help users complete the onboarding process for Business Finland. It includes various components, context providers, and utilities to ensure a smooth and interactive user experience.
 
+## Table of Contents
+- [Getting Started](#getting-started)
+- [Available Scripts](#available-scripts)
+- [Project Structure](#project-structure)
+- [Components](#components)
+- [Context](#context)
+- [Hooks](#hooks)
+- [Utilities](#utilities)
+- [Deployment](#deployment)
+- [Learn More](#learn-more)
+- [Detailed Setup Instructions](#detailed-setup-instructions)
+- [Usage Examples](#usage-examples)
+- [API Documentation](#api-documentation)
+- [Running Tests](#running-tests)
+- [Code Structure and Conventions](#code-structure-and-conventions)
+- [Contribution Guidelines](#contribution-guidelines)
+- [Deployment Instructions](#deployment-instructions)
+- [License Information](#license-information)
+
 ## Getting Started
 
 To get started with the development server, follow these steps:

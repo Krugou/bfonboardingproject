@@ -11,10 +11,12 @@ import { toast } from 'react-toastify';
 import AuthForm from './LoginRegisterModal/AuthForm';
 interface LoginRegisterModalProps {
   isLoginVisible: boolean;
+  setIsLoginVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
   isLoginVisible,
+  setIsLoginVisible,
 }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -51,13 +53,11 @@ const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
       }
 
       const user = userCredential.user;
-      console.log('🚀 ~ handleSubmit ~ user:', user);
 
       // Check if account exists in Firestore
       const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
       if (accountDoc.exists()) {
         const accountData = accountDoc.data();
-        console.log('🚀 ~ handleSubmit ~ accountData:', accountData);
         setUserInfo({
           email: accountData.email ?? 'default@example.com',
           questionAnswers: accountData.questionAnswers,
@@ -102,6 +102,7 @@ const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
       setPassword={setPassword}
       handleSubmit={handleSubmit}
       toggleAuthMode={() => setIsLogin(!isLogin)}
+      onClose={() => setIsLoginVisible(false)}
     />
   );
 };

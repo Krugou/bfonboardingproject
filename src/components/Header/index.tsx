@@ -97,7 +97,7 @@ const Header = () => {
               role='button'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
-            <LoginRegisterModal isLoginVisible={isLoginVisible} />
+            <LoginRegisterModal setIsLoginVisible={setIsLoginVisible} isLoginVisible={isLoginVisible} />
           </>
         )}
 

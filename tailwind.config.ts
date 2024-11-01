@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 const config: Config = {
   content: [
@@ -24,7 +24,7 @@ const config: Config = {
         ],
       },
       fontSize: {
-        'base': '16px',
+        'base': '1rem',
         'small': '0.9rem',
         'header-1': '5.653rem',
         'header-2': '3.998rem',
