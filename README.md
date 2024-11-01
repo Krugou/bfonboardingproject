@@ -20,6 +20,7 @@ This project is designed to help users complete the onboarding process for Busin
 - [Contribution Guidelines](#contribution-guidelines)
 - [Deployment Instructions](#deployment-instructions)
 - [License Information](#license-information)
+- [High-Level Design](#high-level-design)
 
 ## Getting Started
 
@@ -471,3 +472,20 @@ To deploy the application to a production environment, follow these steps:
 ## License Information
 
 This project is licensed under the [MIT License](LICENSE). By contributing to this project, you agree to abide by the terms and conditions of the license.
+
+## High-Level Design
+
+### Diagram
+
+![High-Level Design Diagram](extra/high_level_design.drawio)
+
+### Explanation
+
+The high-level design diagram provides an overview of the application's structure, including the main components, their interactions, and data flow. The key components are:
+
+- **Client**: The front-end of the application, which interacts with the user.
+- **Server**: The back-end of the application, which handles business logic and data processing.
+- **Database**: Stores the application's data.
+- **External API**: External services that the application interacts with, such as OpenAI.
+
+The diagram also shows the data flow between these components, highlighting how user requests are processed and how data is fetched and returned.
