@@ -60,6 +60,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log('🚀 ~ unsubscribe ~ auth:', auth);
@@ -91,7 +92,15 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
   useEffect(() => {
     if (userInfo) {
-      console.log('userInfo', userInfo);
+      if (auth.currentUser?.uid) {
+        const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
+        updateDoc(accountDocRef, {
+          email: userInfo.email,
+          questionAnswers: userInfo.questionAnswers,
+          lastLogin: userInfo.lastLogin,
+          createdAt: userInfo.createdAt,
+        });
+      }
     }
   }, [userInfo]);
 
@@ -124,8 +133,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   }, []);
 
   const setAnswer = async (questionId: string, answer: any) => {
-    // Update local state
-    // @ts-expect-error
+    //@ts-expect-error
     setUserInfo((prevUserInfo) => ({
       ...prevUserInfo,
       questionAnswers: {
@@ -133,15 +141,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         [questionId]: answer,
       },
     }));
-
-    // Save to Firebase
-    const user = auth.currentUser;
-    if (user) {
-      const accountRef = doc(db, 'accounts', user.uid);
-      await updateDoc(accountRef, {
-        [`questionAnswers.${questionId}`]: answer,
-      });
-    }
   };
 
   useEffect(() => {
@@ -173,10 +172,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
     return () => clearInterval(interval);
   }, [lastInteractionTime]);
-  // console log listeningmode when it changes
-  useEffect(() => {
-    console.log('listeningMode', listeningMode);
-  }, [listeningMode]);
+
   return (
     <UserContext.Provider
       value={{
