@@ -24,7 +24,7 @@ export const speakContent = (
 
   utterance.onerror = (event) => {
     console.error('Speech synthesis error:', event.error);
-    toast.error('Speech synthesis error:', event.error);
+    toast.error(`Speech synthesis error: ${event.error}`);
   };
 
   speechSynthesis.speak(utterance);

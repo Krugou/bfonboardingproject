@@ -60,14 +60,18 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({
               title={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
-              onClick={() =>
+              onClick={() => {
                 speakContent(
-                  questions[currentStep - 1].tooltip[language] +
+                  questions[currentStep - 1].question[language] +
                     ' ' +
                     questions[currentStep - 1].tooltip[language],
                   languageSelection,
                   toast,
                 )
+
+
+
+              }
               }
               className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'
               aria-label={language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'}
