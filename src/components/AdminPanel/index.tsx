@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Bounce, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import QuestionForm from './QuestionForm';
-import QuestionsTable from './QuestionsTable';
+import QuestionsFlow from './QuestionsFlow';
 const AdminPanel: React.FC = () => {
   const { questions, setQuestions } = useUserContext();
   const [language, setLanguage] = useState<'en' | 'fi'>('en');
@@ -144,7 +144,7 @@ const AdminPanel: React.FC = () => {
             onClick={toggleLanguage}>
             {language === 'en' ? 'Switch to Finnish' : 'Switch to English'}
           </button>
-          <QuestionsTable
+          <QuestionsFlow
             questions={questions}
             language={language}
             handleEdit={handleEdit}
