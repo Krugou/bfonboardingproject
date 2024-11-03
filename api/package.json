@@ -4,14 +4,15 @@
   "description": "api for bfinno",
   "main": "bfinno/main.js",
   "scripts": {
-    "start": "npm run build && npm run node",
+    "start": "node bfinno/main.js",
     "build": "npm run tsc",
     "node": "node bfinno/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "apidev": "npm i && concurrently \"tsc --watch\" \"nodemon --delay 1s bfinno/main.js\"",
     "dev": "npm i && concurrently \"tsc --watch\" \"nodemon --delay 1s bfinno/main.js\" \"cd .. && npm run start\"",
     "tsc": "tsc",
-    "tscW": "tsc --watch"
+    "tscW": "tsc --watch",
+    "copyApi": "python copy_api.py"
   },
   "author": "bfinno",
   "license": "ISC",

@@ -94,6 +94,21 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
+      - name: Copy API content
+        run: |
+          mkdir -p ../bfinnoapi
+          rsync -av --exclude='node_modules' ./api/ ../bfinnoapi/
+
+      - name: Push to bfinnoapi repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd ../bfinnoapi
+          git init
+          git remote add origin https://github.com/krugou/bfinnoapi.git
+          git add .
+          git commit -m "Update API content"
+          git push -f origin main
 
   # Deployment job
   deploy:

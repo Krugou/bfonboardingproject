@@ -25,6 +25,11 @@ const startTime: Date = new Date();
 
 app.use(fetchWebsiteRouter);
 
+// New route to respond with "Hello World"
+app.get('/', (_req, res) => {
+  res.send('Hello World');
+});
+
 // Middleware for centralized error handling
 app.use(errorHandler);
 
