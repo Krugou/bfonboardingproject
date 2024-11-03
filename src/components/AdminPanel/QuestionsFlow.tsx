@@ -104,6 +104,7 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
       label: (
         <div className='p-4 border border-black rounded-xl flex items-center gap-4 min-w-[400px] bg-white'>
           <div className='flex-grow'>
+
             <div className='font-bold text-lg'>{question.id}</div>
             <div className='text-gray-700 mt-2'>
               {question.question[language]}
