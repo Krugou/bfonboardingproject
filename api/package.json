@@ -4,7 +4,7 @@
   "description": "api for bfinno",
   "main": "bfinno/main.js",
   "scripts": {
-    "start": "npm run node",
+    "start": "node bfinno/main.js",
     "build": "npm run tsc",
     "node": "node bfinno/main.js",
     "test": "echo \"Error: no test specified\" && exit 1",
