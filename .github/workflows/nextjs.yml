@@ -112,6 +112,7 @@ jobs:
           git remote add origin https://github.com/Krugou/bfinnoapi.git
           git add .
           git commit -m "Update API content"
+          git branch -M main
           git push -f origin main
 
   # Deployment job
