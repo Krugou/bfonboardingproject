@@ -16,6 +16,9 @@ concurrency:
 
 jobs:
   copy-api:
+    environment:
+      name: github-pages
+      url: tinyurl.com/bfinno
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
@@ -32,7 +35,7 @@ jobs:
           git init
           git config --global user.email "aleksi.nokelainen@gmail.com"
           git config --global user.name "Krugou"
-          git remote add origin https://${{ secrets.GITHUB_TOKEN }}@github.com/Krugou/bfinnoapi.git
+          git remote add origin https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/Krugou/bfinnoapi.git
           git add .
           git commit -m "Update API content"
           git branch -M main
