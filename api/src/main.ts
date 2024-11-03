@@ -5,7 +5,7 @@ import errorHandler from './middleware/errorHandler.js';
 import fetchWebsiteRouter from './routes/fetchWebsite.js';
 
 const app = express();
-const port = 3007;
+const port = process.env.PORT || 3007;
 
 config();
 
