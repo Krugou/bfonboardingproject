@@ -8,9 +8,15 @@ import React, {useState} from 'react';
 import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Home = () => {
+/**
+ * Home component that renders the main page of the application.
+ * It includes the Header, MainContent, and AnsweredQuestionsModal components.
+ *
+ * @returns {JSX.Element} The rendered Home component.
+ */
+const Home: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const {userInfo} = useUserContext();
+  const {userInfo, language} = useUserContext();
 
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
@@ -39,11 +45,13 @@ const Home = () => {
               BUSINESS FINLAND
             </h2>
             <h4 className='text-4xl font-bold text-gray-700'>
-              Onboarding Portal
+              {language === 'fi' ? 'Onboarding Portaali' : 'Onboarding Portal'}
             </h4>
             <LoadingElement />
             <p className='text-2xl font-bold text-gray-700'>
-              Please login to start
+              {language === 'fi'
+                ? 'Kirjaudu sisään aloittaaksesi'
+                : 'Please login to start'}
             </p>
           </div>
         )}
