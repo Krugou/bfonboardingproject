@@ -1,12 +1,13 @@
 'use client';
 import AdminPanel from '@/components/AdminPanel';
+import Header from '@/components/Header';
 import React from 'react';
-import { Bounce, ToastContainer } from 'react-toastify';
+import {Bounce, ToastContainer} from 'react-toastify';
 
 const AdminPage: React.FC = () => {
   return (
     <>
-       <ToastContainer
+      <ToastContainer
         position='top-right'
         autoClose={5000}
         hideProgressBar={false}
@@ -19,6 +20,7 @@ const AdminPage: React.FC = () => {
         theme={'light'}
         transition={Bounce}
       />
+      <Header />
       <AdminPanel />
     </>
   );

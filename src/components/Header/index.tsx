@@ -32,9 +32,6 @@ const Header: React.FC = () => {
         const adminRef = doc(db, 'admins', userInfo.email);
         const adminDoc = await getDoc(adminRef);
         if (adminDoc.exists()) {
-          setTimeout(() => {
-            toast.success('Admin rights confirmed, soldier!');
-          }, 1000);
           setIsAdmin(true);
         } else {
           setIsAdmin(false);
