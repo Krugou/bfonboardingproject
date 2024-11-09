@@ -1,15 +1,20 @@
 import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
-import { useUserContext } from '@/context/UserContext';
+import {useUserContext} from '@/context/UserContext';
 import questions from '@/data/mockdata';
-import { logEvent } from '@/utils/analytics';
-import { db } from '@/utils/firebase';
-import { doc, getDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
-import { FlagIcon } from 'react-flag-kit';
-import { toast } from 'react-toastify';
+import {logEvent} from '@/utils/analytics';
+import {db} from '@/utils/firebase';
+import {doc, getDoc} from 'firebase/firestore';
+import {useRouter} from 'next/navigation';
+import React, {useEffect, useState} from 'react';
+import {FlagIcon} from 'react-flag-kit';
+import {toast} from 'react-toastify';
 
-const Header = () => {
+/**
+ * Header component that displays the header of the application.
+ *
+ * @returns {JSX.Element} The rendered Header component.
+ */
+const Header: React.FC = () => {
   const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
   const router = useRouter();
   const [isLoginVisible, setIsLoginVisible] = useState(false);
@@ -46,16 +51,19 @@ const Header = () => {
   return (
     <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>
       <div>
-        <p className='w-10 mx-2 text-white font-bold'>
+        <button
+          className='w-10 h-10 mx-2 text-white font-bold'
+          onClick={() => router.push('/')}
+          aria-label={
+            language === 'fi' ? 'Minun Business Finland' : 'My Business Finland'
+          }>
           {language === 'fi' ? 'Minun Business Finland' : 'My Business Finland'}
-        </p>
+        </button>
       </div>
       {process.env.NODE_ENV === 'development' && (
         <div className='flex w-full justify-center items-center'>
           <p className='mx-2 text-white font-bold'>
-            {language === 'fi'
-              ? 'Paikallinen kehitysympäristö'
-              : 'Local Development Environment'}
+            {language === 'fi' ? 'Paikallinen' : 'Local'}
           </p>
           <p
             className='mx-2 text-white font-bold'
@@ -97,7 +105,10 @@ const Header = () => {
               role='button'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
-            <LoginRegisterModal setIsLoginVisible={setIsLoginVisible} isLoginVisible={isLoginVisible} />
+            <LoginRegisterModal
+              setIsLoginVisible={setIsLoginVisible}
+              isLoginVisible={isLoginVisible}
+            />
           </>
         )}
 
@@ -106,7 +117,7 @@ const Header = () => {
           size={32}
           onClick={() => {
             setLanguage('fi');
-            logEvent('language_selection', { language: 'fi' });
+            logEvent('language_selection', {language: 'fi'});
           }}
           className='cursor-pointer'
           aria-label='Select Finnish language'
@@ -117,7 +128,7 @@ const Header = () => {
           size={32}
           onClick={() => {
             setLanguage('en');
-            logEvent('language_selection', { language: 'en' });
+            logEvent('language_selection', {language: 'en'});
           }}
           className='cursor-pointer'
           aria-label='Select English language'
