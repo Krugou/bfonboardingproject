@@ -1,92 +1,29 @@
-import { useUserContext } from '@/context/UserContext';
-import { auth, db } from '@/utils/firebase';
-import {
-  createUserWithEmailAndPassword,
-  fetchSignInMethodsForEmail,
-  signInWithEmailAndPassword,
-} from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
-import { toast } from 'react-toastify';
+import { useAuth } from '@/hooks/useAuth';
 import AuthForm from './LoginRegisterModal/AuthForm';
+import { useUserContext } from '@/context/UserContext';
+
 interface LoginRegisterModalProps {
   isLoginVisible: boolean;
   setIsLoginVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
-  isLoginVisible,
-  setIsLoginVisible,
-}) => {
+/**
+ * LoginRegisterModal component for handling user authentication.
+ *
+ * @param {LoginRegisterModalProps} props - The props for the component.
+ * @returns {JSX.Element | null} The rendered LoginRegisterModal component.
+ */
+const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({ isLoginVisible, setIsLoginVisible }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
-  const {setUserInfo} = useUserContext();
+  const { handleEmailPasswordAuth, handleGoogleLogin, error } = useAuth();
+  const { setUserInfo } = useUserContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
-    console.log('email', email);
-
-    try {
-      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
-
-      let userCredential;
-      if (isLogin || signInMethods.length > 0) {
-        // Handle login
-        userCredential = await signInWithEmailAndPassword(
-          auth,
-          email,
-          password,
-        );
-        toast.success('Logged in successfully');
-      } else {
-        // Handle register
-        userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password,
-        );
-        toast.success('Registered successfully');
-        setIsLogin(true);
-      }
-
-      const user = userCredential.user;
-
-      // Check if account exists in Firestore
-      const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
-      if (accountDoc.exists()) {
-        const accountData = accountDoc.data();
-        setUserInfo({
-          email: accountData.email ?? 'default@example.com',
-          questionAnswers: accountData.questionAnswers,
-          lastLogin: accountData.lastLogin?.toDate(),
-          createdAt: accountData.createdAt.toDate(),
-        });
-      } else {
-        // Create account in Firestore if it doesn't exist
-        const accountData = {
-          email: user.email ?? 'default@example.com',
-          questionAnswers: {},
-          createdAt: new Date(),
-          lastLogin: new Date(),
-        };
-        await setDoc(doc(db, 'accounts', user.uid), accountData);
-        setUserInfo(accountData);
-        toast.success('Account created successfully');
-      }
-
-      // Update last login
-      await setDoc(
-        doc(db, 'accounts', user.uid),
-        {lastLogin: new Date()},
-        {merge: true},
-      );
-    } catch (error) {
-      setError((error as Error).message);
-      toast.error((error as Error).message);
-    }
+    await handleEmailPasswordAuth(email, password, isLogin);
   };
 
   if (!isLoginVisible) {
@@ -94,16 +31,20 @@ const LoginRegisterModal: React.FC<LoginRegisterModalProps> = ({
   }
 
   return (
-    <AuthForm
-      isLogin={isLogin}
-      email={email}
-      password={password}
-      setEmail={setEmail}
-      setPassword={setPassword}
-      handleSubmit={handleSubmit}
-      toggleAuthMode={() => setIsLogin(!isLogin)}
-      onClose={() => setIsLoginVisible(false)}
-    />
+    <div>
+      <AuthForm
+        isLogin={isLogin}
+        email={email}
+        password={password}
+        setEmail={setEmail}
+        setPassword={setPassword}
+        handleSubmit={handleSubmit}
+        toggleAuthMode={() => setIsLogin(!isLogin)}
+        onClose={() => setIsLoginVisible(false)}
+        handleGoogleLogin={handleGoogleLogin}
+        error={error}
+      />
+    </div>
   );
 };
 
