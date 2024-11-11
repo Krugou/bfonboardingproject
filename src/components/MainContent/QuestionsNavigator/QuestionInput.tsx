@@ -30,7 +30,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     handleSingleChoiceClick,
     handleMultiChoiceClick,
     handleSliderChange,
-    handleDropdownChange,
   } = useCommand(question);
   const {recognition, transcriptContent, startListening, stopListening} =
     useSpeechRecognition(
@@ -120,7 +119,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
           <DropdownInput
             question={question}
             language={language as 'en' | 'fi'}
-            handleDropdownChange={handleDropdownChange}
           />
         );
       default:

@@ -1,20 +1,34 @@
 import {QuestionItem} from '@/app/types';
-import React from 'react';
-import Select, {MultiValue} from 'react-select';
+import React, {useEffect, useState} from 'react';
+import Select, {MultiValue, SingleValue} from 'react-select';
+import {useUserContext} from '@/context/UserContext';
 
 interface DropdownInputProps {
   question: QuestionItem;
   language: 'en' | 'fi';
-  handleDropdownChange: (
-    selectedOptions: MultiValue<{value: string; label: string}>,
-  ) => void;
 }
 
-const DropdownInput: React.FC<DropdownInputProps> = ({
-  question,
-  language,
-  handleDropdownChange,
-}) => {
+const DropdownInput: React.FC<DropdownInputProps> = ({question, language}) => {
+  const {saveDropdownSelection, userInfo} = useUserContext();
+  const [selectedOptions, setSelectedOptions] = useState<
+    MultiValue<{value: string; label: string}>
+  >([]);
+
+  useEffect(() => {
+    if (
+      userInfo &&
+      userInfo.questionAnswers &&
+      userInfo.questionAnswers[question.id]
+    ) {
+      const userAnswers = userInfo.questionAnswers[question.id];
+      const initialSelectedOptions = userAnswers.map((answer: string) => ({
+        value: answer,
+        label: answer,
+      }));
+      setSelectedOptions(initialSelectedOptions);
+    }
+  }, [userInfo, question.id]);
+
   const answerOptions = question.answerOptions
     ?.map((option) => option.text[language])
     .filter(Boolean);
@@ -28,11 +42,20 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
     label: option.trim(),
   }));
 
+  const handleChange = (
+    selectedOptions: MultiValue<{value: string; label: string}>,
+  ) => {
+    setSelectedOptions(selectedOptions);
+    const selectedValues = selectedOptions.map((option) => option.value);
+    saveDropdownSelection(question.id, selectedValues);
+  };
+
   return (
     <div className='p-2 ml-4 w-full'>
       <Select
         options={options}
-        onChange={handleDropdownChange}
+        value={selectedOptions}
+        onChange={handleChange}
         classNamePrefix='react-select'
         isMulti
       />

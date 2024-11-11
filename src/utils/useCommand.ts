@@ -51,17 +51,11 @@ const useCommand = (question: QuestionItem) => {
     },
     [question.id, setAnswer],
   );
-  const handleDropdownChange = useCallback(
-    (selectedOption: any) => {
-      setAnswer(question.id, selectedOption.value);
-    },
-    [question.id, setAnswer],
-  );
+
   return {
     handleSingleChoiceClick,
     handleMultiChoiceClick,
     handleSliderChange,
-    handleDropdownChange,
   };
 };
 

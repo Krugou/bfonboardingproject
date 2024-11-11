@@ -35,7 +35,6 @@ const InsertMockData: React.FC = () => {
     } catch (error) {
       toast.error('Error inserting data into Firestore');
       console.error('Error inserting data into Firestore:', error);
-      throw new FirestoreError('Failed to insert data into Firestore');
     }
   };
 

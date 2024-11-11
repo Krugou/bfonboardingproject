@@ -38,6 +38,10 @@ interface UserContextType {
   setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStep: (step: number) => void;
   currentStep: number;
+  saveDropdownSelection: (
+    questionId: string,
+    selectedOptions: string[],
+  ) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -160,7 +164,31 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       );
     };
   }, []);
+  const saveDropdownSelection = async (
+    questionId: string,
+    selectedOptions: string[],
+  ) => {
+    if (!userInfo) return;
+    if (auth.currentUser?.uid) {
+      const userRef = doc(db, 'accounts', auth.currentUser.uid);
+      const updatedAnswers = {
+        ...userInfo.questionAnswers,
+        [questionId]: selectedOptions.filter(
+          (option) => option !== undefined && option !== null,
+        ),
+      };
 
+      try {
+        await updateDoc(userRef, {questionAnswers: updatedAnswers});
+        setUserInfo((prev: any) => ({
+          ...prev,
+          questionAnswers: updatedAnswers,
+        }));
+      } catch (error) {
+        console.error('Error saving dropdown selection:', error);
+      }
+    }
+  };
   useEffect(() => {
     const checkInactivity = () => {
       if (Date.now() - lastInteractionTime > 3600000) {
@@ -197,6 +225,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setListeningMode,
         setCurrentStep,
         currentStep,
+        saveDropdownSelection,
       }}>
       {children}
     </UserContext.Provider>
