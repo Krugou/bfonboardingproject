@@ -10,9 +10,19 @@ export interface AnswerOption {
     fi: string;
   };
 }
-
-
-
+export interface SpecialCondition {
+  allowedAnswers?: [0, 1];
+  questionId?: 'k1.2';
+  numberOfEmployees?: {
+    min?: number;
+    max?: number;
+  };
+  companyAge?: {
+    minYears?: number;
+    maxYears?: number;
+  };
+  companyType?: string;
+}
 /**
  * Interface for Question with both Finnish and English texts
  */
@@ -74,6 +84,7 @@ export interface QuestionItem {
   };
   maxLength?: number;
   validationRegex?: ValidationRegex;
+  specialCondition?: SpecialCondition;
 }
 
 /**

@@ -155,7 +155,10 @@ const questions: QuestionItem[] = [
         },
       },
     ],
-
+    specialCondition: {
+      questionId: 'k1.2',
+      allowedAnswers: [0, 1],
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -257,6 +260,11 @@ const questions: QuestionItem[] = [
         },
       },
     ],
+    specialCondition: {
+      questionId: 'k1.2',
+      allowedAnswers: [0, 1],
+      companyAge: {maxYears: 5},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -298,7 +306,11 @@ const questions: QuestionItem[] = [
         },
       },
     ],
-
+    specialCondition: {
+      questionId: 'k1.2',
+      allowedAnswers: [0, 1],
+      companyAge: {maxYears: 5},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -340,6 +352,11 @@ const questions: QuestionItem[] = [
         },
       },
     ],
+    specialCondition: {
+      questionId: 'k1.2',
+      allowedAnswers: [0, 1],
+      companyAge: {maxYears: 5},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -384,6 +401,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
+    specialCondition: {
+      numberOfEmployees: {max: 250},
+    },
 
     errorAnswer: {
       en: '',
@@ -407,7 +427,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
-
+    specialCondition: {
+      numberOfEmployees: {max: 250},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -429,7 +451,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
-
+    specialCondition: {
+      numberOfEmployees: {max: 250},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -451,7 +475,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
-
+    specialCondition: {
+      numberOfEmployees: {max: 250},
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -473,7 +499,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
-
+    specialCondition: {
+      companyType: 'housing',
+    },
     errorAnswer: {
       en: '',
       fi: '',
@@ -495,7 +523,9 @@ const questions: QuestionItem[] = [
       fi: '',
     },
     answerType: 'directInput',
-
+    specialCondition: {
+      companyType: 'housing',
+    },
     errorAnswer: {
       en: '',
       fi: '',
