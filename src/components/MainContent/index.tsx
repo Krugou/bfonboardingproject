@@ -59,22 +59,24 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   ) {
     return (
       <div className='flex flex-col justify-center items-center h-screen'>
-        <p className='text-xl font-bold text-gray-700 mb-4'>
-          {language === 'fi'
-            ? 'Olet jo vastannut joihinkin kysymyksiin. Haluatko nollata kysymykset vai jatkaa?'
-            : 'You have already answered some questions. Do you want to reset the questions or continue?'}
-        </p>
-        <div className='flex space-x-4'>
-          <button
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-            onClick={handleReset}>
-            {language === 'fi' ? 'Nollaa kysymykset' : 'Reset Questions'}
-          </button>
-          <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-            onClick={handleContinue}>
-            {language === 'fi' ? 'Jatka' : 'Continue'}
-          </button>
+        <div className='w-full  bg-bf-brand-primary  p-4 rounded-xl'>
+          <p className='text-xl font-bold text-white   mb-4'>
+            {language === 'fi'
+              ? 'Olet jo vastannut joihinkin kysymyksiin. Haluatko nollata kysymykset vai jatkaa?'
+              : 'You have already answered some questions. Do you want to reset the questions or continue?'}
+          </p>
+          <div className='flex gap-4 justify-between'>
+            <button
+              className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
+              onClick={handleReset}>
+              {language === 'fi' ? 'Nollaa kysymykset' : 'Reset Questions'}
+            </button>
+            <button
+              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
+              onClick={handleContinue}>
+              {language === 'fi' ? 'Jatka' : 'Continue'}
+            </button>
+          </div>
         </div>
       </div>
     );
