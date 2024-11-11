@@ -21,39 +21,60 @@ const Home: React.FC = () => {
   const textRef = useRef<HTMLHeadingElement>(null);
   const subTextRef = useRef<HTMLHeadingElement>(null);
   const loginTextRef = useRef<HTMLParagraphElement>(null);
+  const subElementRef = useRef<HTMLParagraphElement>(null);
 
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
 
   useEffect(() => {
-    try {
-      if (textRef.current && subTextRef.current && loginTextRef.current) {
-        const tl = gsap.timeline();
-        tl.fromTo(
-          textRef.current,
-          {opacity: 0, y: -50},
-          {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
-        )
-          .fromTo(
-            subTextRef.current,
-            {opacity: 0, y: -30},
+    const animateText = () => {
+      try {
+        if (
+          textRef.current &&
+          subTextRef.current &&
+          loginTextRef.current &&
+          subElementRef.current
+        ) {
+          const tl = gsap.timeline();
+          tl.fromTo(
+            textRef.current,
+            {opacity: 0, y: -50},
             {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
-            '-=0.5',
           )
-          .fromTo(
-            loginTextRef.current,
-            {opacity: 0, y: -20},
-            {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
-            '-=0.5',
-          );
+            .fromTo(
+              subTextRef.current,
+              {opacity: 0, y: -30},
+              {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
+              '-=0.5',
+            )
+            .fromTo(
+              subElementRef.current,
+              {opacity: 0, y: -20},
+              {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
+              '-=0.5',
+            )
+            .fromTo(
+              loginTextRef.current,
+              {opacity: 0, y: -10},
+              {opacity: 1, y: 0, duration: 1, ease: 'bounce.out'},
+              '-=0.5',
+            );
+        }
+      } catch (error) {
+        console.error('Error animating text:', error);
       }
-    } catch (error) {
-      console.error('Error animating text:', error);
-    }
+    };
+
+    // Initial animation
+    animateText();
+
+    // Set interval to run animation every 120 seconds
+    const intervalId = setInterval(animateText, 120000);
 
     // Cleanup function to prevent memory leaks
     return () => {
+      clearInterval(intervalId);
       if (textRef.current) {
         gsap.killTweensOf(textRef.current);
       }
@@ -62,6 +83,9 @@ const Home: React.FC = () => {
       }
       if (loginTextRef.current) {
         gsap.killTweensOf(loginTextRef.current);
+      }
+      if (subElementRef.current) {
+        gsap.killTweensOf(subElementRef.current);
       }
     };
   }, []);
@@ -93,7 +117,7 @@ const Home: React.FC = () => {
             <h4 ref={subTextRef} className='text-4xl font-bold text-gray-700'>
               {language === 'fi' ? 'Onboarding Portaali' : 'Onboarding Portal'}
             </h4>
-            <LoadingElement />
+            <LoadingElement ref={subElementRef} />
             <p ref={loginTextRef} className='text-2xl font-bold text-gray-700'>
               {language === 'fi'
                 ? 'Kirjaudu sisään aloittaaksesi'

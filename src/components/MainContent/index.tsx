@@ -38,19 +38,6 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
     logEvent('page_view', {page: 'MainContent'});
   }, []);
 
-  if (!questions.length) {
-    return (
-      <div className='flex justify-center items-center h-screen'>
-        <LoadingElement />
-        <p className='text-2xl font-bold text-gray-700'>
-          {language === 'fi'
-            ? 'Kirjaudu sisään aloittaaksesi'
-            : 'Please login to start'}
-        </p>
-      </div>
-    );
-  }
-
   if (
     resetQuestions === null &&
     userInfo &&
