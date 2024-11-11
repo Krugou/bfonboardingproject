@@ -1,6 +1,6 @@
 import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
 import {useUserContext} from '@/context/UserContext';
-import questions from '@/data/mockdata';
+import questions from '@/data/questions';
 import {logEvent} from '@/utils/analytics';
 import {db} from '@/utils/firebase';
 import {doc, getDoc} from 'firebase/firestore';

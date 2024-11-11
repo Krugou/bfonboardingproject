@@ -1,15 +1,17 @@
-import React, { useEffect } from 'react';
-import { useUserContext } from '../../context/UserContext';
-import questions from '../../data/mockdata';
+import React, {useEffect} from 'react';
+import {useUserContext} from '../../context/UserContext';
+import questions from '../../data/questions';
 import QuestionInput from './QuestionsNavigator/QuestionInput';
-interface QuestionNavigatorProps {
+interface QuestionNavigatorProps {}
 
-}
-
-const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
-
-}) => {
-  const {language, setCurrentQuestion, setCurrentStep,currentStep,listeningMode} = useUserContext();
+const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
+  const {
+    language,
+    setCurrentQuestion,
+    setCurrentStep,
+    currentStep,
+    listeningMode,
+  } = useUserContext();
 
   const handleReset = () => {
     setCurrentStep(1);
@@ -56,10 +58,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({
       {currentStep <= questions.length ? (
         <>
           <div className='w-full sm:w-3/4'>
-            <QuestionInput
-              question={questions[currentStep - 1]}
-
-            />
+            <QuestionInput question={questions[currentStep - 1]} />
           </div>
           <button
             className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'

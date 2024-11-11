@@ -1,4 +1,4 @@
-import questions from '@/data/mockdata';
+import questions from '@/data/questions';
 import {db} from '@/utils/firebase';
 import {collection, doc, getDoc, setDoc} from 'firebase/firestore';
 import React from 'react';
