@@ -1,38 +1,49 @@
-import { QuestionItem } from '@/app/types';
-import { useUserContext } from '@/context/UserContext';
-import useCommand from '@/utils/useCommand';
-import React, { useEffect, useRef, useState } from 'react';
-import useSpeechRecognition from '../../../utils/useSpeechRecognition';
-import useVoiceCommand from '../../../utils/useVoiceCommand';
-import AreaInput from './QuestionInput/AreaInput';
-import ChoiceInput from './QuestionInput/ChoiceInput';
-import SliderInput from './QuestionInput/SliderInput';
+import React, {useEffect, useRef, useState} from 'react';
+import {QuestionItem} from '@/app/types';
+import {useUserContext} from '@/context/UserContext';
 import SpecialInput from './QuestionInput/SpecialInput';
 import TextInput from './QuestionInput/TextInput';
+import AreaInput from './QuestionInput/AreaInput';
+import ChoiceInput from './QuestionInput/ChoiceInput';
+import DropdownInput from './QuestionInput/DropdownInput';
+import useVoiceCommand from '@/utils/useVoiceCommand';
+import useCommand from '@/utils/useCommand';
+import useSpeechRecognition from '@/utils/useSpeechRecognition';
 
 interface QuestionInputProps {
   question: QuestionItem;
 }
-const QuestionInput: React.FC<QuestionInputProps> = ({
-  question,
 
-}) => {
-  const { userInfo, setAnswer, setCurrentStep ,currentStep, listeningMode } = useUserContext();
+const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
+  const {userInfo, setAnswer, setCurrentStep, currentStep, listeningMode} =
+    useUserContext();
   const [sliderValue, setSliderValue] = useState<number>(0);
-  const { language } = useUserContext();
+  const {language} = useUserContext();
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
-  const { handleVoiceCommand,  } = useVoiceCommand(question, setCurrentStep, currentStep);
-  const { handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange } = useCommand(question);
-  const { recognition, transcriptContent, startListening, stopListening } = useSpeechRecognition(language, handleVoiceCommand, listeningMode);
+  const {handleVoiceCommand} = useVoiceCommand(
+    question,
+    setCurrentStep,
+    currentStep,
+  );
+  const {
+    handleSingleChoiceClick,
+    handleMultiChoiceClick,
+    handleSliderChange,
+    handleDropdownChange,
+  } = useCommand(question);
+  const {recognition, transcriptContent, startListening, stopListening} =
+    useSpeechRecognition(
+      language as 'en' | 'fi',
+      handleVoiceCommand,
+      listeningMode,
+    );
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-
-
 
   useEffect(() => {
     if (userInfo && userInfo.questionAnswers[question.id]) {
@@ -52,7 +63,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
         return (
           <SpecialInput
             question={question}
-            language={language}
+            language={language as 'en' | 'fi'}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
@@ -62,7 +73,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
         return (
           <TextInput
             question={question}
-            language={language}
+            language={language as 'en' | 'fi'}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
@@ -71,25 +82,25 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
         return (
           <AreaInput
             question={question}
-            language={language}
+            language={language as 'en' | 'fi'}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
         );
-      case 'slider':
-        return (
-          <SliderInput
-            question={question}
-            language={language}
-            sliderValue={sliderValue}
-            handleSliderChange={handleSliderChange}
-          />
-        );
+      // case 'slider':
+      //   return (
+      //     <SliderInput
+      //       question={question}
+      //       language={language as 'en' | 'fi'}
+      //       sliderValue={sliderValue}
+      //       handleSliderChange={handleSliderChange}
+      //     />
+      //   );
       case 'singleChoice':
         return (
           <ChoiceInput
             question={question}
-            language={language}
+            language={language as 'en' | 'fi'}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
           />
@@ -99,9 +110,17 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
         return (
           <ChoiceInput
             question={question}
-            language={language}
+            language={language as 'en' | 'fi'}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
+          />
+        );
+      case 'dropdown':
+        return (
+          <DropdownInput
+            question={question}
+            language={language as 'en' | 'fi'}
+            handleDropdownChange={handleDropdownChange}
           />
         );
       default:
@@ -113,8 +132,8 @@ const QuestionInput: React.FC<QuestionInputProps> = ({
     <>
       <div className='w-full'>{renderInput()}</div>
       {listeningMode && (
-        <div className=' p-2 m-2 border rounded-xl'>
-          <p className=' text-base font-bold text-bf-brand-primary'>
+        <div className='p-2 m-2 border rounded-xl'>
+          <p className='text-base font-bold text-bf-brand-primary'>
             {language === 'fi' ? 'Kuulin Komennon: ' : 'I heard Command: '}
             {transcriptContent}
           </p>

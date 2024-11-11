@@ -1,11 +1,10 @@
-import { QuestionItem } from '@/app/types';
-import React, { useEffect, useState } from 'react';
+import {QuestionItem} from '@/app/types';
+import React, {useEffect, useState} from 'react';
 
 interface AreaInputProps {
   question: QuestionItem;
-  language: string;
-  answers: { [key: string]: any };
-  // eslint-disable-next-line no-unused-vars
+  language: 'en' | 'fi';
+  answers: {[key: string]: any};
   setAnswer: (questionId: string, answer: any) => void;
 }
 
@@ -44,7 +43,7 @@ const AreaInput: React.FC<AreaInputProps> = ({
         value={inputValue}
         onChange={handleChange}
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
-        placeholder={question.syntaxPlaceholder[language]}
+        placeholder={question.syntaxPlaceholder?.[language] || ''}
         rows={4}
         maxLength={question.maxLength}
       />

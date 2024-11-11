@@ -1,11 +1,13 @@
-import { QuestionItem } from '@/app/types';
+import {QuestionItem} from '@/app/types';
 import React from 'react';
-import Select from 'react-select';
+import Select, {MultiValue} from 'react-select';
 
 interface DropdownInputProps {
   question: QuestionItem;
-  language: string;
-  handleDropdownChange: (selectedOption: any) => void;
+  language: 'en' | 'fi';
+  handleDropdownChange: (
+    selectedOptions: MultiValue<{value: string; label: string}>,
+  ) => void;
 }
 
 const DropdownInput: React.FC<DropdownInputProps> = ({
@@ -13,22 +15,26 @@ const DropdownInput: React.FC<DropdownInputProps> = ({
   language,
   handleDropdownChange,
 }) => {
-  const answerOptions = question.answerOptions?.[language] ?? '';
+  const answerOptions = question.answerOptions
+    ?.map((option) => option.text[language])
+    .filter(Boolean);
 
-  if (!answerOptions) {
-    return null;
+  if (!answerOptions || answerOptions.length === 0) {
+    return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
   }
 
-  const options = answerOptions
-    .split('#')
-    .map((option) => ({ value: option.trim(), label: option.trim() }));
+  const options = answerOptions.map((option) => ({
+    value: option.trim(),
+    label: option.trim(),
+  }));
 
   return (
-    <div className="p-2 ml-4 w-full">
+    <div className='p-2 ml-4 w-full'>
       <Select
         options={options}
         onChange={handleDropdownChange}
-        classNamePrefix="react-select"
+        classNamePrefix='react-select'
+        isMulti
       />
     </div>
   );

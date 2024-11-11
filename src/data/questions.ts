@@ -735,7 +735,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'multiChoice',
+    answerType: 'dropdown',
     answerOptions: countries,
 
     errorAnswer: {
