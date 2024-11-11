@@ -1,6 +1,5 @@
 import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
 import {useUserContext} from '@/context/UserContext';
-import questions from '@/data/questions';
 import {logEvent} from '@/utils/analytics';
 import {db} from '@/utils/firebase';
 import {doc, getDoc} from 'firebase/firestore';
@@ -15,7 +14,8 @@ import {toast} from 'react-toastify';
  * @returns {JSX.Element} The rendered Header component.
  */
 const Header: React.FC = () => {
-  const {setLanguage, language, currentQuestion, userInfo} = useUserContext();
+  const {setLanguage, language, currentQuestion, userInfo, questions} =
+    useUserContext();
   const router = useRouter();
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);

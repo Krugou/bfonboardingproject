@@ -1,6 +1,5 @@
 import React, {useEffect} from 'react';
 import {useUserContext} from '../../context/UserContext';
-import questions from '../../data/questions';
 import QuestionInput from './QuestionsNavigator/QuestionInput';
 interface QuestionNavigatorProps {}
 
@@ -11,6 +10,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     setCurrentStep,
     currentStep,
     listeningMode,
+    questions,
   } = useUserContext();
 
   const handleReset = () => {

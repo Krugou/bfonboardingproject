@@ -5,50 +5,46 @@ import React from 'react';
 import {Bounce, toast, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+/**
+ * InsertMockData component that inserts mock data into Firestore.
+ *
+ * @returns {JSX.Element} The rendered InsertMockData component.
+ */
 const InsertMockData: React.FC = () => {
+  /**
+   * Inserts mock data into Firestore after user confirmation.
+   */
   const insertData = async () => {
+    if (
+      !window.confirm(
+        'Are you sure you want to overwrite the questions data? This will overwrite existing data.',
+      )
+    ) {
+      return;
+    }
+
     const questionsCollectionRef = collection(db, 'questions');
     const questionsDocRef = doc(questionsCollectionRef, 'questions');
 
     try {
-      const docSnap = await getDoc(questionsDocRef);
-
-      if (docSnap.exists()) {
-        toast.info('Document already exists in Firestore');
-      } else {
-        // Create a new document with the ID 'questions'
-        await setDoc(questionsDocRef, {questions});
-        toast.success(
-          'Data successfully inserted into Firestore with ID: questions',
-        );
-      }
+      // Overwrite the existing document with the new questions data
+      await setDoc(questionsDocRef, {questions});
+      toast.success(
+        'Data successfully inserted into Firestore with ID: questions',
+      );
     } catch (error) {
       toast.error('Error inserting data into Firestore');
       console.error('Error inserting data into Firestore:', error);
+      throw new FirestoreError('Failed to insert data into Firestore');
     }
   };
 
   return (
-    <div className='p-4'>
-      <ToastContainer
-        position='top-right'
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme='light'
-        transition={Bounce}
-      />
-      <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-        onClick={insertData}>
-        Insert Mock Data
-      </button>
-    </div>
+    <button
+      className='bg-blue-500 hover:bg-blue-700  text-white font-bold p-4 rounded'
+      onClick={insertData}>
+      Insert questions Data
+    </button>
   );
 };
 

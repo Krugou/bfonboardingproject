@@ -1,4 +1,3 @@
-import LoadingElement from '@/components/LoadingElement';
 import {useUserContext} from '@/context/UserContext';
 import {logEvent} from '@/utils/analytics';
 import React, {useEffect, useState} from 'react';
@@ -21,7 +20,7 @@ interface MainContentProps {
  * @returns {JSX.Element} The rendered MainContent component.
  */
 const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
-  const {questions, userInfo, setUserInfo, language} = useUserContext();
+  const {userInfo, setUserInfo, language} = useUserContext();
   const [resetQuestions, setResetQuestions] = useState<boolean | null>(null);
 
   const handleReset = () => {
