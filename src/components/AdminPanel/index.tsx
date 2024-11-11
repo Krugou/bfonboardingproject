@@ -32,17 +32,15 @@ const AdminPanel: React.FC = () => {
     const newQuestion: QuestionItem = {
       id: '',
       question: {en: '', fi: ''},
-      condition: '',
+      conditions: [],
       tooltip: {en: '', fi: ''},
       syntaxPlaceholder: {en: '', fi: ''},
       answerType: '',
-      targetAudience: '',
       errorAnswer: {en: '', fi: ''},
-      answerOptions: {en: '', fi: ''}, // Optional, can be omitted if not needed
-      optionalStepAnswer: {en: '', fi: ''}, // Optional, can be omitted if not needed
-      unit: '', // Optional, can be omitted if not needed
+      answerOptions: [], // Optional, can be omitted if not needed
       maxLength: 0, // Optional, can be omitted if not needed
       validationRegex: {en: '', fi: ''}, // Optional, can be omitted if not needed
+      specialCondition: {}, // Optional, can be omitted if not needed
     };
     setCurrentQuestion(newQuestion);
     setIsEditing(true);

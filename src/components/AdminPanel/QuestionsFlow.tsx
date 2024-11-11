@@ -32,13 +32,11 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
   handleEdit,
   moveQuestion,
 }) => {
-  // Initialize with null to indicate server-side rendering
   const [windowSize, setWindowSize] = useState({
     width: typeof window !== 'undefined' ? window.innerWidth : 1000,
     height: typeof window !== 'undefined' ? window.innerHeight : 800,
   });
 
-  // Use useLayoutEffect instead of useEffect for window measurements
   useLayoutEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -47,14 +45,12 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
       });
     };
 
-    // Set initial size
     handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Create initial nodes from questions
   const renderNodeButtons = (question: QuestionItem, index: number) => (
     <div className='flex flex-col gap-2'>
       <button
@@ -95,16 +91,13 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     </div>
   );
 
-  // Update the node data structure in both initialNodes and useEffect
   const nodeContent = (question: QuestionItem, index: number) => ({
     id: question.id,
-    // Increase Y spacing from 150 to 250
     position: {x: 100, y: index * 250},
     data: {
       label: (
-        <div className='p-4 border border-black rounded-xl flex items-center gap-4 min-w-[400px] bg-white'>
+        <div className='p-4 border border-black rounded-xl flex items-center gap-4 min-w-[200px] bg-white'>
           <div className='flex-grow'>
-
             <div className='font-bold text-lg'>{question.id}</div>
             <div className='text-gray-700 mt-2'>
               {question.question[language]}
@@ -113,7 +106,6 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
               {question.answerType}
             </div>
           </div>
-          {/* Buttons container */}
           <div className='flex flex-col gap-2 ml-4'>
             {renderNodeButtons(question, index)}
           </div>
@@ -123,12 +115,10 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     type: 'default',
   });
 
-  // Update initialNodes
   const initialNodes = questions.map((question, index) =>
     nodeContent(question, index),
   );
 
-  // Create edges between nodes
   const initialEdges = questions
     .map((question, index) => ({
       id: `e${index}`,
@@ -174,7 +164,6 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     }
   };
 
-  // Update useEffect to also depend on window size
   useEffect(() => {
     const newNodes = questions.map((question, index) =>
       nodeContent(question, index),
@@ -192,10 +181,12 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
 
     setNodes(newNodes);
     setEdges(newEdges);
-  }, [questions, language, windowSize]); // Add windowSize dependency
+  }, [questions, language, windowSize]);
 
   return (
-    <div style={{width: '100%', height: '800px'}}>
+    <div
+      style={{width: '100%', height: '800px'}}
+      className='bg-black/20 rounded-xl m-2 p-4'>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -203,8 +194,7 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-        fitViewOptions={{ padding: 0.2 }}  // Add padding for better fit
-      >
+        fitViewOptions={{padding: 0.2}}>
         <Background />
         <Controls />
       </ReactFlow>

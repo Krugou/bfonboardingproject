@@ -82,6 +82,7 @@ export interface QuestionItem {
     en: string;
     fi: string;
   };
+  locked?: boolean;
   maxLength?: number;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;

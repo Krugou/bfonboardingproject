@@ -7,6 +7,7 @@ import {useRouter} from 'next/navigation';
 import React, {useEffect, useState} from 'react';
 import {FlagIcon} from 'react-flag-kit';
 import {toast} from 'react-toastify';
+import {usePathname} from 'next/navigation';
 
 /**
  * Header component that displays the header of the application.
@@ -19,9 +20,17 @@ const Header: React.FC = () => {
   const router = useRouter();
   const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
+  const pathname = usePathname();
   const handleAdminClick = () => {
-    router.push('/admin');
+    try {
+      if (pathname === '/admin') {
+        router.push('/');
+      } else {
+        router.push('/admin');
+      }
+    } catch (error) {
+      console.error('Navigation error:', error);
+    }
   };
 
   const [adminCheckPerformed, setAdminCheckPerformed] = useState(false);
@@ -44,6 +53,14 @@ const Header: React.FC = () => {
       checkAdmin();
     }
   }, [userInfo, adminCheckPerformed]);
+  const buttonText =
+    pathname === '/admin'
+      ? language === 'fi'
+        ? 'Takaisin kysymyksiin'
+        : 'Back to questions'
+      : language === 'fi'
+      ? 'Admin paneeli'
+      : 'Admin panel';
 
   return (
     <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>
@@ -64,8 +81,8 @@ const Header: React.FC = () => {
           </p>
           <p
             className='mx-2 text-white font-bold'
-            title={questions[currentQuestion - 1].question[language]}>
-            {questions[currentQuestion - 1].id}
+            title={questions[currentQuestion - 1]?.question[language]}>
+            {questions[currentQuestion - 1]?.id}
           </p>
         </div>
       )}
@@ -74,9 +91,9 @@ const Header: React.FC = () => {
           <button
             onClick={handleAdminClick}
             className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'
-            aria-label={language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
+            aria-label={buttonText}
             role='button'>
-            {language === 'fi' ? 'Admin paneeli' : 'Admin panel'}
+            {buttonText}
           </button>
         )}
 
