@@ -6,18 +6,15 @@ import {
   ReactFlow,
   useEdgesState,
   useNodesState,
+  Node,
+  Edge,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import React, {useCallback, useEffect, useState, useLayoutEffect} from 'react';
-
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import EditIcon from '@mui/icons-material/Edit';
-import LockIcon from '@mui/icons-material/Lock';
-import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {doc, getDoc, updateDoc} from 'firebase/firestore';
 import {QuestionItem} from '../../app/types';
 import {db} from '../../utils/firebase';
+import NodeContent from './NodeContent';
 
 interface QuestionsFlowProps {
   questions: QuestionItem[];
@@ -37,6 +34,26 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     height: typeof window !== 'undefined' ? window.innerHeight : 800,
   });
 
+  const toggleLock = async (index: number) => {
+    const question = questions[index];
+    const newLockedStatus = !question.locked;
+
+    try {
+      const questionRef = doc(db, 'questions', 'questions');
+      const questionSnapshot = await getDoc(questionRef);
+
+      if (questionSnapshot.exists()) {
+        const oldQuestions = questionSnapshot.data().questions;
+        oldQuestions[index].locked = newLockedStatus;
+        await updateDoc(questionRef, {
+          questions: oldQuestions,
+        });
+      }
+    } catch (error) {
+      console.error('Error updating lock status:', error);
+    }
+  };
+
   useLayoutEffect(() => {
     const handleResize = () => {
       setWindowSize({
@@ -51,75 +68,27 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const renderNodeButtons = (question: QuestionItem, index: number) => (
-    <div className='flex flex-col gap-2'>
-      <button
-        className={`p-1.5 rounded text-white ${
-          question.locked
-            ? 'bg-red-500 hover:bg-red-700'
-            : 'bg-blue-500 hover:bg-blue-700'
-        }`}
-        onClick={() => toggleLock(index)}>
-        {question.locked ? (
-          <LockOpenIcon fontSize='small' />
-        ) : (
-          <LockIcon fontSize='small' />
-        )}
-      </button>
-      {!question.locked && (
-        <>
-          <button
-            title='Edit question'
-            className='bg-green-500 hover:bg-green-700 text-white p-1.5 rounded'
-            onClick={() => handleEdit(question)}>
-            <EditIcon fontSize='small' />
-          </button>
-          <button
-            title='Move question up'
-            className='bg-gray-500 hover:bg-gray-700 text-white p-1.5 rounded'
-            onClick={() => moveQuestion(index, 'up')}>
-            <ArrowUpwardIcon fontSize='small' />
-          </button>
-          <button
-            title='Move question down'
-            className='bg-gray-500 hover:bg-gray-700 text-white p-1.5 rounded'
-            onClick={() => moveQuestion(index, 'down')}>
-            <ArrowDownwardIcon fontSize='small' />
-          </button>
-        </>
-      )}
-    </div>
-  );
-
-  const nodeContent = (question: QuestionItem, index: number) => ({
+  const createNode = (question: QuestionItem, index: number): Node => ({
     id: question.id,
-    position: {x: 100, y: index * 250},
     data: {
       label: (
-        <div className='p-4 border border-black rounded-xl flex items-center gap-4 min-w-[200px] bg-white'>
-          <div className='flex-grow'>
-            <div className='font-bold text-lg'>{question.id}</div>
-            <div className='text-gray-700 mt-2'>
-              {question.question[language]}
-            </div>
-            <div className='text-sm text-gray-500 mt-1'>
-              {question.answerType}
-            </div>
-          </div>
-          <div className='flex flex-col gap-2 ml-4'>
-            {renderNodeButtons(question, index)}
-          </div>
-        </div>
+        <NodeContent
+          question={question}
+          index={index}
+          language={language}
+          handleEdit={handleEdit}
+          moveQuestion={moveQuestion}
+          toggleLock={toggleLock}
+        />
       ),
     },
-    type: 'default',
+
+    position: {x: 0, y: index * 250},
   });
 
-  const initialNodes = questions.map((question, index) =>
-    nodeContent(question, index),
-  );
+  const initialNodes: Node[] = questions.map(createNode);
 
-  const initialEdges = questions
+  const initialEdges: Edge[] = questions
     .map((question, index) => ({
       id: `e${index}`,
       source: question.id,
@@ -144,30 +113,8 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
     [setEdges],
   );
 
-  const toggleLock = async (index: number) => {
-    const question = questions[index];
-    const newLockedStatus = !question.locked;
-
-    try {
-      const questionRef = doc(db, 'questions', 'questions');
-      const questionSnapshot = await getDoc(questionRef);
-
-      if (questionSnapshot.exists()) {
-        const oldQuestions = questionSnapshot.data().questions;
-        oldQuestions[index].locked = newLockedStatus;
-        await updateDoc(questionRef, {
-          questions: oldQuestions,
-        });
-      }
-    } catch (error) {
-      console.error('Error updating lock status:', error);
-    }
-  };
-
   useEffect(() => {
-    const newNodes = questions.map((question, index) =>
-      nodeContent(question, index),
-    );
+    const newNodes = questions.map(createNode);
 
     const newEdges = questions
       .map((question, index) => ({
@@ -194,7 +141,7 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         fitView
-        fitViewOptions={{padding: 0.2}}>
+        fitViewOptions={{padding: 0.6}}>
         <Background />
         <Controls />
       </ReactFlow>
