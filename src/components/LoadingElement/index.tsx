@@ -1,21 +1,23 @@
-import React from 'react';
-import './LoadingElement.css'; // Assuming you have a CSS file for styles
+import React, {forwardRef} from 'react';
+import './LoadingElement.css';
 
-const LoadingElement = () => {
+const LoadingElement = forwardRef<HTMLDivElement, {}>((props, ref) => {
   return (
-    <div className="container ">
-      <div className="cloud front">
-        <span className="left-front"></span>
-        <span className="right-front"></span>
+    <div className='container' ref={ref}>
+      <div className='cloud front'>
+        <span className='left-front'></span>
+        <span className='right-front'></span>
       </div>
-      <span className="sun sunshine"></span>
-      <span className="sun"></span>
-      <div className="cloud back">
-        <span className="left-back"></span>
-        <span className="right-back"></span>
+      <span className='sun sunshine'></span>
+      <span className='sun'></span>
+      <div className='cloud back'>
+        <span className='left-back'></span>
+        <span className='right-back'></span>
       </div>
     </div>
   );
-};
+});
+
+LoadingElement.displayName = 'LoadingElement';
 
 export default LoadingElement;

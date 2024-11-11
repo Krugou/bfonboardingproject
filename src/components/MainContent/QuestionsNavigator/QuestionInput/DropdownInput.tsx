@@ -1,34 +1,63 @@
-import { QuestionItem } from '@/app/types';
-import React from 'react';
-import Select from 'react-select';
+import {QuestionItem} from '@/app/types';
+import React, {useEffect, useState} from 'react';
+import Select, {MultiValue, SingleValue} from 'react-select';
+import {useUserContext} from '@/context/UserContext';
 
 interface DropdownInputProps {
   question: QuestionItem;
-  language: string;
-  handleDropdownChange: (selectedOption: any) => void;
+  language: 'en' | 'fi';
 }
 
-const DropdownInput: React.FC<DropdownInputProps> = ({
-  question,
-  language,
-  handleDropdownChange,
-}) => {
-  const answerOptions = question.answerOptions?.[language] ?? '';
+const DropdownInput: React.FC<DropdownInputProps> = ({question, language}) => {
+  const {saveDropdownSelection, userInfo} = useUserContext();
+  const [selectedOptions, setSelectedOptions] = useState<
+    MultiValue<{value: string; label: string}>
+  >([]);
 
-  if (!answerOptions) {
-    return null;
+  useEffect(() => {
+    if (
+      userInfo &&
+      userInfo.questionAnswers &&
+      userInfo.questionAnswers[question.id]
+    ) {
+      const userAnswers = userInfo.questionAnswers[question.id];
+      const initialSelectedOptions = userAnswers.map((answer: string) => ({
+        value: answer,
+        label: answer,
+      }));
+      setSelectedOptions(initialSelectedOptions);
+    }
+  }, [userInfo, question.id]);
+
+  const answerOptions = question.answerOptions
+    ?.map((option) => option.text[language])
+    .filter(Boolean);
+
+  if (!answerOptions || answerOptions.length === 0) {
+    return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
   }
 
-  const options = answerOptions
-    .split('#')
-    .map((option) => ({ value: option.trim(), label: option.trim() }));
+  const options = answerOptions.map((option) => ({
+    value: option.trim(),
+    label: option.trim(),
+  }));
+
+  const handleChange = (
+    selectedOptions: MultiValue<{value: string; label: string}>,
+  ) => {
+    setSelectedOptions(selectedOptions);
+    const selectedValues = selectedOptions.map((option) => option.value);
+    saveDropdownSelection(question.id, selectedValues);
+  };
 
   return (
-    <div className="p-2 ml-4 w-full">
+    <div className='p-2 ml-4 w-full'>
       <Select
         options={options}
-        onChange={handleDropdownChange}
-        classNamePrefix="react-select"
+        value={selectedOptions}
+        onChange={handleChange}
+        classNamePrefix='react-select'
+        isMulti
       />
     </div>
   );

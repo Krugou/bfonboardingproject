@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 
 interface TextInputProps {
   question: QuestionItem;
-  language: string;
+  language: 'en' | 'fi';
   answers: {[key: string]: any};
   // eslint-disable-next-line no-unused-vars
   setAnswer: (questionId: string, answer: any) => void;
@@ -71,7 +71,7 @@ const TextInput: React.FC<TextInputProps> = ({
         className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
         placeholder={question.syntaxPlaceholder[language]}
         maxLength={question.maxLength}
-        aria-label={question.question[language]}
+        aria-label={question.question[language as 'en' | 'fi']}
         aria-invalid={error}
         aria-describedby={
           error ? 'error-message' : found ? 'success-message' : ''

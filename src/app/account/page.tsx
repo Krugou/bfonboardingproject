@@ -1,7 +1,8 @@
 'use client';
 import AccountInfo from '@/components/AccountInfo';
+import Header from '@/components/Header';
 import React from 'react';
-import { Bounce, ToastContainer } from 'react-toastify';
+import {Bounce, ToastContainer} from 'react-toastify';
 const AccountPage: React.FC = () => {
   return (
     <>
@@ -18,6 +19,7 @@ const AccountPage: React.FC = () => {
         theme={'light'}
         transition={Bounce}
       />
+      <Header />
       <AccountInfo />
     </>
   );
