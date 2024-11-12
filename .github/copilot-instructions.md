@@ -8,7 +8,10 @@
 - Use proper TypeScript types and interfaces
 - Include memory leak prevention
 - Add proper cleanup and disposal of resources
-
+- Prefer arrow functions over function expressions
+- Use async/await over Promises
+- Include proper error handling for async operations
+- Use functional programming patterns where appropriate
 2. Architecture & Design
 
 - Follow SOLID principles
