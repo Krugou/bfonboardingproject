@@ -63,7 +63,7 @@ const Header: React.FC = () => {
       : 'Admin panel';
 
   return (
-    <header className='bg-bf-brand-primary dark:bg-gray-800 flex justify-between h-20 w-full'>
+    <header className='bg-bf-brand-primary dark:bg-bf-brand-primary-dark flex justify-between h-20 w-full'>
       <div>
         <button
           className='w-10 h-10 mx-2 text-white font-bold dark:text-gray-200'
