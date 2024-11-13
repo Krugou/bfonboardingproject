@@ -520,7 +520,7 @@ const questions: QuestionItem[] = [
     specialCondition: {
       numberOfEmployees: {max: 250},
       questionId: 'k2.7',
-      allowedAnswers: ['yes'],
+      allowedAnswers: ['yes', 'kyllä'],
     },
     errorAnswer: {
       en: '',

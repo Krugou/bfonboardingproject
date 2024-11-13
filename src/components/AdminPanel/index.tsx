@@ -17,16 +17,11 @@ import InsertMockData from '@/components/InsertMockData';
 import QuestionForm from './QuestionForm';
 import QuestionsFlow from './QuestionsFlow';
 const AdminPanel: React.FC = () => {
-  const {questions, setQuestions} = useUserContext();
-  const [language, setLanguage] = useState<'en' | 'fi'>('en');
+  const {questions, setQuestions, userInfo, language} = useUserContext();
   const [currentQuestion, setCurrentQuestion] = useState<QuestionItem | null>(
     null,
   );
   const [isEditing, setIsEditing] = useState(false);
-
-  const toggleLanguage = () => {
-    setLanguage((prevLanguage) => (prevLanguage === 'en' ? 'fi' : 'en'));
-  };
 
   const handleAdd = () => {
     const newQuestion: QuestionItem = {
@@ -169,14 +164,16 @@ const AdminPanel: React.FC = () => {
             <button
               className='bg-green-500 hover:bg-green-700 text-white font-bold p-4 rounded '
               onClick={handleAdd}>
-              Add Question
+              {language === 'en' ? 'Add Question' : 'Lisää kysymys'}
             </button>
             <button
               className='bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded '
               onClick={handleRestore}>
-              Restore from Backup
+              {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
             </button>
-            {process.env.NODE_ENV === 'development' && <InsertMockData />}
+            {userInfo &&
+              process.env.NODE_ENV === 'development' &&
+              userInfo.email === 'krugou@gmail.com' && <InsertMockData />}
           </div>
         </>
       )}

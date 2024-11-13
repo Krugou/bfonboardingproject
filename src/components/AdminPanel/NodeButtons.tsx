@@ -10,6 +10,7 @@ interface NodeButtonsProps {
   index: number;
   handleEdit: (question: QuestionItem) => void;
   moveQuestion: (index: number, direction: 'up' | 'down') => void;
+  language: 'en' | 'fi' | string;
 }
 
 const NodeButtons: React.FC<NodeButtonsProps> = ({
@@ -17,24 +18,27 @@ const NodeButtons: React.FC<NodeButtonsProps> = ({
   index,
   handleEdit,
   moveQuestion,
+  language,
 }) => (
   <div className='flex justify-center items-center gap-2'>
     {!question.locked && (
       <>
         <button
-          title='Edit question'
+          title={language === 'en' ? 'Edit question' : 'Muokkaa kysymystä'}
           className='bg-green-500 hover:bg-green-700 text-white p-1.5 rounded'
           onClick={() => handleEdit(question)}>
           <EditIcon fontSize='small' />
         </button>
         <button
-          title='Move question up'
+          title={language === 'en' ? 'Move question up' : 'Siirrä kysymys ylös'}
           className='bg-gray-500 hover:bg-gray-700 text-white p-1.5 rounded'
           onClick={() => moveQuestion(index, 'up')}>
           <ArrowUpwardIcon fontSize='small' />
         </button>
         <button
-          title='Move question down'
+          title={
+            language === 'en' ? 'Move question down' : 'Siirrä kysymys alas'
+          }
           className='bg-gray-500 hover:bg-gray-700 text-white p-1.5 rounded'
           onClick={() => moveQuestion(index, 'down')}>
           <ArrowDownwardIcon fontSize='small' />

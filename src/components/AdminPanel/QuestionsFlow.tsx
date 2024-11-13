@@ -18,7 +18,7 @@ import NodeContent from './NodeContent';
 
 interface QuestionsFlowProps {
   questions: QuestionItem[];
-  language: 'en' | 'fi';
+  language: 'en' | 'fi' | string;
   handleEdit: (question: QuestionItem) => void;
   moveQuestion: (index: number, direction: 'up' | 'down') => void;
 }
