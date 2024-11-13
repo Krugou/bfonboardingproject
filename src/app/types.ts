@@ -11,8 +11,8 @@ export interface AnswerOption {
   };
 }
 export interface SpecialCondition {
-  allowedAnswers?: [0, 1];
-  questionId?: 'k1.2';
+  allowedAnswers?: string[] | number[];
+  questionId?: string;
   numberOfEmployees?: {
     min?: number;
     max?: number;

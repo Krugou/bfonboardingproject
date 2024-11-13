@@ -1,10 +1,11 @@
 import {QuestionItem} from '@/app/types';
-import countries from './countries';
+import {countries} from './countries';
 import {services} from './services';
 import {currentTopics} from './currentTopics';
 import {industries} from './industries';
 import {stageOfCompany} from './stageOfCompany';
 import {revenueExportGrowth} from './renevueExportGrowth';
+import {companyTypes} from './companyTypes';
 
 const questions: QuestionItem[] = [
   {
@@ -414,10 +415,10 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.6',
     question: {
-      en: ' janne "keksii" tähän lisä Large kysymyksen 1',
-      fi: 'Janne "keksii" tähän lisä Large kysymyksen 1',
+      en: 'Has the organization developed a product development and innovation strategy?',
+      fi: 'Onko organisaatiossa laadittu tuotekehitys ja innovaatiostrategia?',
     },
-    conditions: ['large', 'skip'],
+    conditions: ['large'],
     tooltip: {
       en: '',
       fi: '',
@@ -426,7 +427,27 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'singleChoice',
+    answerOptions: [
+      {
+        key: 'yes',
+        score: 1,
+        weight: 1,
+        text: {
+          en: 'Yes',
+          fi: 'Kyllä',
+        },
+      },
+      {
+        key: 'no',
+        score: 0,
+        weight: 1,
+        text: {
+          en: 'No',
+          fi: 'Ei',
+        },
+      },
+    ],
     specialCondition: {
       numberOfEmployees: {max: 250},
     },
@@ -438,10 +459,10 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.7',
     question: {
-      en: ' janne "keksii" tähän lisä Large kysymyksen 2 ',
-      fi: 'Janne "keksii" tähän lisä Large kysymyksen 2',
+      en: 'Are you actively seeking partners to advance your innovation strategy?',
+      fi: 'Oletteko aktiivisesti hakemassa kumppaneita oman innovaatiostrategian edistämiseksi?',
     },
-    conditions: ['large', 'skip'],
+    conditions: ['large'],
     tooltip: {
       en: '',
       fi: '',
@@ -450,7 +471,27 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'singleChoice',
+    answerOptions: [
+      {
+        key: 'yes',
+        score: 1,
+        weight: 1,
+        text: {
+          en: 'Yes',
+          fi: 'Kyllä',
+        },
+      },
+      {
+        key: 'no',
+        score: 0,
+        weight: 1,
+        text: {
+          en: 'No',
+          fi: 'Ei',
+        },
+      },
+    ],
     specialCondition: {
       numberOfEmployees: {max: 250},
     },
@@ -462,10 +503,10 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.8',
     question: {
-      en: ' janne "keksii" tähän lisä Large kysymyksen 3 ',
-      fi: 'Janne "keksii" tähän lisä Large kysymyksen 3',
+      en: ' janne "keksii" tähän lisä Large kysymyksen 1 ',
+      fi: 'Janne "keksii" tähän lisä Large kysymyksen 1',
     },
-    conditions: ['large', 'skip'],
+    conditions: ['large'],
     tooltip: {
       en: '',
       fi: '',
@@ -474,9 +515,12 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'multiChoice',
+    answerOptions: companyTypes,
     specialCondition: {
       numberOfEmployees: {max: 250},
+      questionId: 'k2.7',
+      allowedAnswers: ['yes'],
     },
     errorAnswer: {
       en: '',
@@ -486,10 +530,10 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.9',
     question: {
-      en: ' janne "keksii" tähän lisä As Oy kysymyksen 1',
-      fi: 'Janne "keksii" tähän lisä As Oy kysymyksen 1',
+      en: 'Has the housing company prepared an energy saving survey?',
+      fi: 'Onko taloyhtiössänne laadittu energiasäästökartoitus?',
     },
-    conditions: ['housing', 'skip'],
+    conditions: ['housing'],
     tooltip: {
       en: '',
       fi: '',
@@ -510,10 +554,10 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.91',
     question: {
-      en: ' janne "keksii" tähän lisä As Oy kysymyksen 2',
-      fi: 'Janne "keksii" tähän lisä As Oy kysymyksen 2',
+      en: 'Has the housing company received or have you submitted an energy grant application?',
+      fi: 'Onko taloyhtiöllenne myönnetty tai oletteko jättäneet energia-avustus hakemuksen?',
     },
-    conditions: ['housing', 'skip'],
+    conditions: ['housing'],
     tooltip: {
       en: '',
       fi: '',
