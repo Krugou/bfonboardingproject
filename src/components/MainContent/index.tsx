@@ -45,8 +45,8 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   ) {
     return (
       <div className='flex flex-col justify-center items-center h-screen'>
-        <div className='w-full  bg-bf-brand-primary  p-4 rounded-xl'>
-          <p className='text-xl font-bold text-white   mb-4'>
+        <div className='w-full bg-bf-brand-primary dark:bg-gray-800 p-4 rounded-xl'>
+          <p className='text-xl font-bold text-white mb-4'>
             {language === 'fi'
               ? 'Olet jo vastannut joihinkin kysymyksiin. Haluatko nollata kysymykset vai jatkaa?'
               : 'You have already answered some questions. Do you want to reset the questions or continue?'}
@@ -70,7 +70,7 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
 
   return (
     <div className='flex flex-col justify-center items-center w-full h-full'>
-      <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 rounded-xl m-10 p-4 max-w-screen-lg max-h-min transition-all duration-500 ease-in-out transform hover:scale-105'>
+      <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 dark:bg-gray-900 rounded-xl m-10 p-4 max-w-screen-lg max-h-min transition-all duration-500 ease-in-out transform hover:scale-105'>
         <UpperPanel handleOpenModal={handleOpenModal} />
         <QuestionDisplay />
         <QuestionsNavigator />

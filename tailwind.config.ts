@@ -1,6 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
+  darkMode: 'class', // P521a
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -82,6 +83,11 @@ const config: Config = {
         'bf-gradient-1': '#000068',
         'bf-gradient-2': '#0048ff',
         'bf-gradient-3': '#19b2ff',
+        'dark-bg': '#1a202c', // P0e4c
+        'dark-text': '#a0aec0', // P0e4c
+        'dark-primary': '#2d3748', // P0e4c
+        'dark-secondary': '#4a5568', // P0e4c
+        'dark-accent': '#718096', // P0e4c
       },
     },
   },

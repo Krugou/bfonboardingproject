@@ -9,9 +9,47 @@
   font-style: normal;
 }
 
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Dark mode styles */
+@layer base {
+  @apply dark:bg-gray-900 dark:text-white;
+}
+
+@layer components {
+  .dark .header {
+    @apply dark:bg-gray-800 dark:text-white;
+  }
+
+  .dark .main-content {
+    @apply dark:bg-gray-700 dark:text-white;
+  }
+
+  .dark .question-display {
+    @apply dark:bg-gray-600 dark:text-white;
+  }
+
+  .dark .questions-navigator {
+    @apply dark:bg-gray-500 dark:text-white;
+  }
+
+  .dark .upper-panel {
+    @apply dark:bg-gray-400 dark:text-white;
+  }
+
+  .dark .bf-stepper {
+    @apply dark:bg-gray-300 dark:text-white;
+  }
+
+  .dark .history-button {
+    @apply dark:bg-gray-200 dark:text-white;
+  }
+
+  .dark .listening-mode-toggle {
+    @apply dark:bg-gray-100 dark:text-white;
   }
 }
