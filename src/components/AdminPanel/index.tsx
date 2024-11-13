@@ -1,22 +1,20 @@
+import React, {useState} from 'react';
+import BackupModal from './BackupModal';
+import QuestionsFlow from './QuestionsFlow';
+import QuestionForm from './QuestionForm';
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
-import {db} from '@/utils/firebase';
 import {
-  addDoc,
   collection,
   doc,
   getDocs,
-  orderBy,
   query,
+  orderBy,
   setDoc,
+  addDoc,
 } from 'firebase/firestore';
-import React, {useState} from 'react';
-import {Bounce, toast} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import InsertMockData from '@/components/InsertMockData';
-import QuestionForm from './QuestionForm';
-import QuestionsFlow from './QuestionsFlow';
-import BackupModal from './BackupModal';
+import {db} from '@/utils/firebase';
+import {toast} from 'react-toastify';
 
 const AdminPanel: React.FC = () => {
   const {questions, setQuestions, userInfo, language} = useUserContext();
@@ -140,6 +138,7 @@ const AdminPanel: React.FC = () => {
         ...doc.data(),
         timestamp: doc.data().timestamp,
       }));
+      // @ts-expect-error
       setBackups(backupData);
     } catch (error) {
       toast.error('Failed to load backups');
@@ -167,27 +166,36 @@ const AdminPanel: React.FC = () => {
     setIsBackupModalOpen(true);
   };
 
+  const handleCleanOldBackups = (
+    cleanedBackups: {
+      id: string;
+      timestamp: string;
+      questions: QuestionItem[];
+    }[],
+  ) => {
+    setBackups(cleanedBackups);
+  };
+
   return (
-    <div className='m-4 p-4'>
+    <div className='m-4 bg-gradient-to-br rounded-xl from-slate-700 to-bf-brand-primary/50 p-4'>
       {!currentQuestion && (
         <>
           <div className='flex justify-center gap-4 p-4 items-center w-full'>
             <div className='flex justify-start w-full'>
-              <h1 className='text-2xl font-bold  mb-4'>Admin Panel</h1>
+              <h1 className='text-2xl font-bold text-white mb-4'>
+                Admin Panel
+              </h1>
             </div>
             <button
-              className='bg-green-500 hover:bg-green-700 text-white font-bold p-4 rounded-xl '
+              className='bg-green-500 hover:bg-green-700 text-white font-bold p-4 rounded-xl'
               onClick={handleAdd}>
               {language === 'en' ? 'Add Question' : 'Lisää kysymys'}
             </button>
             <button
-              className='bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded-xl '
+              className='bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded-xl'
               onClick={handleRestoreClick}>
               {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
             </button>
-            {/* {userInfo &&
-              process.env.NODE_ENV === 'development' &&
-              userInfo.email === 'krugou@gmail.com' && <InsertMockData />} */}
           </div>
           <QuestionsFlow
             questions={questions}
@@ -211,6 +219,7 @@ const AdminPanel: React.FC = () => {
         onClose={() => setIsBackupModalOpen(false)}
         backups={backups}
         onRestore={handleRestore}
+        onCleanOldBackups={handleCleanOldBackups}
         language={language}
       />
     </div>

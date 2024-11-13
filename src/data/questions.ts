@@ -542,7 +542,27 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'singleChoice',
+    answerOptions: [
+      {
+        key: 'yes',
+        score: 1,
+        weight: 1,
+        text: {
+          en: 'Yes',
+          fi: 'Kyllä',
+        },
+      },
+      {
+        key: 'no',
+        score: 0,
+        weight: 1,
+        text: {
+          en: 'No',
+          fi: 'Ei',
+        },
+      },
+    ],
     specialCondition: {
       companyType: 'housing',
     },
@@ -566,7 +586,27 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    answerType: 'directInput',
+    answerType: 'singleChoice',
+    answerOptions: [
+      {
+        key: 'yes',
+        score: 1,
+        weight: 1,
+        text: {
+          en: 'Yes',
+          fi: 'Kyllä',
+        },
+      },
+      {
+        key: 'no',
+        score: 0,
+        weight: 1,
+        text: {
+          en: 'No',
+          fi: 'Ei',
+        },
+      },
+    ],
     specialCondition: {
       companyType: 'housing',
     },
