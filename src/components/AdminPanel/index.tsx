@@ -16,12 +16,18 @@ import 'react-toastify/dist/ReactToastify.css';
 import InsertMockData from '@/components/InsertMockData';
 import QuestionForm from './QuestionForm';
 import QuestionsFlow from './QuestionsFlow';
+import BackupModal from './BackupModal';
+
 const AdminPanel: React.FC = () => {
   const {questions, setQuestions, userInfo, language} = useUserContext();
   const [currentQuestion, setCurrentQuestion] = useState<QuestionItem | null>(
     null,
   );
   const [isEditing, setIsEditing] = useState(false);
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState(false);
+  const [backups, setBackups] = useState<
+    {id: string; timestamp: string; questions: QuestionItem[]}[]
+  >([]);
 
   const handleAdd = () => {
     const newQuestion: QuestionItem = {
@@ -123,58 +129,72 @@ const AdminPanel: React.FC = () => {
     }
     setQuestions(updatedQuestions);
   };
-  const handleRestore = async () => {
-    if (
-      !window.confirm(
-        'Are you sure you want to restore the questions from the latest backup?',
-      )
-    ) {
-      return;
-    }
+
+  const loadBackups = async () => {
     const backupRef = collection(db, 'questionsBackup');
     const q = query(backupRef, orderBy('timestamp', 'desc'));
     try {
       const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        const latestBackup = querySnapshot.docs[0].data();
-        setQuestions(latestBackup.questions);
-        const docRef = doc(db, 'questions', 'questions');
-        await setDoc(docRef, {questions: latestBackup.questions});
-        toast.success('Questions restored from backup');
-      } else {
-        toast.error('No backup found');
-      }
+      const backupData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        timestamp: doc.data().timestamp,
+      }));
+      setBackups(backupData);
     } catch (error) {
-      toast.error('Failed to restore questions from backup');
-      console.error('Error restoring questions from backup: ', error);
+      toast.error('Failed to load backups');
+      console.error('Error loading backups:', error);
     }
   };
+
+  const handleRestore = async (backup: {
+    questions: QuestionItem[];
+    timestamp: string;
+  }) => {
+    try {
+      const docRef = doc(db, 'questions', 'questions');
+      await setDoc(docRef, {questions: backup.questions});
+      setQuestions(backup.questions);
+      toast.success('Questions restored from backup');
+    } catch (error) {
+      toast.error('Failed to restore questions from backup');
+      console.error('Error restoring questions from backup:', error);
+    }
+  };
+
+  const handleRestoreClick = () => {
+    loadBackups();
+    setIsBackupModalOpen(true);
+  };
+
   return (
-    <div className='p-4'>
-      <h1 className='text-2xl font-bold text center mb-4'>Admin Panel</h1>
+    <div className='m-4 p-4'>
       {!currentQuestion && (
         <>
+          <div className='flex justify-center gap-4 p-4 items-center w-full'>
+            <div className='flex justify-start w-full'>
+              <h1 className='text-2xl font-bold  mb-4'>Admin Panel</h1>
+            </div>
+            <button
+              className='bg-green-500 hover:bg-green-700 text-white font-bold p-4 rounded-xl '
+              onClick={handleAdd}>
+              {language === 'en' ? 'Add Question' : 'Lisää kysymys'}
+            </button>
+            <button
+              className='bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded-xl '
+              onClick={handleRestoreClick}>
+              {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
+            </button>
+            {/* {userInfo &&
+              process.env.NODE_ENV === 'development' &&
+              userInfo.email === 'krugou@gmail.com' && <InsertMockData />} */}
+          </div>
           <QuestionsFlow
             questions={questions}
             language={language}
             handleEdit={handleEdit}
             moveQuestion={moveQuestion}
           />
-          <div className='flex justify-center gap-4 m-2 items-center'>
-            <button
-              className='bg-green-500 hover:bg-green-700 text-white font-bold p-4 rounded '
-              onClick={handleAdd}>
-              {language === 'en' ? 'Add Question' : 'Lisää kysymys'}
-            </button>
-            <button
-              className='bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded '
-              onClick={handleRestore}>
-              {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
-            </button>
-            {userInfo &&
-              process.env.NODE_ENV === 'development' &&
-              userInfo.email === 'krugou@gmail.com' && <InsertMockData />}
-          </div>
         </>
       )}
       {currentQuestion && (
@@ -186,6 +206,13 @@ const AdminPanel: React.FC = () => {
           isEditing={isEditing}
         />
       )}
+      <BackupModal
+        isOpen={isBackupModalOpen}
+        onClose={() => setIsBackupModalOpen(false)}
+        backups={backups}
+        onRestore={handleRestore}
+        language={language}
+      />
     </div>
   );
 };
