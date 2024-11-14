@@ -22,7 +22,7 @@ interface UserContextType {
   currentQuestion: number;
   setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
   setAnswer: (questionId: string, answer: any) => void;
-  language: string;
+  language: 'en' | 'fi' | string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
   isDarkmode: boolean;
   setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;

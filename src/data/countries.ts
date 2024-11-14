@@ -1,6 +1,6 @@
 import {AnswerOption} from '@/app/types';
 
-const countries: AnswerOption[] = [
+export const countries: AnswerOption[] = [
   {
     key: 'afghanistan',
     score: 1,
@@ -976,4 +976,4 @@ const countries: AnswerOption[] = [
   },
 ];
 
-export default countries;
+

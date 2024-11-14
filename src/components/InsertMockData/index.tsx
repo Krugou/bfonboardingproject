@@ -40,7 +40,7 @@ const InsertMockData: React.FC = () => {
 
   return (
     <button
-      className='bg-blue-500 hover:bg-blue-700  text-white font-bold p-4 rounded'
+      className='bg-blue-500 hover:bg-blue-700  text-white font-bold p-4 rounded-xl'
       onClick={insertData}>
       Insert questions Data
     </button>

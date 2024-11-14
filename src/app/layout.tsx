@@ -29,10 +29,10 @@ export const metadata: Metadata = {
 };
 // console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => {
-
+  const prefersDarkMode = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   return (
-    <html lang='en'>
+    <html lang='en' className={prefersDarkMode ? 'dark' : ''}>
       <body className={finlandica.className}>
         <UserProvider>
           <GoogleStartup />

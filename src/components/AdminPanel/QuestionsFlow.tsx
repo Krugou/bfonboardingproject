@@ -18,7 +18,7 @@ import NodeContent from './NodeContent';
 
 interface QuestionsFlowProps {
   questions: QuestionItem[];
-  language: 'en' | 'fi';
+  language: 'en' | 'fi' | string;
   handleEdit: (question: QuestionItem) => void;
   moveQuestion: (index: number, direction: 'up' | 'down') => void;
 }
@@ -132,7 +132,7 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
 
   return (
     <div
-      style={{width: '100%', height: '800px'}}
+      style={{width: '98%', height: '800px'}}
       className='bg-black/20 rounded-xl m-2 p-4'>
       <ReactFlow
         nodes={nodes}

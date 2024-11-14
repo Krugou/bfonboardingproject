@@ -2,16 +2,49 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'Finlandica';
-  src: url('/fonts/Finlandica/Finlandica-VariableFont_wght.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+/* Dark mode styles */
+@layer base {
+  body {
+    @apply dark:bg-gray-900 dark:text-white;
+  }
 }
 
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+@layer components {
+  .header {
+    @apply dark:bg-gray-800 dark:text-white;
   }
+
+  .main-content {
+    @apply dark:bg-gray-700 dark:text-white;
+  }
+
+  .question-display {
+    @apply dark:bg-gray-600 dark:text-white;
+  }
+
+  .questions-navigator {
+    @apply dark:bg-gray-500 dark:text-white;
+  }
+
+  .upper-panel {
+    @apply dark:bg-gray-400 dark:text-white;
+  }
+
+  .bf-stepper {
+    @apply dark:bg-gray-300 dark:text-white;
+  }
+
+  .history-button {
+    @apply dark:bg-gray-200 dark:text-white;
+  }
+
+  .listening-mode-toggle {
+    @apply dark:bg-gray-100 dark:text-white;
+  }
+}
+
+@font-face {
+  font-family: 'Finlandica';
+  src: url('/fonts/Finlandica/Finlandica-VariableFont_wght.ttf')
+    format('truetype');
 }

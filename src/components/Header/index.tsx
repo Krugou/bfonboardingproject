@@ -63,10 +63,10 @@ const Header: React.FC = () => {
       : 'Admin panel';
 
   return (
-    <header className='bg-bf-brand-primary flex justify-between h-20 w-full'>
+    <header className='bg-bf-brand-primary dark:bg-bf-brand-primary-dark flex justify-between h-20 w-full'>
       <div>
         <button
-          className='w-10 h-10 mx-2 text-white font-bold'
+          className='w-10 h-10 mx-2 text-white font-bold dark:text-gray-200'
           onClick={() => router.push('/')}
           aria-label={
             language === 'fi' ? 'Minun Business Finland' : 'My Business Finland'
@@ -76,11 +76,11 @@ const Header: React.FC = () => {
       </div>
       {process.env.NODE_ENV === 'development' && (
         <div className='flex w-full justify-center items-center'>
-          <p className='mx-2 text-white font-bold'>
+          <p className='mx-2 text-white font-bold dark:text-gray-200'>
             {language === 'fi' ? 'Paikallinen' : 'Local'}
           </p>
           <p
-            className='mx-2 text-white font-bold'
+            className='mx-2 text-white font-bold dark:text-gray-200'
             title={questions[currentQuestion - 1]?.question[language]}>
             {questions[currentQuestion - 1]?.id}
           </p>
@@ -90,7 +90,7 @@ const Header: React.FC = () => {
         {isAdmin && (
           <button
             onClick={handleAdminClick}
-            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded'
+            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded dark:bg-gray-700 dark:text-gray-200'
             aria-label={buttonText}
             role='button'>
             {buttonText}
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
 
         {userInfo ? (
           <button
-            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
+            className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl dark:bg-gray-700 dark:text-gray-200'
             onClick={() => {
               router.push('/account');
             }}
@@ -110,7 +110,7 @@ const Header: React.FC = () => {
         ) : (
           <>
             <button
-              className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl'
+              className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl dark:bg-gray-700 dark:text-gray-200'
               onClick={() => {
                 setIsLoginVisible(true);
                 logEvent('login_button_click');

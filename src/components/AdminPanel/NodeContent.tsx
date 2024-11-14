@@ -6,7 +6,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 interface NodeContentProps {
   question: QuestionItem;
   index: number;
-  language: 'en' | 'fi';
+  language: 'en' | 'fi' | string;
   handleEdit: (question: QuestionItem) => void;
   moveQuestion: (index: number, direction: 'up' | 'down') => void;
   toggleLock: (index: number) => void;
@@ -40,18 +40,25 @@ const NodeContent: React.FC<NodeContentProps> = ({
         </button>
       </div>
       <div className='flex flex-col gap-2'>
-        <p className='font-bold'>Question:</p>
-
+        <p className='font-bold'>
+          {language === 'en' ? 'Question:' : 'Kysymys:'}
+        </p>
+        {/* @ts-ignore */}
         <p>{question.question[language]}</p>
+        {/* @ts-ignore */}
         {question.tooltip[language] && (
           <>
-            <p className='font-bold'>Tooltip: </p>
+            <p className='font-bold'>
+              {language === 'en' ? 'Tooltip:' : 'Vihje:'}
+            </p>
+            {/* @ts-ignore */}
             <p>{question.tooltip[language]}</p>
           </>
         )}
 
         <NodeButtons
           question={question}
+          language={language}
           index={index}
           handleEdit={handleEdit}
           moveQuestion={moveQuestion}

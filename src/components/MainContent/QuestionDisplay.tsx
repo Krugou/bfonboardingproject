@@ -43,12 +43,12 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
   }
 
   return (
-    <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10'>
+    <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10 dark:bg-gray-700 dark:text-white'>
       {currentStep <= questions.length ? (
-        <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6'>
+        <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6 dark:bg-gray-600 dark:text-white'>
           <div className='flex justify-end w-full items-center rounded-xl'>
             <button
-              className='flex justify-center items-center border text-blue-500 hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6'
+              className='flex justify-center items-center border text-blue-500 hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6 dark:text-blue-300 dark:border-blue-300'
               onClick={() => setShowTooltip(!showTooltip)}
               aria-label={language === 'fi' ? 'Näytä tooltip' : 'Show tooltip'}
               role='button'>
@@ -67,7 +67,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
                   toast,
                 );
               }}
-              className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all'
+              className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all dark:text-blue-300'
               aria-label={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
@@ -77,7 +77,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
           </div>
           <div className='group'>
             <h2
-              className='text-center w-full h-full font-bold text-lg sm:text-2xl md:text-3xl lg:text-4xl text-bf-brand-primary overflow-wrap break-word'
+              className='text-center w-full h-full font-bold text-lg sm:text-2xl md:text-3xl lg:text-4xl text-bf-brand-primary overflow-wrap break-word dark:text-white'
               title={questions[currentStep - 1].tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
@@ -86,8 +86,8 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
             {questions[currentStep - 1].id === 'k2' &&
               companyInfo &&
               currentStep === 2 && (
-                <div className='mt-4 font-bold text-bf-brand-primary'>
-                  <h3 className='text-xl font-bold text-bf-brand-primary'>
+                <div className='mt-4 font-bold text-bf-brand-primary dark:text-white'>
+                  <h3 className='text-xl font-bold text-bf-brand-primary dark:text-white'>
                     {language === 'fi'
                       ? 'Yrityksen tiedot:'
                       : 'Company Information:'}
@@ -145,7 +145,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
                 showTooltip
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100'
-              }`}
+              } dark:text-white`}
               tabIndex={0}
               aria-live='polite'>
               {questions[currentStep - 1].tooltip[language]}
@@ -153,7 +153,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
           </div>
         </div>
       ) : (
-        <h2 className='text-center text-lg sm:text-2xl md:text-3xl lg:text-4xl'>
+        <h2 className='text-center text-lg sm:text-2xl md:text-3xl lg:text-4xl dark:text-white'>
           {language === 'fi'
             ? 'Kiitos vastauksistasi!'
             : 'Thank you for your answers!'}

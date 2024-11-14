@@ -43,9 +43,9 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
   }, [setCurrentStep, setCurrentQuestion]);
 
   return (
-    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
+    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
+        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
         onClick={() => {
           setCurrentStep(currentStep - 1);
           setCurrentQuestion(currentStep - 1);
@@ -61,7 +61,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
             <QuestionInput question={questions[currentStep - 1]} />
           </div>
           <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg'
+            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
             onClick={() => {
               setCurrentStep(currentStep + 1);
               setCurrentQuestion(currentStep + 1);
@@ -74,7 +74,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
         </>
       ) : (
         <button
-          className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg'
+          className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
           onClick={handleReset}
           aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
           role='button'>

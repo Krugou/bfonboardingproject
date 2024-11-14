@@ -22,7 +22,7 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({
 
   return (
     <div
-      className={`flex gap-1 justify-center items-center w-1/3  ${
+      className={`flex gap-1 justify-center items-center w-1/3 dark:bg-gray-800 dark:text-white ${
         listeningMode ? '' : ''
       }`}
       title={titleText}>
@@ -43,12 +43,12 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({
       </label>
       {listeningMode ? (
         <MicIcon
-          className='text-green-600 cursor-pointer'
+          className='text-green-600 dark:text-green-400 cursor-pointer'
           onClick={() => setListeningMode(!listeningMode)}
         />
       ) : (
         <MicOffIcon
-          className='text-gray-600 cursor-pointer'
+          className='text-gray-600 dark:text-gray-400 cursor-pointer'
           onClick={() => setListeningMode(!listeningMode)}
         />
       )}
