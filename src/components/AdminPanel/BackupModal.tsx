@@ -2,6 +2,7 @@ import React, {useCallback} from 'react';
 import {QuestionItem} from '@/app/types';
 import {deleteDoc, doc} from 'firebase/firestore';
 import {db} from '@/utils/firebase';
+
 interface BackupModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -25,8 +26,6 @@ const BackupModal: React.FC<BackupModalProps> = ({
   onCleanOldBackups,
   language,
 }) => {
-  if (!isOpen) return null;
-
   const handleCleanOldBackups = useCallback(async () => {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
@@ -50,6 +49,8 @@ const BackupModal: React.FC<BackupModalProps> = ({
       console.error('Error deleting old backups:', error);
     }
   }, [backups, onCleanOldBackups]);
+
+  if (!isOpen) return null;
 
   return (
     <div className='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50'>
