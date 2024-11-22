@@ -48,7 +48,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
         <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6 dark:bg-gray-600 dark:text-white'>
           <div className='flex justify-end w-full items-center rounded-xl'>
             <button
-              className='flex justify-center items-center border text-text-bf-brand-primary hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6 '
+              className='flex justify-center items-center border text-bf-brand-primary  border-blue-500 m-1 p-2 rounded-xl h-6 w-6 '
               onClick={() => setShowTooltip(!showTooltip)}
               aria-label={language === 'fi' ? 'Näytä tooltip' : 'Show tooltip'}
               role='button'>
