@@ -14,7 +14,7 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({onClick}) => {
   return (
     <div className='flex justify-end h-full dark:bg-gray-200 dark:text-white'>
       <button
-        className={`primary-button ${
+        className={`primary-button uppercase ${
           isDisabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={onClick}
