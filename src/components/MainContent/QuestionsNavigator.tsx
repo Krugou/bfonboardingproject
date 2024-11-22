@@ -12,11 +12,27 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     currentStep,
     listeningMode,
     questions,
+    userInfo,
   } = useUserContext();
 
   const handleReset = () => {
     setCurrentStep(1);
     setCurrentQuestion(1);
+  };
+
+  const isNextButtonDisabled = () => {
+    if (currentStep === questions.length) return true;
+    if (!userInfo?.questionAnswers) return true;
+
+    const currentQuestion = questions[currentStep - 1];
+    const hasAnswer = !!userInfo.questionAnswers[currentQuestion.id];
+
+    // Special validation for first question (k1)
+    if (currentStep === 1) {
+      return !hasAnswer || !userInfo.questionAnswers['k1'];
+    }
+
+    return !hasAnswer;
   };
 
   useEffect(() => {
@@ -59,12 +75,14 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
             <QuestionInput question={questions[currentStep - 1]} />
           </div>
           <button
-            className='primary-button w-auto uppercase'
+            className={`primary-button w-auto uppercase ${
+              isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             onClick={() => {
               setCurrentStep(currentStep + 1);
               setCurrentQuestion(currentStep + 1);
             }}
-            disabled={currentStep === questions.length}
+            disabled={isNextButtonDisabled()}
             aria-label={language === 'fi' ? 'Seuraava' : 'Next'}
             role='button'>
             {language === 'fi' ? 'SEURAAVA' : 'NEXT'}
