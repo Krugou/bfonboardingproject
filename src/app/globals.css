@@ -43,7 +43,7 @@
   }
 
   .primary-badge-button {
-    @apply flex flex-row justify-center items-center p-1.5 px-5 gap-2.5 rounded-full;
+    @apply flex flex-row justify-center cursor-not-allowed items-center p-1.5 px-5 gap-2.5 rounded-full;
   }
 
   .primary-badge-button-selected {
@@ -55,11 +55,11 @@
   }
 
   .primary-button {
-    @apply flex flex-row font-semibold items-start p-2.5 px-7 w-full h-[2,6rem] text-bf-white bg-bf-brand-primary rounded-full flex-none flex-grow-0
+    @apply flex flex-row font-semibold cursor-not-allowed items-start p-2.5 px-7 w-full h-[2,6rem] text-bf-white bg-bf-brand-primary rounded-full flex-none flex-grow-0
   }
 
   .secondary-button {
-    @apply box-border flex font-semibold text-bf-brand-primary flex-row justify-center items-center p-2.5 px-7 h-[2,8rem] bg-bf-white border border-bf-brand-primary rounded-full flex-none flex-grow-0
+    @apply box-border flex font-semibold cursor-not-allowed text-bf-brand-primary flex-row justify-center items-center p-2.5 px-7 h-[2,8rem] bg-bf-white border border-bf-brand-primary rounded-full flex-none flex-grow-0
   }
 }
 
