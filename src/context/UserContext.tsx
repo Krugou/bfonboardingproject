@@ -37,8 +37,6 @@ interface UserContextType {
       preferredLanguage?: string;
     } | null>
   >;
-  currentQuestion: number;
-  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
   setAnswer: (questionId: string, answer: any) => void;
   language: 'en' | 'fi' | string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
@@ -131,6 +129,12 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           questionAnswers: userInfo.questionAnswers,
           lastLogin: userInfo.lastLogin,
           createdAt: userInfo.createdAt,
+          browserInfo: userInfo.browserInfo,
+          lastName: userInfo.lastName,
+          firstName: userInfo.firstName,
+          totalScore: userInfo.totalScore,
+          businessId: userInfo.businessId,
+          preferredLanguage: userInfo.preferredLanguage,
         });
       }
     }
@@ -165,14 +169,31 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   }, []);
 
   const setAnswer = async (questionId: string, answer: any) => {
-    //@ts-expect-error
-    await setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      questionAnswers: {
-        ...prevUserInfo?.questionAnswers,
+    if (!userInfo) return;
+
+    try {
+      const updatedAnswers = {
+        ...userInfo.questionAnswers,
         [questionId]: answer,
-      },
-    }));
+      };
+
+      // Calculate new total score from all answers
+      const newTotalScore = Object.values(updatedAnswers).reduce(
+        (total: number, ans: any) => {
+          return total + (ans?.score || 0);
+        },
+        0,
+      );
+
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo!,
+        questionAnswers: updatedAnswers,
+        totalScore: newTotalScore,
+      }));
+    } catch (error) {
+      console.error('Error updating answer and total score:', error);
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -246,6 +267,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setListeningMode,
         setCurrentStep,
         currentStep,
+
         saveDropdownSelection,
       }}>
       {children}

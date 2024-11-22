@@ -71,13 +71,7 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
             }>
             <GoogleIcon />
           </button>
-          <button
-            type='button'
-            onClick={onClose}
-            className='text-gray-500 text-2xl hover:shadow-2xl hover:bg-bf-brand-primary rounded-full h-10 w-10 hover:text-white'
-            aria-label='Close modal'>
-            &times;
-          </button>
+
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>

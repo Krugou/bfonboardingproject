@@ -1,4 +1,4 @@
-import {QuestionItem} from '@/app/types';
+import {QuestionItem, CompanyInfo} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import {fetchCompanyInfo} from '@/hooks/api';
 import {speakContent} from '@/utils/speakContent';
@@ -6,9 +6,9 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useEffect, useState} from 'react';
 import {toast} from 'react-toastify';
 
-interface QuestionDisplayProps {}
-const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
-  const {language, userInfo, questions, currentStep} = useUserContext();
+const QuestionDisplay = () => {
+  const {language, userInfo, questions, currentStep, setCurrentStep} =
+    useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -39,6 +39,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
         const data = await fetchCompanyInfo(businessId);
 
         if (data) {
+          // @ts-expect-error
           setCompanyInfo(data);
           toast.success(
             language === 'fi'
@@ -60,6 +61,30 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
 
     fetchCompanyData();
   }, [currentStep, questions, userInfo, language]);
+
+  useEffect(() => {
+    // Check if the current question is k1.1 and the answer is 'no'
+    if (
+      questions[currentStep]?.id === 'k1.1' &&
+      userInfo?.questionAnswers['k1.1'] === 'No'
+    ) {
+      // Go back to question 0
+      setCurrentStep(0);
+      // Clear the answer
+      if (userInfo?.questionAnswers) {
+        delete userInfo.questionAnswers['k1.1'];
+      }
+      toast.info(
+        language === 'fi' ? 'Palataan alkuun' : 'Going back to the beginning',
+      );
+    }
+  }, [
+    userInfo?.questionAnswers,
+    currentStep,
+    language,
+    setCurrentStep,
+    questions,
+  ]);
 
   const [showTooltip, setShowTooltip] = useState(false);
   if (!userInfo) {
