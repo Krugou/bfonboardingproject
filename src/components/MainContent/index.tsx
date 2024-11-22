@@ -75,7 +75,7 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
 
   return (
     <div className='flex flex-col justify-center items-center  w-full h-full'>
-      <main className='w-full h-full flex flex-col shadow-xl border-bf-brand-primary border-4 bg-bf-white  rounded-xl  p-4 max-w-screen-lg max-h-min  '>
+      <main className='w-full h-full flex flex-col shadow-2xl shadow-bf-brand-secondary border-bf-brand-primary border-4 bg-bf-white  rounded-xl  p-4 max-w-screen-lg max-h-min  '>
         <UpperPanel handleOpenModal={handleOpenModal} />
         <QuestionDisplay />
         <QuestionsNavigator />

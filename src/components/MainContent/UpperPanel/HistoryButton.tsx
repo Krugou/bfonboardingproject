@@ -12,14 +12,14 @@ const HistoryButton: React.FC<HistoryButtonProps> = ({onClick}) => {
     Object.keys(userInfo.questionAnswers).length === 0;
 
   return (
-    <div className='flex justify-end h-full dark:bg-gray-200 dark:text-white'>
+    <div className='flex justify-end h-full '>
       <button
         className={`primary-button uppercase ${
           isDisabled ? 'opacity-50 cursor-not-allowed' : ''
         }`}
         onClick={onClick}
         disabled={isDisabled}
-        aria-label='Open history modal'>
+        aria-label={language === 'fi' ? 'Avaa Historia' : 'Open History'}>
         {language === 'fi' ? 'Historia' : 'History'}
       </button>
     </div>
