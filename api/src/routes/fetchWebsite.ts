@@ -33,7 +33,7 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Summarize the following content in JSON format with industry, address, number of employees, www-address and add more data in similar way: ${data}`,
+            content: `Summarize the following content in JSON format with industry, address, number of employees, www-address , keywords "first,second,third" related to the website and add more data in similar way: ${data}`,
           },
         ],
         model: 'gpt-4o',
