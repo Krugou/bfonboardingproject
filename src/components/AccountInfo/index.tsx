@@ -1,7 +1,9 @@
+'use client';
+
+import React, {useRef, useState, useEffect} from 'react';
 import {useUserContext} from '@/context/UserContext';
 import useFetchUserInfo from '@/hooks/useFetchUserInfo';
 import {useRouter} from 'next/navigation';
-import React from 'react';
 import {signOut} from 'firebase/auth';
 import {auth} from '@/utils/firebase';
 import {toast} from 'react-toastify';
@@ -53,12 +55,25 @@ const AccountInfo: React.FC = () => {
     );
   }
 
+  const createdAt = new Date(userInfo.createdAt);
+  const lastLogin = userInfo.lastLogin ? new Date(userInfo.lastLogin) : null;
+
   return (
     <div className='flex flex-col items-center justify-center min-h-screen '>
       <div className='bg-bf-white border-2 border-bf-brand-primary  rounded-lg p-8 max-w-md w-full'>
         <h1 className='text-2xl text-bf-brand-primary font-bold mb-4'>
           {language === 'fi' ? 'Tilin tiedot' : 'Account Information'}
         </h1>
+        {userInfo.firstName && userInfo.lastName && (
+          <div className='mb-4'>
+            <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
+              {language === 'fi' ? 'Nimi:' : 'Name:'}
+            </label>
+            <p className='text-bf-brand-primary'>
+              {`${userInfo.firstName} ${userInfo.lastName}`}
+            </p>
+          </div>
+        )}
         <div className='mb-4'>
           <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
             {language === 'fi' ? 'Sähköposti:' : 'Email:'}
@@ -71,7 +86,7 @@ const AccountInfo: React.FC = () => {
               {language === 'fi' ? 'Luotu:' : 'Created At:'}
             </label>
             <p className='text-bf-brand-primary'>
-              {userInfo.createdAt.toLocaleDateString()}
+              {createdAt.toLocaleDateString()}
             </p>
           </div>
           <div className='mb-4'>
@@ -79,8 +94,8 @@ const AccountInfo: React.FC = () => {
               {language === 'fi' ? 'Viimeisin kirjautuminen:' : 'Last Login:'}
             </label>
             <p className='text-bf-brand-primary'>
-              {userInfo.lastLogin
-                ? userInfo.lastLogin.toLocaleDateString()
+              {lastLogin
+                ? lastLogin.toLocaleDateString()
                 : language === 'fi'
                 ? 'Ei tietoja'
                 : 'N/A'}

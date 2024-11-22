@@ -4,7 +4,6 @@
 export interface AnswerOption {
   key: string;
   score: number;
-  weight: number;
   text: {
     en: string;
     fi: string;
@@ -84,6 +83,7 @@ export interface QuestionItem {
   };
   locked?: boolean;
   maxLength?: number;
+  weight?: number;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;
 }

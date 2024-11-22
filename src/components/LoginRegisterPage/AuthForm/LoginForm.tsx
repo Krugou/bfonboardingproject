@@ -91,9 +91,10 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
             <input
               type='email'
               id='email'
+              {...register('email', {
+                onChange: (e) => setEmail(e.target.value),
+              })}
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              {...register('email')}
               className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
               required
               aria-invalid={errors.email ? 'true' : 'false'}

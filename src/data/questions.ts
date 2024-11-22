@@ -19,6 +19,7 @@ const questions: QuestionItem[] = [
       en: 'Please provide your company’s business ID.',
       fi: 'Anna yrityksesi Y-tunnus.',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: 'Business ID format (validation) ',
       fi: 'Y-tunnus formaatti (validointi) ',
@@ -46,6 +47,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -55,7 +57,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -64,7 +65,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -88,6 +88,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -97,7 +98,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -106,7 +106,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -131,6 +130,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -140,7 +140,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -149,7 +148,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -176,6 +174,7 @@ const questions: QuestionItem[] = [
       en: 'What is own free capital? Own free capital is capital that does not have a repayment obligation, such as accumulated profits and investments made in the company (e.g., invested unrestricted equity fund - SVOP). For example, possible dividends are paid from the company’s free capital.',
       fi: 'Mikä on oma vapaa pääoma? Oma vapaa pääomaa on pääomaa, jolla ei ole takaisinmaksuvelvoitetta kuten yritykseen kertyneet voittovarat ja yritykseen tehdyt sijoitukset (ns. sijoitetun vapaan oman pääoman rahasto - SVOP). Esimerkiksi mahdolliset osingot maksetaan yrityksen vapaasta pääomasta.',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -185,7 +184,6 @@ const questions: QuestionItem[] = [
       {
         key: 'less_than_30000',
         score: 1,
-        weight: 0.25,
         text: {
           en: 'Less than €30,000',
           fi: 'Alle 30 000€',
@@ -194,7 +192,6 @@ const questions: QuestionItem[] = [
       {
         key: '30000_to_200000',
         score: 2,
-        weight: 0.5,
         text: {
           en: '€30,000 - €200,000',
           fi: '30 000 - 200 000€',
@@ -203,7 +200,6 @@ const questions: QuestionItem[] = [
       {
         key: '200000_to_1m',
         score: 3,
-        weight: 0.75,
         text: {
           en: '€200,000 - €1M',
           fi: '200 000 - 1M€',
@@ -212,7 +208,6 @@ const questions: QuestionItem[] = [
       {
         key: 'more_than_1m',
         score: 4,
-        weight: 1,
         text: {
           en: 'More than €1M',
           fi: 'Yli 1M€',
@@ -236,6 +231,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -245,7 +241,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -254,7 +249,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -282,6 +276,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -291,7 +286,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -300,7 +294,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -328,6 +321,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -337,7 +331,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -346,7 +339,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -374,6 +366,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -397,6 +390,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -423,6 +417,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -432,7 +427,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -441,7 +435,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -467,6 +460,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -476,7 +470,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -485,7 +478,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -511,6 +503,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -538,6 +531,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -547,7 +541,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -556,7 +549,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -582,6 +574,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -591,7 +584,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -600,7 +592,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -626,6 +617,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -635,7 +627,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes',
         score: 1,
-        weight: 1,
         text: {
           en: 'Yes',
           fi: 'Kyllä',
@@ -644,7 +635,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -668,6 +658,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -677,7 +668,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 0,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -686,7 +676,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes_domestic_and_international',
         score: 2,
-        weight: 0.5,
         text: {
           en: 'Yes (domestic and international markets)',
           fi: 'Kyllä (koti- ja kansainvälisillä markkinoilla)',
@@ -695,7 +684,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes_international_only',
         score: 3,
-        weight: 1,
         text: {
           en: 'Yes (only international markets)',
           fi: 'Kyllä (ainoastaan kansainvälisillä markkinoilla)',
@@ -719,6 +707,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -728,7 +717,6 @@ const questions: QuestionItem[] = [
       {
         key: 'no',
         score: 0,
-        weight: 0,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -737,7 +725,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes_strengthening_current_markets',
         score: 2,
-        weight: 0.7,
         text: {
           en: 'Yes (strengthening current markets)',
           fi: 'Kyllä (nykymarkkinoita vahvistamalla)',
@@ -746,7 +733,6 @@ const questions: QuestionItem[] = [
       {
         key: 'yes_opening_new_markets',
         score: 3,
-        weight: 1,
         text: {
           en: 'Yes (opening new markets)',
           fi: 'Kyllä (uusia markkinoita avaamalla)',
@@ -769,6 +755,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -792,6 +779,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -815,6 +803,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -838,6 +827,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -861,6 +851,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -883,6 +874,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -906,6 +898,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    weight: 1,
     syntaxPlaceholder: {
       en: '',
       fi: '',

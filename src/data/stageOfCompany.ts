@@ -4,7 +4,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'interested_in_growth',
     score: 1,
-    weight: 0.5,
     text: {
       en: 'I am interested in growth',
       fi: 'Olen kiinnostunut kasvusta',
@@ -13,7 +12,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'find_out_how_to_grow_and_internationalize',
     score: 2,
-    weight: 0.6,
     text: {
       en: 'I want to find out how my company can grow and internationalize',
       fi: 'Haluan selvittää miten yritykseni voi kasvaa ja kansainvälistyä',
@@ -22,7 +20,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'planning_growth_and_internationalization',
     score: 3,
-    weight: 0.8,
     text: {
       en: 'I am planning growth and internationalization',
       fi: 'Suunnittelen kasvua ja kansainvälistymistä',
@@ -31,7 +28,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'entering_the_market',
     score: 3,
-    weight: 0.9,
     text: {
       en: 'I am entering the market',
       fi: 'Olen menossa markkinoille',
@@ -40,7 +36,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'trading',
     score: 2,
-    weight: 0.7,
     text: {
       en: 'I am trading',
       fi: 'Käyn kauppaa',

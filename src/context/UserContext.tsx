@@ -14,6 +14,11 @@ interface UserContextType {
       platform: string;
       language: string;
     };
+    lastName?: string;
+    firstName?: string;
+    totalScore?: number;
+    businessId?: string;
+    preferredLanguage?: string;
   } | null;
   setUserInfo: React.Dispatch<
     React.SetStateAction<{
@@ -25,6 +30,11 @@ interface UserContextType {
         platform: string;
         language: string;
       };
+      lastName?: string;
+      firstName?: string;
+      totalScore?: number;
+      businessId?: string;
+      preferredLanguage?: string;
     } | null>
   >;
   currentQuestion: number;
@@ -57,6 +67,15 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     questionAnswers: Record<string, any>;
     lastLogin?: Date;
     createdAt: Date;
+    browserInfo?: {
+      platform: string;
+      language: string;
+    };
+    lastName?: string;
+    firstName?: string;
+    totalScore?: number;
+    businessId?: string;
+    preferredLanguage?: string;
   } | null>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
@@ -72,11 +91,21 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
           if (accountDoc.exists()) {
             const accountData = accountDoc.data();
+            // Set user's preferred language if available
+            if (accountData.preferredLanguage) {
+              setLanguage(accountData.preferredLanguage);
+            }
             setUserInfo({
               email: accountData.email ?? 'default@example.com',
               questionAnswers: accountData.questionAnswers,
               lastLogin: accountData.lastLogin?.toDate(),
               createdAt: accountData.createdAt.toDate(),
+              browserInfo: accountData.browserInfo,
+              lastName: accountData.lastName,
+              firstName: accountData.firstName,
+              totalScore: accountData.totalScore,
+              businessId: accountData.businessId,
+              preferredLanguage: accountData.preferredLanguage,
             });
           }
         } catch (error) {
@@ -85,6 +114,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       } else {
         // User is signed out, clear user info
         setUserInfo(null);
+        setLanguage('en'); // Reset to default language when user signs out
       }
     });
 

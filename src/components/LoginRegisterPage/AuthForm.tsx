@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useUserContext } from '@/context/UserContext';
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import React, {useState, useCallback} from 'react';
+import {useUserContext} from '@/context/UserContext';
+import {useAuth} from '@/hooks/useAuth';
+import {useRouter} from 'next/navigation';
 import LoginForm from './AuthForm/LoginForm';
 import RegisterForm from './AuthForm/RegisterForm';
 
@@ -18,23 +18,64 @@ const AuthForm: React.FC = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const { handleEmailPasswordAuth, handleGoogleLogin, error } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
   const router = useRouter();
-  const { language } = useUserContext();
+  const {language} = useUserContext();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const success: boolean = await handleEmailPasswordAuth(
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      if (isLoading) return;
+
+      try {
+        setIsLoading(true);
+        const success = await handleEmailPasswordAuth(
+          email,
+          password,
+          isLogin,
+          firstName,
+          lastName,
+        );
+
+        if (success) {
+          // Ensure we wait for the next tick before navigation
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          await router.replace('/');
+        }
+      } catch (error) {
+        console.error('Authentication error:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [
       email,
       password,
       isLogin,
       firstName,
-      lastName
-    );
-    if (success) {
-      router.push('/');
+      lastName,
+      handleEmailPasswordAuth,
+      router,
+      isLoading,
+    ],
+  );
+
+  const handleGoogleAuthAndRedirect = useCallback(async () => {
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+      const success = await handleGoogleLogin();
+      if (success) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await router.replace('/');
+      }
+    } catch (error) {
+      console.error('Google authentication error:', error);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [handleGoogleLogin, router, isLoading]);
 
   const toggleAuthMode = () => setIsLogin(!isLogin);
 
@@ -50,9 +91,10 @@ const AuthForm: React.FC = () => {
     onSubmit: handleSubmit,
     onClose: () => router.push('/'),
     error,
-    handleGoogleLogin,
+    handleGoogleLogin: handleGoogleAuthAndRedirect,
     language,
     toggleAuthMode,
+    isLoading,
   };
 
   return isLogin ? (

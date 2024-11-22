@@ -15,6 +15,10 @@ export interface BaseAuthFormProps {
   lastName: string;
   setFirstName: (name: string) => void;
   setLastName: (name: string) => void;
+  businessId?: string;
+  setBusinessId: (value: string) => void;
+  preferredLanguage?: string;
+  setPreferredLanguage: (value: string) => void;
 }
 
 export interface AccountData {

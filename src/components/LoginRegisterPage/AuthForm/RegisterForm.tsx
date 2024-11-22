@@ -21,6 +21,8 @@ const passwordSchema = z
         'Password must contain at least one special character',
       ),
     confirmPassword: z.string(),
+    businessId: z.string().min(1, 'Business ID is required'),
+    preferredLanguage: z.string().min(1, 'Preferred language is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -36,6 +38,10 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
   lastName,
   setFirstName,
   setLastName,
+  businessId,
+  setBusinessId,
+  preferredLanguage,
+  setPreferredLanguage,
   onSubmit,
   onClose,
   language,
@@ -103,6 +109,10 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
               className='block text-bf-brand-primary text-sm font-bold mb-2'
               htmlFor='firstName'>
               {language === 'fi' ? 'Etunimi' : 'First Name'}
+              <span className='text-red-600' aria-hidden='true'>
+                {' '}
+                *
+              </span>
             </label>
             <input
               type='text'
@@ -121,6 +131,10 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
               className='block text-bf-brand-primary text-sm font-bold mb-2'
               htmlFor='lastName'>
               {language === 'fi' ? 'Sukunimi' : 'Last Name'}
+              <span className='text-red-600' aria-hidden='true'>
+                {' '}
+                *
+              </span>
             </label>
             <input
               type='text'
@@ -137,8 +151,67 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
           <div className='mb-4'>
             <label
               className='block text-bf-brand-primary text-sm font-bold mb-2'
+              htmlFor='businessId'>
+              {language === 'fi' ? 'Y-tunnus' : 'Business ID'}
+              <span className='text-red-600' aria-hidden='true'>
+                {' '}
+                *
+              </span>
+            </label>
+            <input
+              {...register('businessId')}
+              type='text'
+              id='businessId'
+              value={businessId}
+              onChange={(e) => setBusinessId(e.target.value)}
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
+              required
+            />
+            {errors.businessId && (
+              <p className='mt-1 text-red-600 text-sm' role='alert'>
+                {errors.businessId.message}
+              </p>
+            )}
+          </div>
+
+          <div className='mb-4'>
+            <label
+              className='block text-bf-brand-primary text-sm font-bold mb-2'
+              htmlFor='preferredLanguage'>
+              {language === 'fi' ? 'Ensisijainen kieli' : 'Preferred Language'}
+              <span className='text-red-600' aria-hidden='true'>
+                {' '}
+                *
+              </span>
+            </label>
+            <select
+              {...register('preferredLanguage')}
+              id='preferredLanguage'
+              value={preferredLanguage}
+              onChange={(e) => setPreferredLanguage(e.target.value)}
+              className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
+              required>
+              <option value=''>
+                {language === 'fi' ? 'Valitse kieli' : 'Select language'}
+              </option>
+              <option value='fi'>Suomi</option>
+              <option value='en'>English</option>
+            </select>
+            {errors.preferredLanguage && (
+              <p className='mt-1 text-red-600 text-sm' role='alert'>
+                {errors.preferredLanguage.message}
+              </p>
+            )}
+          </div>
+          <div className='mb-4'>
+            <label
+              className='block text-bf-brand-primary text-sm font-bold mb-2'
               htmlFor='email'>
               {language === 'fi' ? 'Sähköposti' : 'Email'}
+              <span className='text-red-600' aria-hidden='true'>
+                {' '}
+                *
+              </span>
             </label>
             <input
               type='email'

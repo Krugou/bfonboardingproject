@@ -39,6 +39,10 @@ const getAuthErrorMessage = (
   language: string = 'en',
 ): string => {
   const errorMessages: Record<string, {en: string; fi: string}> = {
+    'auth/invalid-credential': {
+      en: 'Invalid email or password.',
+      fi: 'Virheellinen sähköposti tai salasana.',
+    },
     'auth/email-already-in-use': {
       en: 'Email is already registered. Please login or use a different email.',
       fi: 'Sähköposti on jo rekisteröity. Kirjaudu sisään tai käytä toista sähköpostia.',
@@ -114,6 +118,8 @@ export const useAuth = () => {
     firstName?: string,
     lastName?: string,
   ): Promise<boolean> => {
+    console.log('🚀 ~ useAuth ~ lastName:', lastName);
+    console.log('🚀 ~ useAuth ~ firstName:', firstName);
     setError(null);
     const auth = getAuth();
 
@@ -124,13 +130,26 @@ export const useAuth = () => {
           ? await signInWithEmailAndPassword(auth, email, password)
           : await createUserWithEmailAndPassword(auth, email, password);
 
-      const accountData = createAccountData(
-        userCredential.user.email ?? '',
-        firstName || '',
-        lastName || '',
-      );
+      // Create account data with provided first and last name
+      const browserInfo = getBrowserInfo();
+      const accountData = {
+        ...createAccountData(
+          userCredential.user.email ?? '',
+          firstName || '',
+          lastName || '',
+        ),
+        browserInfo,
+      };
 
-      await handleAuthResult(userCredential);
+      // Save the account data to Firestore for new registrations
+      if (!isLogin) {
+        const accountRef = doc(db, 'accounts', userCredential.user.uid);
+        await setDoc(accountRef, accountData);
+        setUserInfo(accountData);
+      } else {
+        await handleAuthResult(userCredential);
+      }
+
       toast.success(
         isLogin ? 'Logged in successfully' : 'Registered successfully',
       );

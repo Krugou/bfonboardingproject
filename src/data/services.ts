@@ -4,7 +4,6 @@ export const services: AnswerOption[] = [
   {
     key: 'internationalization_services',
     score: 3,
-    weight: 1,
     text: {
       en: 'Internationalization services',
       fi: 'Kansainvälistymispalvelut',
@@ -13,7 +12,6 @@ export const services: AnswerOption[] = [
   {
     key: 'product_service_development',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Product and service development (R&D)',
       fi: 'Rahoitus (Tuotteiden ja palveluiden kehittäminen (T&KI)',
@@ -22,7 +20,6 @@ export const services: AnswerOption[] = [
   {
     key: 'energy_support',
     score: 1,
-    weight: 0.6,
     text: {
       en: 'Energy support',
       fi: 'Energiatuki',
@@ -31,7 +28,6 @@ export const services: AnswerOption[] = [
   {
     key: 'international_talent_recruitment',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'International talent recruitment',
       fi: 'Kansainvälisen osaajan rekrytointi',
@@ -40,7 +36,6 @@ export const services: AnswerOption[] = [
   {
     key: 'funding_internationalization_export',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Funding (Internationalization and export)',
       fi: 'Rahoitus (Kansainvälistyminen ja vienti)',
@@ -49,7 +44,6 @@ export const services: AnswerOption[] = [
   {
     key: 'funding_emerging_markets',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Funding opportunities in emerging markets',
       fi: 'Rahoitusmahdollisuudet kehittyvillä markkinoilla',
@@ -58,7 +52,6 @@ export const services: AnswerOption[] = [
   {
     key: 'export_permits_sanctions',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Export permits and sanctions',
       fi: 'Vientiluvat ja pakotteet',
@@ -67,7 +60,6 @@ export const services: AnswerOption[] = [
   {
     key: 'networking_contacts',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Networking and contacts',
       fi: 'Verkostoituminen ja kontaktit',
@@ -76,7 +68,6 @@ export const services: AnswerOption[] = [
   {
     key: 'market_information',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Market information',
       fi: 'Markkinatieto',
