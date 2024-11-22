@@ -10,7 +10,6 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     setCurrentQuestion,
     setCurrentStep,
     currentStep,
-    listeningMode,
     questions,
     userInfo,
   } = useUserContext();
@@ -37,16 +36,16 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        setCurrentStep((prevStep: number) =>
+      if (event.key === 'ArrowRight' && !isNextButtonDisabled()) {
+        // @ts-expect-error
+        setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
+        setCurrentQuestion((prevStep) =>
           Math.min(prevStep + 1, questions.length),
         );
-        setCurrentQuestion((prevStep: number) =>
-          Math.min(prevStep + 1, questions.length),
-        );
-      } else if (event.key === 'ArrowLeft') {
-        setCurrentStep((prevStep: number) => Math.max(prevStep - 1, 1));
-        setCurrentQuestion((prevStep: number) => Math.max(prevStep - 1, 1));
+      } else if (event.key === 'ArrowLeft' && currentStep > 1) {
+        // @ts-expect-error
+        setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
+        setCurrentQuestion((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
 
@@ -54,15 +53,23 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setCurrentStep, setCurrentQuestion, questions.length]);
+  }, [
+    setCurrentStep,
+    setCurrentQuestion,
+    questions.length,
+    currentStep,
+    isNextButtonDisabled,
+  ]);
 
   return (
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
       <button
         className='w-auto secondary-button uppercase'
         onClick={() => {
-          setCurrentStep(currentStep - 1);
-          setCurrentQuestion(currentStep - 1);
+          if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+            setCurrentQuestion(currentStep - 1);
+          }
         }}
         disabled={currentStep === 1}
         aria-label={language === 'fi' ? 'Edellinen' : 'Previous'}
@@ -79,8 +86,10 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
               isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed' : ''
             }`}
             onClick={() => {
-              setCurrentStep(currentStep + 1);
-              setCurrentQuestion(currentStep + 1);
+              if (!isNextButtonDisabled()) {
+                setCurrentStep(currentStep + 1);
+                setCurrentQuestion(currentStep + 1);
+              }
             }}
             disabled={isNextButtonDisabled()}
             aria-label={language === 'fi' ? 'Seuraava' : 'Next'}
