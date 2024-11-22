@@ -503,8 +503,8 @@ const questions: QuestionItem[] = [
   {
     id: 'k2.8',
     question: {
-      en: ' janne "keksii" tähän lisä Large kysymyksen 1 ',
-      fi: 'Janne "keksii" tähän lisä Large kysymyksen 1',
+      en: 'Define the type of partners you are looking for?',
+      fi: 'Määrittele, Millaisia kumppaneita olette hakemassa?',
     },
     conditions: ['large'],
     tooltip: {
