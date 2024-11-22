@@ -189,6 +189,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       }
     }
   };
+  // automatically sign out user after 1 hour of inactivity
   useEffect(() => {
     const checkInactivity = () => {
       if (Date.now() - lastInteractionTime > 3600000) {
