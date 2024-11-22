@@ -60,7 +60,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
       ref={modalRef}
       tabIndex={-1}>
       {/* actual content of the modal is below */}
-      <div className='bg-white rounded-lg p-6 w-full xl:w-2/3'>
+      <div className='bg-white rounded-lg p-6 w-full max-h-[150rem] xl:w-2/3'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-xl font-bold' id='answered-questions-modal-title'>
             {language === 'fi' ? 'Vastatut kysymykset' : 'Answered Questions'}
@@ -79,7 +79,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 
         <div className=' p-2'>
           {answeredQuestions.length > 0 ? (
-            <AnswersTable />
+            <AnswersTable onClose={onClose} />
           ) : (
             <p className='text-center'>
               {language === 'fi'
