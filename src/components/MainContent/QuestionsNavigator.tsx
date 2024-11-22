@@ -48,14 +48,14 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
       <button
         className={`w-auto secondary-button uppercase ${
-          currentStep === 1 ? 'opacity-50 invisible cursor-not-allowed' : ''
+          currentStep === 0 ? 'opacity-50 invisible cursor-not-allowed' : ''
         }`}
         onClick={() => {
           if (currentStep > 0) {
-            setCurrentStep(currentStep);
+            setCurrentStep(currentStep - 1);
           }
         }}
-        disabled={currentStep === 1}
+        disabled={currentStep === 0}
         aria-label={language === 'fi' ? 'Edellinen' : 'Previous'}
         role='button'>
         {language === 'fi' ? 'EDELLINEN' : 'PREVIOUS'}

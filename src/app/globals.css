@@ -55,7 +55,7 @@
   }
 
   .primary-button {
-    @apply flex flex-row font-semibold select-none	 cursor-pointer items-start p-2.5 px-7 w-full h-[2,6rem] text-bf-white bg-bf-brand-primary rounded-full flex-none flex-grow-0
+    @apply flex flex-row font-semibold select-none	 cursor-pointer items-start p-2.5 px-7  h-[2,6rem] text-bf-white bg-bf-brand-primary rounded-full flex-none flex-grow-0
   }
 
   .secondary-button {

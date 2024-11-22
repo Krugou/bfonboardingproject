@@ -11,6 +11,10 @@ export interface BaseAuthFormProps {
   handleGoogleLogin: () => void;
   language: string;
   toggleAuthMode: () => void;
+  firstName: string;
+  lastName: string;
+  setFirstName: (name: string) => void;
+  setLastName: (name: string) => void;
 }
 
 export interface AccountData {
@@ -19,6 +23,8 @@ export interface AccountData {
   lastLogin: Date;
   createdAt: Date;
   browserInfo: BrowserInfo;
+  firstName: string;
+  lastName: string;
 }
 
 export interface BrowserInfo {

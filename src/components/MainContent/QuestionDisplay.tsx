@@ -10,7 +10,8 @@ interface QuestionDisplayProps {}
 const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
   const {language, userInfo, questions, currentStep} = useUserContext();
   const [languageSelection, setLanguageSelection] = useState('en-US');
-  const [companyInfo, setCompanyInfo] = useState<any>(null);
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (language === 'fi') {
@@ -21,21 +22,44 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
   }, [language]);
 
   useEffect(() => {
-    if (!userInfo) {
-      return;
-    }
-    const companyInfo = fetchCompanyInfo(userInfo.questionAnswers['k1']);
-    setCompanyInfo(companyInfo);
-
-    const currentQuestion = questions[currentStep];
-    if (currentQuestion?.id === 'k2') {
-      const businessId = userInfo.questionAnswers['k1'];
-
-      if (businessId) {
-        fetchCompanyInfo(businessId);
+    const fetchCompanyData = async () => {
+      if (!userInfo?.questionAnswers['k1']) {
+        return;
       }
-    }
-  }, [currentStep, questions]);
+
+      // Only fetch if we're on the company info step (k1.1)
+      const currentQuestion = questions[currentStep];
+      if (currentQuestion?.id !== 'k1.1') {
+        return;
+      }
+
+      try {
+        setIsLoading(true);
+        const businessId = userInfo.questionAnswers['k1'];
+        const data = await fetchCompanyInfo(businessId);
+
+        if (data) {
+          setCompanyInfo(data);
+          toast.success(
+            language === 'fi'
+              ? 'Yrityksen tiedot haettu onnistuneesti'
+              : 'Company information fetched successfully',
+          );
+        }
+      } catch (error) {
+        toast.error(
+          language === 'fi'
+            ? 'Virhe yritystietojen haussa'
+            : 'Error fetching company information',
+        );
+        console.error('Error fetching company data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCompanyData();
+  }, [currentStep, questions, userInfo, language]);
 
   const [showTooltip, setShowTooltip] = useState(false);
   if (!userInfo) {
@@ -43,16 +67,16 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
   }
 
   return (
-    <div className='flex flex-col h-1/2 justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10 dark:bg-gray-700 dark:text-white'>
+    <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 dark:bg-gray-700 dark:text-white'>
       {currentStep <= questions.length ? (
-        <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6 dark:bg-gray-600 dark:text-white'>
-          <div className='flex justify-end w-full items-center rounded-xl'>
+        <div className='flex flex-col justify-center items-center h-full w-full rounded-lg p-3 dark:bg-gray-600 dark:text-white'>
+          <div className='flex justify-end w-full items-center rounded-lg mb-2'>
             <button
-              className='flex justify-center items-center border text-bf-brand-primary  border-blue-500 m-1 p-2 rounded-xl h-6 w-6 '
+              className='flex justify-center items-center border text-bf-brand-primary border-blue-500 mx-1 p-1 rounded-lg h-5 w-5'
               onClick={() => setShowTooltip(!showTooltip)}
               aria-label={language === 'fi' ? 'Näytä tooltip' : 'Show tooltip'}
               role='button'>
-              <p className='text-xl'>i</p>
+              <p className='text-sm'>i</p>
             </button>
             <button
               title={
@@ -67,81 +91,88 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
                   toast,
                 );
               }}
-              className=' p-4 text-bf-brand-primary  '
+              className='p-2 text-bf-brand-primary'
               aria-label={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
               role='button'>
-              <VolumeUpIcon fontSize='medium' />
+              <VolumeUpIcon fontSize='small' />
             </button>
           </div>
-          <div className='group'>
+          <div className='group space-y-2'>
             <h2
-              className='text-center w-full h-full font-bold text-lg lg:text-xl text-bf-brand-primary overflow-wrap break-word '
+              className='text-center w-full font-bold text-base lg:text-lg text-bf-brand-primary break-words'
               title={questions[currentStep].tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
               {questions[currentStep].question[language]}
             </h2>
-            {questions[currentStep].id === 'k2' &&
-              companyInfo &&
-              currentStep === 2 && (
-                <div className='mt-4 font-bold text-bf-brand-primary dark:text-white'>
-                  <h3 className='text-xl font-bold text-bf-brand-primary dark:text-white'>
+            {questions[currentStep].id === 'k1.1' && (
+              <div className='mt-2 text-sm font-bold text-bf-brand-primary dark:text-white'>
+                {isLoading ? (
+                  <div
+                    role='status'
+                    aria-label={
+                      language === 'fi' ? 'Ladataan...' : 'Loading...'
+                    }>
                     {language === 'fi'
-                      ? 'Yrityksen tiedot:'
-                      : 'Company Information:'}
-                  </h3>
-                  <p>
-                    {companyInfo?.businessId?.value && (
-                      <>
-                        {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
-                        {companyInfo.businessId.value}
-                      </>
-                    )}
-                  </p>
-                  <p>
-                    {companyInfo?.names?.[0]?.name && (
-                      <>
-                        {language === 'fi' ? 'Nimi: ' : 'Name: '}
-                        {companyInfo.names[0].name}
-                      </>
-                    )}
-                  </p>
-                  <p>
-                    {companyInfo?.addresses?.[0]?.street && (
-                      <>
-                        {language === 'fi' ? 'Osoite: ' : 'Address: '}
-                        {companyInfo.addresses[0].street}
-                      </>
-                    )}
-                  </p>
-                  <p>
-                    {companyInfo?.website?.url && (
-                      <>
-                        {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
-                        {companyInfo.website.url}
-                      </>
-                    )}
-                  </p>
-                  <p>
-                    {companyInfo?.mainBusinessLine?.descriptions?.[0]
-                      ?.description && (
-                      <>
-                        {language === 'fi'
-                          ? 'Päätoimiala: '
-                          : 'Main Business Line: '}
-                        {
-                          companyInfo.mainBusinessLine.descriptions[0]
-                            .description
-                        }
-                      </>
-                    )}
-                  </p>
-                </div>
-              )}
+                      ? 'Ladataan yritystietoja...'
+                      : 'Loading company information...'}
+                  </div>
+                ) : companyInfo ? (
+                  <div className='space-y-1'>
+                    <p>
+                      {companyInfo?.businessId?.value && (
+                        <>
+                          {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
+                          {companyInfo.businessId.value}
+                        </>
+                      )}
+                    </p>
+                    <p>
+                      {companyInfo?.names?.[0]?.name && (
+                        <>
+                          {language === 'fi' ? 'Nimi: ' : 'Name: '}
+                          {companyInfo.names[0].name}
+                        </>
+                      )}
+                    </p>
+                    <p>
+                      {companyInfo?.addresses?.[0]?.street && (
+                        <>
+                          {language === 'fi' ? 'Osoite: ' : 'Address: '}
+                          {companyInfo.addresses[0].street}
+                        </>
+                      )}
+                    </p>
+                    <p>
+                      {companyInfo?.website?.url && (
+                        <>
+                          {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
+                          {companyInfo.website.url}
+                        </>
+                      )}
+                    </p>
+                    <p>
+                      {companyInfo?.mainBusinessLine?.descriptions?.[0]
+                        ?.description && (
+                        <>
+                          {language === 'fi'
+                            ? 'Päätoimiala: '
+                            : 'Main Business Line: '}
+                          {
+                            companyInfo.mainBusinessLine.descriptions[0]
+                              .description
+                          }
+                        </>
+                      )}
+                    </p>
+                  </div>
+                ) : null}
+              </div>
+            )}
             <h3
-              className={`text-center text-bf-brand-primary transition-opacity duration-300 overflow-wrap break-word ${
+              className={`text-center text-sm text-bf-brand-primary transition-opacity duration-300 break-words ${
                 showTooltip
                   ? 'opacity-100'
                   : 'opacity-0 group-hover:opacity-100'
@@ -153,7 +184,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
           </div>
         </div>
       ) : (
-        <h2 className='text-center text-lg sm:text-2xl md:text-3xl lg:text-4xl dark:text-white'>
+        <h2 className='text-center text-base sm:text-lg md:text-xl lg:text-2xl dark:text-white'>
           {language === 'fi'
             ? 'Kiitos vastauksistasi!'
             : 'Thank you for your answers!'}

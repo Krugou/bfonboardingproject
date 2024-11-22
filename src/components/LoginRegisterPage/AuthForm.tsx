@@ -1,11 +1,11 @@
 'use client';
 
-import React, {useState} from 'react';
-import {useUserContext} from '@/context/UserContext';
-import {useAuth} from '@/hooks/useAuth';
-import {useRouter} from 'next/navigation';
-import LoginForm from './AuthForm/LoginFormLoginForm';
-import RegisterForm from './AuthForm/RegisterFormisterForm';
+import React, { useState } from 'react';
+import { useUserContext } from '@/context/UserContext';
+import { useAuth } from '@/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import LoginForm from './AuthForm/LoginForm';
+import RegisterForm from './AuthForm/RegisterForm';
 
 /**
  * AuthForm component for handling user authentication.
@@ -16,9 +16,11 @@ const AuthForm: React.FC = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const { handleEmailPasswordAuth, handleGoogleLogin, error } = useAuth();
   const router = useRouter();
-  const {language} = useUserContext();
+  const { language } = useUserContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +28,8 @@ const AuthForm: React.FC = () => {
       email,
       password,
       isLogin,
+      firstName,
+      lastName
     );
     if (success) {
       router.push('/');
@@ -39,6 +43,10 @@ const AuthForm: React.FC = () => {
     setEmail,
     password,
     setPassword,
+    firstName,
+    lastName,
+    setFirstName,
+    setLastName,
     onSubmit: handleSubmit,
     onClose: () => router.push('/'),
     error,

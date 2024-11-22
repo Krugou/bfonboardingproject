@@ -63,12 +63,22 @@ const Header: React.FC = () => {
     <header className='bg-bf-brand-primary dark:bg-bf-brand-primary-dark flex justify-between h-20 w-full'>
       <div>
         <button
-          className='w-10 h-10 mx-2 text-white font-bold dark:text-gray-200'
+          className='w-10 h-10 mx-4 text-white font-bold '
           onClick={() => router.push('/')}
           aria-label={
             language === 'fi' ? 'Minun Business Finland' : 'My Business Finland'
           }>
-          {language === 'fi' ? 'Minun Business Finland' : 'My Business Finland'}
+          <div className='flex flex-col uppercase items-start'>
+            <span className='font-bold'>
+              {language === 'fi' ? 'Minun' : 'My'}
+            </span>
+            <span className='font-light'>
+              {language === 'fi' ? 'Business' : 'Business'}
+            </span>
+            <span className='font-bold'>
+              {language === 'fi' ? 'Finland' : 'Finland'}
+            </span>
+          </div>
         </button>
       </div>
       {process.env.NODE_ENV === 'development' && (
