@@ -1,4 +1,3 @@
-import LoginRegisterModal from '@/components/Header/LoginRegisterModal';
 import {useUserContext} from '@/context/UserContext';
 import {logEvent} from '@/utils/analytics';
 import {db} from '@/utils/firebase';
@@ -6,7 +5,6 @@ import {doc, getDoc} from 'firebase/firestore';
 import {useRouter} from 'next/navigation';
 import React, {useEffect, useState} from 'react';
 import {FlagIcon} from 'react-flag-kit';
-import {toast} from 'react-toastify';
 import {usePathname} from 'next/navigation';
 
 /**
@@ -18,7 +16,6 @@ const Header: React.FC = () => {
   const {setLanguage, language, currentQuestion, userInfo, questions} =
     useUserContext();
   const router = useRouter();
-  const [isLoginVisible, setIsLoginVisible] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const pathname = usePathname();
   const handleAdminClick = () => {
@@ -112,17 +109,13 @@ const Header: React.FC = () => {
             <button
               className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl dark:bg-gray-700 dark:text-gray-200'
               onClick={() => {
-                setIsLoginVisible(true);
+                router.push('/loginregister');
                 logEvent('login_button_click');
               }}
               aria-label={language === 'fi' ? 'Kirjaudu' : 'Login'}
               role='button'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
-            <LoginRegisterModal
-              setIsLoginVisible={setIsLoginVisible}
-              isLoginVisible={isLoginVisible}
-            />
           </>
         )}
 

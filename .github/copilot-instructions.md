@@ -12,6 +12,9 @@
 - Use async/await over Promises
 - Include proper error handling for async operations
 - Use functional programming patterns where appropriate
+- always use make the react with accessibility in mind
+- always use make the react with performance in mind
+
 2. Architecture & Design
 
 - Follow SOLID principles

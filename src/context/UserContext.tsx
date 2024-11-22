@@ -10,6 +10,10 @@ interface UserContextType {
     questionAnswers: Record<string, any>;
     lastLogin?: Date;
     createdAt: Date;
+    browserInfo?: {
+      platform: string;
+      language: string;
+    };
   } | null;
   setUserInfo: React.Dispatch<
     React.SetStateAction<{
@@ -17,6 +21,10 @@ interface UserContextType {
       questionAnswers: Record<string, any>;
       lastLogin?: Date;
       createdAt: Date;
+      browserInfo?: {
+        platform: string;
+        language: string;
+      };
     } | null>
   >;
   currentQuestion: number;
@@ -24,12 +32,6 @@ interface UserContextType {
   setAnswer: (questionId: string, answer: any) => void;
   language: 'en' | 'fi' | string;
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
-  isDarkmode: boolean;
-  setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
-  highContrast: boolean;
-  setHighContrast: React.Dispatch<React.SetStateAction<boolean>>;
-  fontSize: number;
-  setFontSize: React.Dispatch<React.SetStateAction<number>>;
   questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
   lastInteractionTime: number;
@@ -56,14 +58,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     lastLogin?: Date;
     createdAt: Date;
   } | null>(null);
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [isDarkmode, setIsDarkmode] = useState(false);
-  const [highContrast, setHighContrast] = useState(false);
-  const [fontSize, setFontSize] = useState(16);
   const [questions, setQuestions] = useState<any[]>([]);
   const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [listeningMode, setListeningMode] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -207,17 +205,9 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       value={{
         userInfo,
         setUserInfo,
-        currentQuestion,
-        setCurrentQuestion,
         setAnswer,
         language,
         setLanguage,
-        isDarkmode,
-        setIsDarkmode,
-        highContrast,
-        setHighContrast,
-        fontSize,
-        setFontSize,
         questions,
         setQuestions,
         lastInteractionTime,

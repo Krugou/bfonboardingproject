@@ -27,7 +27,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
     const companyInfo = fetchCompanyInfo(userInfo.questionAnswers['k1']);
     setCompanyInfo(companyInfo);
 
-    const currentQuestion = questions[currentStep - 1];
+    const currentQuestion = questions[currentStep];
     if (currentQuestion?.id === 'k2') {
       const businessId = userInfo.questionAnswers['k1'];
 
@@ -60,9 +60,9 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
               }
               onClick={() => {
                 speakContent(
-                  questions[currentStep - 1].question[language] +
+                  questions[currentStep].question[language] +
                     ' ' +
-                    questions[currentStep - 1].tooltip[language],
+                    questions[currentStep].tooltip[language],
                   languageSelection,
                   toast,
                 );
@@ -78,12 +78,12 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
           <div className='group'>
             <h2
               className='text-center w-full h-full font-bold text-lg lg:text-xl text-bf-brand-primary overflow-wrap break-word '
-              title={questions[currentStep - 1].tooltip[language]}
+              title={questions[currentStep].tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep - 1].question[language]}
+              {questions[currentStep].question[language]}
             </h2>
-            {questions[currentStep - 1].id === 'k2' &&
+            {questions[currentStep].id === 'k2' &&
               companyInfo &&
               currentStep === 2 && (
                 <div className='mt-4 font-bold text-bf-brand-primary dark:text-white'>
@@ -148,7 +148,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
               } dark:text-white`}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep - 1].tooltip[language]}
+              {questions[currentStep].tooltip[language]}
             </h3>
           </div>
         </div>

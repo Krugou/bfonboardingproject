@@ -5,25 +5,18 @@ import QuestionInput from './QuestionsNavigator/QuestionInput';
 interface QuestionNavigatorProps {}
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
-  const {
-    language,
-    setCurrentQuestion,
-    setCurrentStep,
-    currentStep,
-    questions,
-    userInfo,
-  } = useUserContext();
+  const {language, setCurrentStep, currentStep, questions, userInfo} =
+    useUserContext();
 
   const handleReset = () => {
-    setCurrentStep(1);
-    setCurrentQuestion(1);
+    setCurrentStep(0);
   };
 
   const isNextButtonDisabled = () => {
     if (currentStep === questions.length) return true;
     if (!userInfo?.questionAnswers) return true;
 
-    const currentQuestion = questions[currentStep - 1];
+    const currentQuestion = questions[currentStep];
     const hasAnswer = !!userInfo.questionAnswers[currentQuestion.id];
 
     // Special validation for first question (k1)
@@ -39,13 +32,9 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
       if (event.key === 'ArrowRight' && !isNextButtonDisabled()) {
         // @ts-expect-error
         setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
-        setCurrentQuestion((prevStep) =>
-          Math.min(prevStep + 1, questions.length),
-        );
       } else if (event.key === 'ArrowLeft' && currentStep > 1) {
         // @ts-expect-error
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
-        setCurrentQuestion((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
 
@@ -53,13 +42,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [
-    setCurrentStep,
-    setCurrentQuestion,
-    questions.length,
-    currentStep,
-    isNextButtonDisabled,
-  ]);
+  }, [setCurrentStep, questions.length, currentStep, isNextButtonDisabled]);
 
   return (
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
@@ -68,9 +51,8 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
           currentStep === 1 ? 'opacity-50 invisible cursor-not-allowed' : ''
         }`}
         onClick={() => {
-          if (currentStep > 1) {
-            setCurrentStep(currentStep - 1);
-            setCurrentQuestion(currentStep - 1);
+          if (currentStep > 0) {
+            setCurrentStep(currentStep);
           }
         }}
         disabled={currentStep === 1}
@@ -81,7 +63,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
       {currentStep <= questions.length ? (
         <>
           <div className='w-full sm:w-3/4'>
-            <QuestionInput question={questions[currentStep - 1]} />
+            <QuestionInput question={questions[currentStep]} />
           </div>
           <button
             className={`primary-button w-auto uppercase ${
@@ -90,7 +72,6 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
             onClick={() => {
               if (!isNextButtonDisabled()) {
                 setCurrentStep(currentStep + 1);
-                setCurrentQuestion(currentStep + 1);
               }
             }}
             disabled={isNextButtonDisabled()}
