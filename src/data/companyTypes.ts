@@ -20,7 +20,6 @@ export const companyTypes: AnswerOption[] = [
   {
     key: 'university',
     score: 2,
-    weight: 0.8,
     text: {
       en: 'Universities',
       fi: 'Korkeakoulut',

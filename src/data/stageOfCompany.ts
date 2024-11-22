@@ -44,7 +44,6 @@ export const stageOfCompany: AnswerOption[] = [
   {
     key: 'expand_and_renew',
     score: 3,
-    weight: 1,
     text: {
       en: 'I want to expand and renew',
       fi: 'Haluan laajentua ja uudistua',
