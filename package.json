@@ -13,7 +13,11 @@
     "lint": "next lint",
     "tsc": "tsc --noEmit",
     "tsc:watch": "tsc --noEmit --watch",
-    "copyApi": "cd api && npm run copyApi"
+    "copyApi": "cd api && npm run copyApi",
+    "docker:dev": "cd api && npm run docker:dev",
+    "docker:run": "cd api && npm run docker:run",
+    "docker:compose": "cd api && npm run docker:compose",
+    "docker:build": "cd api && npm run docker:build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
