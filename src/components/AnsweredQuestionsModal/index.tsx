@@ -1,6 +1,6 @@
-import { useUserContext } from '@/context/UserContext';
-import { logEvent } from '@/utils/analytics';
-import React, { useEffect, useRef } from 'react';
+import {useUserContext} from '@/context/UserContext';
+import {logEvent} from '@/utils/analytics';
+import React, {useEffect, useRef} from 'react';
 import AnswersTable from './AnswersTables';
 
 interface AnsweredQuestionsModalProps {
@@ -26,7 +26,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
-        logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
+        logEvent('modal_close', {modal: 'AnsweredQuestionsModal'});
       }
     };
 
@@ -42,7 +42,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   }, [open, onClose]);
 
   if (!userInfo) {
-    return null; // or return a loading indicator or a message
+    return null;
   }
 
   if (!open) return null;
@@ -70,7 +70,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
             onClick={() => {
               onClose();
-              logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
+              logEvent('modal_close', {modal: 'AnsweredQuestionsModal'});
             }}
             aria-label='Close answered questions modal'>
             {language === 'fi' ? 'Sulje' : 'Close'}
@@ -79,9 +79,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 
         <div className=' p-2'>
           {answeredQuestions.length > 0 ? (
-            <AnswersTable
-
-            />
+            <AnswersTable />
           ) : (
             <p className='text-center'>
               {language === 'fi'
