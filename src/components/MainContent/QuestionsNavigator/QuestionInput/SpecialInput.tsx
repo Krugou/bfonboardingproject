@@ -1,7 +1,7 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {QuestionItem} from '@/app/types';
 import {debounce} from 'lodash';
-
+import {industries} from '@/data/industries';
 interface SpecialInputProps {
   question: QuestionItem;
   language: 'en' | 'fi';
@@ -86,8 +86,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
     });
   };
 
-  const industryOptions = ['Technology', 'Finance', 'Healthcare', 'Education'];
-
+  const industryOptions = industries;
   const labels = {
     industry: {
       en: 'Industry',
@@ -123,9 +122,9 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
           onChange={handleIndustryChange}
           className='p-2 border rounded w-full'>
           <option value=''>Select Industry</option>
-          {industryOptions.map((option, index) => (
-            <option key={index} value={option}>
-              {option}
+          {industryOptions.map((option) => (
+            <option key={option.key} value={option.key}>
+              {option.text[language]}
             </option>
           ))}
         </select>
