@@ -1,6 +1,6 @@
-import { useUserContext } from '@/context/UserContext';
-import { logEvent } from '@/utils/analytics';
-import React, { useEffect, useRef } from 'react';
+import {useUserContext} from '@/context/UserContext';
+import {logEvent} from '@/utils/analytics';
+import React, {useEffect, useRef} from 'react';
 import AnswersTable from './AnswersTables';
 
 interface AnsweredQuestionsModalProps {
@@ -26,7 +26,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         onClose();
-        logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
+        logEvent('modal_close', {modal: 'AnsweredQuestionsModal'});
       }
     };
 
@@ -42,7 +42,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
   }, [open, onClose]);
 
   if (!userInfo) {
-    return null; // or return a loading indicator or a message
+    return null;
   }
 
   if (!open) return null;
@@ -60,7 +60,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
       ref={modalRef}
       tabIndex={-1}>
       {/* actual content of the modal is below */}
-      <div className='bg-white rounded-lg p-6 w-full xl:w-2/3'>
+      <div className='bg-white rounded-lg p-6 w-full max-h-[150rem] xl:w-2/3'>
         <div className='flex justify-between items-center mb-4'>
           <h2 className='text-xl font-bold' id='answered-questions-modal-title'>
             {language === 'fi' ? 'Vastatut kysymykset' : 'Answered Questions'}
@@ -70,7 +70,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
             className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
             onClick={() => {
               onClose();
-              logEvent('modal_close', { modal: 'AnsweredQuestionsModal' });
+              logEvent('modal_close', {modal: 'AnsweredQuestionsModal'});
             }}
             aria-label='Close answered questions modal'>
             {language === 'fi' ? 'Sulje' : 'Close'}
@@ -79,9 +79,7 @@ const AnsweredQuestionsModal: React.FC<AnsweredQuestionsModalProps> = ({
 
         <div className=' p-2'>
           {answeredQuestions.length > 0 ? (
-            <AnswersTable
-
-            />
+            <AnswersTable onClose={onClose} />
           ) : (
             <p className='text-center'>
               {language === 'fi'

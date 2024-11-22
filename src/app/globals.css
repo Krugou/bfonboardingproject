@@ -41,10 +41,32 @@
   .listening-mode-toggle {
     @apply dark:bg-gray-100 dark:text-white;
   }
+
+  .primary-badge-button {
+    @apply flex flex-row justify-center  select-none cursor-pointer items-center p-1.5 px-5 gap-2.5 rounded-full;
+  }
+
+  .primary-badge-button-selected {
+    @apply primary-badge-button	 text-bf-white h-[2.125rem] bg-bf-brand-primary;
+  }
+
+  .primary-badge-button-unselected {
+    @apply primary-badge-button box-border text-bf-brand-primary h-[2.375rem] bg-bf-white border border-bf-brand-primary;
+  }
+
+  .primary-button {
+    @apply flex flex-row font-semibold select-none	 cursor-pointer items-start p-2.5 px-7 w-full h-[2,6rem] text-bf-white bg-bf-brand-primary rounded-full flex-none flex-grow-0
+  }
+
+  .secondary-button {
+    @apply box-border flex font-semibold select-none	 cursor-pointer text-bf-brand-primary flex-row justify-center items-center p-2.5 px-7 h-[2,8rem] bg-bf-white border border-bf-brand-primary rounded-full flex-none flex-grow-0
+  }
 }
+
+
+
 
 @font-face {
   font-family: 'Finlandica';
-  src: url('/fonts/Finlandica/Finlandica-VariableFont_wght.ttf')
-    format('truetype');
+  src: url('/fonts/Finlandica/Finlandica-VariableFont_wght.ttf') format('truetype');
 }

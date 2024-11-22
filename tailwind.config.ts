@@ -1,4 +1,4 @@
-import type { Config } from 'tailwindcss';
+import type {Config} from 'tailwindcss';
 
 const config: Config = {
   darkMode: 'class', // P521a
@@ -74,7 +74,7 @@ const config: Config = {
         'bf-black': '#191919',
         'bf-darkgray': '#343a40',
         'bf-lightgray': '#e7ebef',
-        'bf-gray': '#c7cace',
+        'bf-gray2': '#c7cace',
         'bf-red': '#c12d3b',
         'bf-green': '#0b7724',
         'bf-yellow': '#ffc107',
@@ -83,6 +83,8 @@ const config: Config = {
         'bf-gradient-1': '#000068',
         'bf-gradient-2': '#0048ff',
         'bf-gradient-3': '#19b2ff',
+        'bf-brand-secondary': '#CCD7F5',
+        'bf-gray': '#d2d2d2',
         'dark-bg': '#1a202c', // P0e4c
         'dark-text': '#a0aec0', // P0e4c
         'dark-primary': '#2d3748', // P0e4c

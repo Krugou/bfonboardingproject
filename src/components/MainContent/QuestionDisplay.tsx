@@ -48,7 +48,7 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
         <div className='flex flex-col justify-center items-center h-full  w-full rounded-xl p-6 dark:bg-gray-600 dark:text-white'>
           <div className='flex justify-end w-full items-center rounded-xl'>
             <button
-              className='flex justify-center items-center border text-blue-500 hover:text-blue-700 border-blue-500 m-1 p-2 rounded-xl h-6 w-6 dark:text-blue-300 dark:border-blue-300'
+              className='flex justify-center items-center border text-bf-brand-primary  border-blue-500 m-1 p-2 rounded-xl h-6 w-6 '
               onClick={() => setShowTooltip(!showTooltip)}
               aria-label={language === 'fi' ? 'Näytä tooltip' : 'Show tooltip'}
               role='button'>
@@ -67,17 +67,17 @@ const QuestionDisplay: React.FC<QuestionDisplayProps> = ({}) => {
                   toast,
                 );
               }}
-              className='ml-2 p-2 text-blue-500 hover:text-blue-700 whitespace-normal break-all dark:text-blue-300'
+              className=' p-4 text-bf-brand-primary  '
               aria-label={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
               role='button'>
-              <VolumeUpIcon fontSize='large' />
+              <VolumeUpIcon fontSize='medium' />
             </button>
           </div>
           <div className='group'>
             <h2
-              className='text-center w-full h-full font-bold text-lg sm:text-2xl md:text-3xl lg:text-4xl text-bf-brand-primary overflow-wrap break-word dark:text-white'
+              className='text-center w-full h-full font-bold text-lg lg:text-xl text-bf-brand-primary overflow-wrap break-word '
               title={questions[currentStep - 1].tooltip[language]}
               tabIndex={0}
               aria-live='polite'>

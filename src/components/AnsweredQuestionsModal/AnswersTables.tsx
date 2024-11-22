@@ -3,13 +3,11 @@ import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 
 interface AnswersTableProps {
-
+  onClose: () => void;
 }
 
-const AnswersTable: React.FC<AnswersTableProps> = ({
-
-}) => {
-  const {userInfo, language,questions,setCurrentStep} = useUserContext();
+const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
+  const {userInfo, language, questions, setCurrentStep} = useUserContext();
   if (!userInfo) {
     return null; // or return a loading indicator or a message
   }
@@ -20,7 +18,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
   );
 
   return (
-    <div className='overflow-x-auto'>
+    <div className='overflow-x-auto max-h-96'>
       <table className='min-w-full bg-white border-collapse border border-gray-300'>
         <thead>
           <tr>
@@ -35,7 +33,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className=''>
           {answeredQuestions.length > 0 ? (
             answeredQuestions.map((q) => {
               // Find the current step by locating the question index
@@ -76,6 +74,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({
                       className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
                       onClick={() => {
                         setCurrentStep(currentStep);
+                        onClose();
                       }}
                       aria-label={`Go back to question ${currentStep}`}>
                       {language === 'fi'

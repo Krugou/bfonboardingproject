@@ -22,6 +22,19 @@ interface MainContentProps {
 const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   const {userInfo, setUserInfo, language} = useUserContext();
   const [resetQuestions, setResetQuestions] = useState<boolean | null>(null);
+  const [hasExistingAnswers, setHasExistingAnswers] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Only check for existing answers during initial page load
+    const hasAnswers = !!(
+      userInfo?.questionAnswers &&
+      Object.keys(userInfo.questionAnswers).length > 0
+    );
+    setHasExistingAnswers(hasAnswers);
+
+    // Log page view
+    logEvent('page_view', {page: 'MainContent'});
+  }, []); // Empty dependency array ensures this only runs once
 
   const handleReset = () => {
     //@ts-ignore
@@ -33,16 +46,8 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
     setResetQuestions(false);
   };
 
-  useEffect(() => {
-    logEvent('page_view', {page: 'MainContent'});
-  }, []);
-
-  if (
-    resetQuestions === null &&
-    userInfo &&
-    userInfo.questionAnswers &&
-    Object.keys(userInfo.questionAnswers).length > 0
-  ) {
+  // Modified condition to show dialog
+  if (resetQuestions === null && hasExistingAnswers) {
     return (
       <div className='flex flex-col justify-center items-center h-screen'>
         <div className='w-full bg-bf-brand-primary dark:bg-gray-800 p-4 rounded-xl'>
@@ -69,8 +74,8 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   }
 
   return (
-    <div className='flex flex-col justify-center items-center w-full h-full'>
-      <main className='w-full h-full flex flex-col shadow-xl border-blue-400 border-4 bg-gray-100 dark:bg-gray-900 rounded-xl m-10 p-4 max-w-screen-lg max-h-min transition-all duration-500 ease-in-out transform hover:scale-105'>
+    <div className='flex flex-col justify-center items-center  w-full h-full'>
+      <main className='w-full h-full flex flex-col shadow-xl border-bf-brand-primary border-4 bg-bf-white  rounded-xl  p-4 max-w-screen-lg max-h-min  '>
         <UpperPanel handleOpenModal={handleOpenModal} />
         <QuestionDisplay />
         <QuestionsNavigator />

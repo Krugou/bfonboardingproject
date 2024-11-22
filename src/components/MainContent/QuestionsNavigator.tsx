@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {useUserContext} from '../../context/UserContext';
 import QuestionInput from './QuestionsNavigator/QuestionInput';
+
 interface QuestionNavigatorProps {}
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
@@ -9,29 +10,41 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     setCurrentQuestion,
     setCurrentStep,
     currentStep,
-    listeningMode,
     questions,
+    userInfo,
   } = useUserContext();
 
   const handleReset = () => {
     setCurrentStep(1);
     setCurrentQuestion(1);
   };
+
+  const isNextButtonDisabled = () => {
+    if (currentStep === questions.length) return true;
+    if (!userInfo?.questionAnswers) return true;
+
+    const currentQuestion = questions[currentStep - 1];
+    const hasAnswer = !!userInfo.questionAnswers[currentQuestion.id];
+
+    // Special validation for first question (k1)
+    if (currentStep === 1) {
+      return !hasAnswer || !userInfo.questionAnswers['k1'];
+    }
+
+    return !hasAnswer;
+  };
+
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        // @ts-ignore
-        setCurrentStep((prevStep: number) =>
-          Math.min(prevStep + 1, questions.length),
-        );
-        // @ts-ignore
+      if (event.key === 'ArrowRight' && !isNextButtonDisabled()) {
+        // @ts-expect-error
+        setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
         setCurrentQuestion((prevStep) =>
           Math.min(prevStep + 1, questions.length),
         );
-      } else if (event.key === 'ArrowLeft') {
-        // @ts-ignore
+      } else if (event.key === 'ArrowLeft' && currentStep > 1) {
+        // @ts-expect-error
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
-        // @ts-ignore
         setCurrentQuestion((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
@@ -40,20 +53,28 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [setCurrentStep, setCurrentQuestion]);
+  }, [
+    setCurrentStep,
+    setCurrentQuestion,
+    questions.length,
+    currentStep,
+    isNextButtonDisabled,
+  ]);
 
   return (
     <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
       <button
-        className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
+        className='w-auto secondary-button uppercase'
         onClick={() => {
-          setCurrentStep(currentStep - 1);
-          setCurrentQuestion(currentStep - 1);
+          if (currentStep > 1) {
+            setCurrentStep(currentStep - 1);
+            setCurrentQuestion(currentStep - 1);
+          }
         }}
         disabled={currentStep === 1}
         aria-label={language === 'fi' ? 'Edellinen' : 'Previous'}
         role='button'>
-        {language === 'fi' ? 'Edellinen' : 'Previous'}
+        {language === 'fi' ? 'EDELLINEN' : 'PREVIOUS'}
       </button>
       {currentStep <= questions.length ? (
         <>
@@ -61,24 +82,28 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
             <QuestionInput question={questions[currentStep - 1]} />
           </div>
           <button
-            className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded disabled:opacity-50 w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
+            className={`primary-button w-auto uppercase ${
+              isNextButtonDisabled() ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
             onClick={() => {
-              setCurrentStep(currentStep + 1);
-              setCurrentQuestion(currentStep + 1);
+              if (!isNextButtonDisabled()) {
+                setCurrentStep(currentStep + 1);
+                setCurrentQuestion(currentStep + 1);
+              }
             }}
-            disabled={currentStep === questions.length}
+            disabled={isNextButtonDisabled()}
             aria-label={language === 'fi' ? 'Seuraava' : 'Next'}
             role='button'>
-            {language === 'fi' ? 'Seuraava' : 'Next'}
+            {language === 'fi' ? 'SEURAAVA' : 'NEXT'}
           </button>
         </>
       ) : (
         <button
-          className='bg-bf-red hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800'
+          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800 uppercase'
           onClick={handleReset}
           aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
           role='button'>
-          {language === 'fi' ? 'Nollaa' : 'Reset'}
+          {language === 'fi' ? 'NOLLAA' : 'RESET'}
         </button>
       )}
     </div>

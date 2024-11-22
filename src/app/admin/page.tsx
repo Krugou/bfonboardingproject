@@ -8,7 +8,7 @@ const AdminPage: React.FC = () => {
   return (
     <>
       <ToastContainer
-        position='top-right'
+        position='top-center'
         autoClose={5000}
         hideProgressBar={false}
         newestOnTop={false}

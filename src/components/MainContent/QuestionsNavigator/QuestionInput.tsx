@@ -26,11 +26,8 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     setCurrentStep,
     currentStep,
   );
-  const {
-    handleSingleChoiceClick,
-    handleMultiChoiceClick,
-    handleSliderChange,
-  } = useCommand(question);
+  const {handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange} =
+    useCommand(question);
   const {recognition, transcriptContent, startListening, stopListening} =
     useSpeechRecognition(
       language as 'en' | 'fi',
@@ -129,10 +126,10 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   return (
     <>
       <div className='w-full'>{renderInput()}</div>
-      {listeningMode && (
+      {listeningMode && transcriptContent && (
         <div className='p-2 m-2 border rounded-xl'>
           <p className='text-base font-bold text-bf-brand-primary'>
-            {language === 'fi' ? 'Kuulin Komennon: ' : 'I heard Command: '}
+            {language === 'fi' ? 'Kuulin: ' : 'Heard: '}
             {transcriptContent}
           </p>
         </div>

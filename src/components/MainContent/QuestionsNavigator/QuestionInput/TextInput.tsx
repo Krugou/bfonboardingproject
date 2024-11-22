@@ -60,15 +60,15 @@ const TextInput: React.FC<TextInputProps> = ({
   };
 
   return (
-    <div className='p-2 border rounded-xl m-1 flex flex-col justify-center items-center w-full'>
-      <label className='mb-2 text-gray-700 text-center'>
-        {question.question[language]}
+    <div className='p-2 rounded-xl m-1 flex flex-col justify-center items-center w-full'>
+      <label className='mb-2  text-center text-bf-brand-primary'>
+        {question.tooltip[language]}
       </label>
       <input
         type='text'
         value={inputValue}
         onChange={handleChange}
-        className='p-2 border rounded w-full sm:w-3/4 lg:w-1/2'
+        className='p-2 border-bf-brand-primary text-bf-brand-primary border-2 rounded w-full sm:w-3/4 lg:w-1/2'
         placeholder={question.syntaxPlaceholder[language]}
         maxLength={question.maxLength}
         aria-label={question.question[language as 'en' | 'fi']}
@@ -77,7 +77,7 @@ const TextInput: React.FC<TextInputProps> = ({
           error ? 'error-message' : found ? 'success-message' : ''
         }
       />
-      <div className='mt-2 text-gray-600 text-sm'>
+      <div className='mt-2 text-bf-brand-primary text-sm'>
         {charCount}/{question.maxLength}{' '}
         {language === 'fi' ? 'merkkiä' : 'characters'}
       </div>

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
-import { toast } from 'react-toastify';
+import {useCallback, useEffect, useState} from 'react';
+import {toast} from 'react-toastify';
 
 interface SpeechRecognition {
   continuous: boolean;
@@ -10,8 +10,14 @@ interface SpeechRecognition {
   stop: () => void;
 }
 
-const useSpeechRecognition = (language: string, handleVoiceCommand: (command: string) => void, listeningMode: boolean) => {
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+const useSpeechRecognition = (
+  language: string,
+  handleVoiceCommand: (command: string) => void,
+  listeningMode: boolean,
+) => {
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(
+    null,
+  );
   const [transcriptContent, setTranscriptContent] = useState<string>('');
 
   useEffect(() => {
@@ -22,7 +28,7 @@ const useSpeechRecognition = (language: string, handleVoiceCommand: (command: st
     if (SpeechRecognition) {
       try {
         const recognitionInstance = new SpeechRecognition();
-        recognitionInstance.continuous = true;
+        recognitionInstance.continuous = false;
         recognitionInstance.interimResults = false;
         recognitionInstance.lang = language === 'fi' ? 'fi-FI' : 'en-US';
 
@@ -78,9 +84,9 @@ const useSpeechRecognition = (language: string, handleVoiceCommand: (command: st
     } else {
       stopListening();
     }
-  }, [listeningMode ]);
+  }, [listeningMode]);
 
-  return { recognition, transcriptContent, startListening, stopListening };
+  return {recognition, transcriptContent, startListening, stopListening};
 };
 
 export default useSpeechRecognition;
