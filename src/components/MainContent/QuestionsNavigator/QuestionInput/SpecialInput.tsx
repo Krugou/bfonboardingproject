@@ -108,9 +108,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
 
   return (
     <div className='p-2 border gap-2 rounded-xl m-1 flex flex-col justify-center items-center w-full'>
-      <label className='mb-2 text-gray-700 text-center'>
-        {question.question[language]}
-      </label>
+      <label className='mb-2  text-center'>{question.question[language]}</label>
       <div className='w-full sm:w-3/4 lg:w-1/2'>
         <label htmlFor='industry-select' className='block text-gray-700 mb-1'>
           {labels.industry[language]}
