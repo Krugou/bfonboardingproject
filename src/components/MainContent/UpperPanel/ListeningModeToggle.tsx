@@ -19,7 +19,9 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({}) => {
   return (
     <div
       className={`flex gap-1 justify-center items-center   ${
-        listeningMode ? '' : ''
+        listeningMode
+          ? 'border-[0.2rem] border-bf-brand-primary rounded-xl p-2 '
+          : ''
       }`}
       title={titleText}>
       <label className='inline-flex items-center cursor-pointer'>
