@@ -59,7 +59,7 @@
   }
 
   .secondary-button {
-    @apply box-border flex flex-row justify-center items-center p-2.5 px-7 h-[2,8rem] bg-bf-white border border-bf-brand-primary rounded-full flex-none flex-grow-0
+    @apply box-border flex font-semibold text-bf-brand-primary flex-row justify-center items-center p-2.5 px-7 h-[2,8rem] bg-bf-white border border-bf-brand-primary rounded-full flex-none flex-grow-0
   }
 }
 
