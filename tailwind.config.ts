@@ -83,6 +83,7 @@ const config: Config = {
         'bf-gradient-1': '#000068',
         'bf-gradient-2': '#0048ff',
         'bf-gradient-3': '#19b2ff',
+        'bf-brand-secondary': '#CCD7F5',
         'dark-bg': '#1a202c', // P0e4c
         'dark-text': '#a0aec0', // P0e4c
         'dark-primary': '#2d3748', // P0e4c

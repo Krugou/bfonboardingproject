@@ -28,20 +28,20 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
       <div
         className='ml-4 p-2 flex flex-col justify-center items-center w-full'
         role='group'>
-        <div className='mb-2 text-gray-700 text-center'>
+        <div className='mb-2 text-bf-black font-medium text-center'>
           {language === 'fi'
             ? 'Valitse yksi vaihtoehto:'
             : 'Select one option:'}
         </div>
-        <div className='flex flex-wrap justify-center w-full max-h-96 overflow-y-auto'>
+        <div className='flex flex-wrap justify-center w-full gap-4 max-h-96 overflow-y-auto'>
           {options.map((option, index) => (
             <button
               key={index}
-              className={`p-2 sm:p-4 m-1 sm:m-2 border rounded ${
+              className={` ${
                 userInfo?.questionAnswers[question.id] === option.trim()
-                  ? 'bg-green-500 text-white'
-                  : 'border-gray-300'
-              } w-full sm:w-auto text-sm sm:text-lg`}
+                  ? 'primary-badge-button-selected '
+                  : 'primary-badge-button-unselected'
+              }  sm:w-auto text-sm sm:text-lg`}
               onClick={() => handleSingleChoiceClick(option.trim())}
               aria-label={`Select ${option.trim()}`}
               role='button'>
@@ -58,20 +58,20 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
       <div
         className='p-2 ml-4 w-full flex flex-col justify-center items-center'
         role='group'>
-        <div className='mb-2 text-gray-700 text-center'>
+        <div className='mb-2 text-bf-black font-medium text-center'>
           {language === 'fi'
             ? 'Valitse yksi tai useampi vaihtoehto'
             : 'Select one or more options from below'}
         </div>
-        <div className='flex flex-wrap justify-center w-full max-h-96 overflow-y-auto'>
+        <div className='flex flex-wrap justify-center w-full gap-4 max-h-96 overflow-y-auto'>
           {options.map((option, index) => (
             <button
               key={index}
-              className={`p-2 m-1 border sm:m-2 rounded ${
+              className={`${
                 userInfo?.questionAnswers[question.id]?.includes(option.trim())
-                  ? 'bg-green-500 text-white'
-                  : 'border-gray-300'
-              } w-full sm:w-auto text-sm sm:text-lg`}
+                  ? 'primary-badge-button-selected '
+                  : 'primary-badge-button-unselected'
+              } sm:w-auto text-sm sm:text-lg`}
               onClick={() => handleMultiChoiceClick(option.trim())}
               aria-label={`Select ${option.trim()}`}
               role='button'>
