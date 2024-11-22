@@ -13,7 +13,7 @@ import {usePathname} from 'next/navigation';
  * @returns {JSX.Element} The rendered Header component.
  */
 const Header: React.FC = () => {
-  const {setLanguage, language, currentQuestion, userInfo, questions} =
+  const {setLanguage, language, userInfo, currentStep, questions} =
     useUserContext();
   const router = useRouter();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -88,8 +88,8 @@ const Header: React.FC = () => {
           </p>
           <p
             className='mx-2 text-white font-bold dark:text-gray-200'
-            title={questions[currentQuestion - 1]?.question[language]}>
-            {questions[currentQuestion - 1]?.id}
+            title={questions[currentStep]?.question[language]}>
+            {questions[currentStep]?.id}
           </p>
         </div>
       )}
