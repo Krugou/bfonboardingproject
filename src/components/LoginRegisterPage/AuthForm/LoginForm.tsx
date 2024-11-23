@@ -72,7 +72,6 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
             }>
             <GoogleIcon />
           </button>
-
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -155,25 +154,15 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
               className='primary-button text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
             </button>
-            <button
-              type='button'
-              onClick={toggleAuthMode}
+            <Link
+              href='/register'
               className='inline-block align-baseline font-bold text-sm text-bf-brand-primary hover:text-blue-800'>
               {language === 'fi'
                 ? 'Ekaa kertaa täällä? rekisteröidy '
                 : 'First time here? Register'}
-            </button>
+            </Link>
           </div>
         </form>
-        <div className='mt-4 text-center'>
-          <Link href='/register'>
-            <a className='text-bf-brand-primary hover:text-blue-800'>
-              {language === 'fi'
-                ? 'Eikö sinulla ole tiliä? Rekisteröidy'
-                : "Don't have an account? Register"}
-            </a>
-          </Link>
-        </div>
       </div>
     </div>
   );

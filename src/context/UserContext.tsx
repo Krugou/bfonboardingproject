@@ -4,6 +4,7 @@ import {auth, db} from '@/utils/firebase';
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
+
 interface UserContextType {
   userInfo: {
     email: string;
@@ -46,8 +47,8 @@ interface UserContextType {
   setLastInteractionTime: React.Dispatch<React.SetStateAction<number>>;
   listeningMode: boolean;
   setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentStep: (step: number) => void;
   currentStep: number;
+  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   saveDropdownSelection: (
     questionId: string,
     selectedOptions: string[],
@@ -82,7 +83,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('🚀 ~ unsubscribe ~ auth:', auth);
       if (user) {
         try {
           // User is signed in, fetch user info from Firestore
@@ -101,7 +101,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
               browserInfo: accountData.browserInfo,
               lastName: accountData.lastName,
               firstName: accountData.firstName,
-              totalScore: accountData.totalScore,
+              totalScore: accountData.totalScore ?? 0,
               businessId: accountData.businessId,
               preferredLanguage: accountData.preferredLanguage,
             });
@@ -124,7 +124,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     if (userInfo) {
       if (auth.currentUser?.uid) {
         const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
-        updateDoc(accountDocRef, {
+        const updateData: Partial<UserContextType['userInfo']> = {
           email: userInfo.email,
           questionAnswers: userInfo.questionAnswers,
           lastLogin: userInfo.lastLogin,
@@ -132,9 +132,20 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           browserInfo: userInfo.browserInfo,
           lastName: userInfo.lastName,
           firstName: userInfo.firstName,
-          totalScore: userInfo.totalScore,
+          totalScore: userInfo.totalScore ?? 0,
           businessId: userInfo.businessId,
           preferredLanguage: userInfo.preferredLanguage,
+        };
+
+        // Remove undefined fields
+        Object.keys(updateData).forEach(
+          (key) =>
+            updateData[key as keyof typeof updateData] === undefined &&
+            delete updateData[key as keyof typeof updateData],
+        );
+
+        updateDoc(accountDocRef, updateData).catch((error) => {
+          console.error('Error updating user info: ', error);
         });
       }
     }
@@ -213,6 +224,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       );
     };
   }, []);
+
   const saveDropdownSelection = async (
     questionId: string,
     selectedOptions: string[],
@@ -238,6 +250,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       }
     }
   };
+
   // automatically sign out user after 1 hour of inactivity
   useEffect(() => {
     const checkInactivity = () => {
@@ -267,7 +280,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setListeningMode,
         setCurrentStep,
         currentStep,
-
         saveDropdownSelection,
       }}>
       {children}

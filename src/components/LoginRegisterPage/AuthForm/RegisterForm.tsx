@@ -333,25 +333,15 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
               className='primary-button w-1/2 rounded focus:outline-none focus:shadow-outline'>
               {language === 'fi' ? 'Rekisteröidy' : 'Register'}
             </button>
-            <button
-              type='button'
-              onClick={toggleAuthMode}
+            <Link
+              href='/login'
               className='inline-block align-baseline font-bold text-sm text-bf-brand-primary hover:text-blue-800'>
               {language === 'fi'
                 ? 'Onko sinulla jo tili? Kirjaudu'
                 : 'Have an account? Login'}
-            </button>
+            </Link>
           </div>
         </form>
-        <div className='mt-4 text-center'>
-          <Link href='/login'>
-            <a className='text-bf-brand-primary hover:text-blue-800'>
-              {language === 'fi'
-                ? 'Onko sinulla jo tili? Kirjaudu'
-                : 'Already have an account? Login'}
-            </a>
-          </Link>
-        </div>
       </div>
     </div>
   );
