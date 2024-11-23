@@ -119,12 +119,22 @@ const Header: React.FC = () => {
             <button
               className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl dark:bg-gray-700 dark:text-gray-200'
               onClick={() => {
-                router.push('/loginregister');
+                router.push('/login');
                 logEvent('login_button_click');
               }}
               aria-label={language === 'fi' ? 'Kirjaudu' : 'Login'}
               role='button'>
               {language === 'fi' ? 'Kirjaudu' : 'Login'}
+            </button>
+            <button
+              className='bg-white text-bf-brand-primary font-bold py-2 px-4 rounded-xl dark:bg-gray-700 dark:text-gray-200'
+              onClick={() => {
+                router.push('/register');
+                logEvent('register_button_click');
+              }}
+              aria-label={language === 'fi' ? 'Rekisteröidy' : 'Register'}
+              role='button'>
+              {language === 'fi' ? 'Rekisteröidy' : 'Register'}
             </button>
           </>
         )}
