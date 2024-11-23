@@ -6,6 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import Link from 'next/link';
 
 // Password validation schema
 const passwordSchema = z
@@ -342,6 +343,15 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
             </button>
           </div>
         </form>
+        <div className='mt-4 text-center'>
+          <Link href='/login'>
+            <a className='text-bf-brand-primary hover:text-blue-800'>
+              {language === 'fi'
+                ? 'Onko sinulla jo tili? Kirjaudu'
+                : 'Already have an account? Login'}
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );

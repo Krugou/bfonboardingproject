@@ -6,6 +6,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
+import Link from 'next/link';
 
 // Validation schema
 const loginSchema = z.object({
@@ -164,6 +165,15 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
             </button>
           </div>
         </form>
+        <div className='mt-4 text-center'>
+          <Link href='/register'>
+            <a className='text-bf-brand-primary hover:text-blue-800'>
+              {language === 'fi'
+                ? 'Eikö sinulla ole tiliä? Rekisteröidy'
+                : "Don't have an account? Register"}
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );
