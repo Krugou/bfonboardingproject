@@ -1,12 +1,14 @@
 import React, {useState, useCallback} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-import {BaseAuthFormProps} from '@/types/auth';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import {useAuth} from '@/hooks/useAuth';
+import {useRouter} from 'next/router';
+import {useUserContext} from '@/context/UserContext';
 
 // Password validation schema
 const passwordSchema = z
@@ -30,26 +32,20 @@ const passwordSchema = z
     path: ['confirmPassword'],
   });
 
-const RegisterForm: React.FC<BaseAuthFormProps> = ({
-  email,
-  setEmail,
-  password,
-  setPassword,
-  firstName,
-  lastName,
-  setFirstName,
-  setLastName,
-  businessId,
-  setBusinessId,
-  preferredLanguage,
-  setPreferredLanguage,
-  onSubmit,
-  onClose,
-  language,
-  toggleAuthMode,
-}) => {
+const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [businessId, setBusinessId] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
+  const router = useRouter();
+  const {language} = useUserContext();
 
   const {
     register,
@@ -70,20 +66,49 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
 
   const handleFormSubmit = useCallback(
     async (data: any) => {
+      if (isLoading) return;
       try {
-        await onSubmit(data);
+        setIsLoading(true);
+        const success = await handleEmailPasswordAuth(
+          data.email,
+          data.password,
+          false, // isLogin
+          firstName,
+          lastName,
+        );
+        if (success) {
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          await router.replace('/');
+        }
       } catch (error) {
         console.error('Registration error:', error);
-        // Handle error appropriately
+      } finally {
+        setIsLoading(false);
       }
     },
-    [onSubmit],
+    [handleEmailPasswordAuth, router, isLoading, firstName, lastName],
   );
+
+  const handleGoogleAuthAndRedirect = useCallback(async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const success = await handleGoogleLogin();
+      if (success) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await router.replace('/');
+      }
+    } catch (error) {
+      console.error('Google authentication error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [handleGoogleLogin, router, isLoading]);
 
   return (
     <div
       className='flex flex-col items-center justify-center'
-      onClick={onClose}
+      onClick={() => router.push('/')}
       role='dialog'
       aria-labelledby='register-title'>
       <div className='h-10 w-full flex items-center justify-center bg-bf-gray'>
@@ -170,7 +195,7 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
             />
             {errors.businessId && (
               <p className='mt-1 text-red-600 text-sm' role='alert'>
-                {errors.businessId.message}
+                {errors.businessId?.message?.toString()}
               </p>
             )}
           </div>
@@ -200,7 +225,7 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
             </select>
             {errors.preferredLanguage && (
               <p className='mt-1 text-red-600 text-sm' role='alert'>
-                {errors.preferredLanguage.message}
+                {errors.preferredLanguage?.message?.toString()}
               </p>
             )}
           </div>
@@ -244,7 +269,7 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
                 id='password'
                 type={showPassword ? 'text' : 'password'}
                 autoComplete='new-password'
-                aria-invalid={errors.password ? 'true' : 'false'}
+                aria-invalid={errors.password ? true : false}
                 aria-describedby={
                   errors.password ? 'password-error' : undefined
                 }
@@ -330,8 +355,15 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
           <div className='flex items-center justify-between gap-2'>
             <button
               type='submit'
+              disabled={isLoading}
               className='primary-button w-1/2 rounded focus:outline-none focus:shadow-outline'>
-              {language === 'fi' ? 'Rekisteröidy' : 'Register'}
+              {isLoading
+                ? language === 'fi'
+                  ? 'Rekisteröidytään...'
+                  : 'Registering...'
+                : language === 'fi'
+                ? 'Rekisteröidy'
+                : 'Register'}
             </button>
             <Link
               href='/login'
@@ -342,6 +374,12 @@ const RegisterForm: React.FC<BaseAuthFormProps> = ({
             </Link>
           </div>
         </form>
+
+        {error && (
+          <p className='mt-4 text-red-600 text-sm text-center' role='alert'>
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );

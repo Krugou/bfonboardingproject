@@ -1,12 +1,14 @@
 import React, {useState, useCallback} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
-import {BaseAuthFormProps} from '@/types/auth';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import {useAuth} from '@/hooks/useAuth';
+import {useRouter} from 'next/router';
+import {useUserContext} from '@/context/UserContext';
 
 // Validation schema
 const loginSchema = z.object({
@@ -14,18 +16,15 @@ const loginSchema = z.object({
   password: z.string().min(4, 'Password must be at least 4 characters'),
 });
 
-const LoginForm: React.FC<BaseAuthFormProps> = ({
-  email,
-  setEmail,
-  password,
-  setPassword,
-  onSubmit,
-  onClose,
-  handleGoogleLogin,
-  language,
-  toggleAuthMode,
-}) => {
+const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
+  const router = useRouter();
+  const {language} = useUserContext();
 
   const {
     register,
@@ -42,19 +41,49 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
 
   const handleFormSubmit = useCallback(
     async (data: any) => {
+      if (isLoading) return;
       try {
-        await onSubmit(data);
+        setIsLoading(true);
+        const success = await handleEmailPasswordAuth(
+          data.email,
+          data.password,
+          true, // isLogin
+          '', // firstName
+          '', // lastName
+        );
+        if (success) {
+          await new Promise((resolve) => setTimeout(resolve, 0));
+          await router.replace('/');
+        }
       } catch (error) {
         console.error('Login error:', error);
+      } finally {
+        setIsLoading(false);
       }
     },
-    [onSubmit],
+    [handleEmailPasswordAuth, router, isLoading],
   );
+
+  const handleGoogleAuthAndRedirect = useCallback(async () => {
+    if (isLoading) return;
+    try {
+      setIsLoading(true);
+      const success = await handleGoogleLogin();
+      if (success) {
+        await new Promise((resolve) => setTimeout(resolve, 0));
+        await router.replace('/');
+      }
+    } catch (error) {
+      console.error('Google authentication error:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [handleGoogleLogin, router, isLoading]);
 
   return (
     <div
       className='flex items-center justify-center'
-      onClick={onClose}
+      onClick={() => router.push('/')}
       role='dialog'
       aria-labelledby='login-title'>
       <div className='bg-white p-8 w-96' onClick={(e) => e.stopPropagation()}>
@@ -66,7 +95,8 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
           </h2>
           <button
             className='bg-bf-brand-primary hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full flex justify-center items-center'
-            onClick={handleGoogleLogin}
+            onClick={handleGoogleAuthAndRedirect}
+            disabled={isLoading}
             title={
               language === 'fi' ? 'Kirjaudu Googlella' : 'Login with Google'
             }>
@@ -91,7 +121,7 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
               value={email}
               className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
               required
-              aria-invalid={errors.email ? 'true' : 'false'}
+              aria-invalid={errors.email ? true : false}
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
             {errors.email && (
@@ -151,8 +181,15 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
           <div className='flex items-center justify-between'>
             <button
               type='submit'
+              disabled={isLoading}
               className='primary-button text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline'>
-              {language === 'fi' ? 'Kirjaudu' : 'Login'}
+              {isLoading
+                ? language === 'fi'
+                  ? 'Kirjaudutaan...'
+                  : 'Logging in...'
+                : language === 'fi'
+                ? 'Kirjaudu'
+                : 'Login'}
             </button>
             <Link
               href='/register'
@@ -163,6 +200,11 @@ const LoginForm: React.FC<BaseAuthFormProps> = ({
             </Link>
           </div>
         </form>
+        {error && (
+          <p className='mt-4 text-red-600 text-sm text-center' role='alert'>
+            {error}
+          </p>
+        )}
       </div>
     </div>
   );

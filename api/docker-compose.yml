@@ -1,6 +1,9 @@
 services:
   api:
-    build: .
+    build:
+      context: .
+      args:
+        NODE_ENV: production
     ports:
       - '3007:3007'
     environment:

@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import LoginForm from '@/components/LoginRegisterPage/AuthForm/LoginForm';
+import LoginForm from '@/components/Login/LoginForm';
 import {ToastContainer, Bounce} from 'react-toastify';
 import Header from '@/components/Header';
 
