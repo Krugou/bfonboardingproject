@@ -126,7 +126,7 @@ const QuestionDisplay = () => {
           </div>
           <div className='group space-y-2'>
             <h2
-              className='text-center w-full font-bold text-base lg:text-lg text-bf-brand-primary break-words'
+              className='text-center w-full font-medium text-base lg:text-lg text-bf-brand-primary break-words'
               title={questions[currentStep].tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
