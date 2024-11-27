@@ -5,7 +5,7 @@ interface BusinessLine {
 }
 
 const acceptedBusinessLines: BusinessLine[] = [
-  // ...existing code...
+
   {
     code: '000',
     descriptionFi: 'Toimiala tuntematon',
