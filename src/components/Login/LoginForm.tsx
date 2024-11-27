@@ -7,7 +7,7 @@ import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import {useAuth} from '@/hooks/useAuth';
-import {useRouter} from 'next/router';
+import {useRouter} from 'next/navigation';
 import {useUserContext} from '@/context/UserContext';
 
 // Validation schema
