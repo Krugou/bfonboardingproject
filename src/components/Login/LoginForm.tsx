@@ -13,7 +13,7 @@ import {useUserContext} from '@/context/UserContext';
 // Validation schema
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(4, 'Password must be at least 4 characters'),
+  password: z.string().min(1, 'Password must be at least 1 characters'),
 });
 
 const LoginForm: React.FC = () => {

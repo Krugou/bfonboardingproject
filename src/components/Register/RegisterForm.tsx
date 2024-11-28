@@ -16,16 +16,10 @@ const passwordSchema = z
     password: z
       .string()
       .min(8, 'Password must be at least 8 characters')
-      .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-      .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-      .regex(/[0-9]/, 'Password must contain at least one number')
-      .regex(
-        /[^A-Za-z0-9]/,
-        'Password must contain at least one special character',
-      ),
+      .regex(/[a-z]/, 'Password must contain at least one lowercase letter'),
     confirmPassword: z.string(),
     businessId: z.string().min(9, 'Business ID is required'),
-    preferredLanguage: z.string().min(1, 'Preferred language is required'),
+    preferredLanguage: z.string().min(2, 'Preferred language is required'),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -276,7 +270,7 @@ const RegisterForm: React.FC = () => {
                   id='password'
                   type={showPassword ? 'text' : 'password'}
                   autoComplete='new-password'
-                  aria-invalid={errors.password ? true : false}
+                  aria-invalid={!!errors.password}
                   aria-describedby={
                     errors.password ? 'password-error' : undefined
                   }
@@ -299,7 +293,7 @@ const RegisterForm: React.FC = () => {
                   id='password-error'
                   className='mt-1 text-red-600 text-sm'
                   role='alert'>
-                  {errors.password.message}
+                  {errors.password?.message?.toString()}
                 </p>
               )}
             </div>
