@@ -17,6 +17,12 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
+  const updateUser = (updates: Partial<UserProfile>) => {
+    if (!userInfo || !auth.currentUser?.uid) return;
+
+    setUserInfo(prev => ({...prev!, ...updates}));
+  };
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
@@ -177,6 +183,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setCurrentStep,
         currentStep,
         saveDropdownSelection,
+        updateUser,
       }}>
       {children}
     </UserContext.Provider>

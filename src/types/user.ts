@@ -1,3 +1,18 @@
+export interface BusinessLine {
+  type: string;
+  name: string;
+  language?: string;
+}
+
+export interface CompanyInfo {
+  businessId: string;
+  name: string;
+  registrationDate: string;
+  companyForm?: string;
+  mainBusinessLine?: BusinessLine;
+  createdAt: string;
+  status?: string;
+}
 
 export interface BrowserInfo {
   platform: string;
@@ -15,6 +30,7 @@ export interface UserProfile {
   totalScore?: number;
   businessId?: string;
   preferredLanguage?: string;
+  companyInfoResult?: CompanyInfo;
 }
 
 export interface UserContextState {
@@ -30,4 +46,5 @@ export interface UserContextState {
   currentStep: number;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   saveDropdownSelection: (questionId: string, selectedOptions: string[]) => void;
+  updateUser: (updates: Partial<UserProfile>) => void;
 }

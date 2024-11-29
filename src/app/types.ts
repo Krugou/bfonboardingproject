@@ -26,7 +26,8 @@ export interface SpecialCondition {
  * Interface for Question with both Finnish and English texts
  */
 export interface Question {
-  [key: string]: string;
+  en: string;
+  fi: string;
 }
 
 /**
@@ -77,7 +78,7 @@ export interface QuestionItem {
   };
   answerType: string;
   answerOptions?: AnswerOption[];
-  errorAnswer: {
+  errorAnswer?: {
     en: string;
     fi: string;
   };
@@ -101,6 +102,8 @@ export interface CompanyInfo {
     description?: string;
   }; // Website URL and optional description
   mainBusinessLine?: {
+    type: string; // Business line code
+
     descriptions: {description: string}[]; // Descriptions of the business line
   }; // Main business line information
   industry?: string; // Industry sector

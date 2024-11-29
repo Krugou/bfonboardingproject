@@ -19,9 +19,7 @@ const fetchCompanyInfo = async (
   businessId: string,
 ): Promise<CompanyInfo | undefined> => {
   try {
-    return await doFetch<{companies: CompanyInfo[]}>(
-      `https://avoindata.prh.fi/opendata-ytj-api/v3/companies?businessId=${businessId}`,
-    ).then((data) => data.companies?.[0]);
+    return await doFetch<CompanyInfo>(`/company/${businessId}`);
   } catch (error) {
     console.error('Error fetching company info:', error);
     return undefined;

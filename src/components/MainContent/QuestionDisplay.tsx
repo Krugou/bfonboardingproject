@@ -1,4 +1,3 @@
-import {QuestionItem, CompanyInfo} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
@@ -9,7 +8,7 @@ import {playAudio} from '@/utils/playAudio';
 
 const QuestionDisplay = () => {
   const {language, userInfo, questions, currentStep} = useUserContext();
-  const {companyInfo, isLoading} = useCompanyInfo();
+  const {companyInfo, isLoading, isUnsupportedBusiness, unsupportedReason} = useCompanyInfo();
   const [showTooltip, setShowTooltip] = useState(false);
 
   useQuestionsLogic();
@@ -131,6 +130,21 @@ const QuestionDisplay = () => {
                         </>
                       )}
                     </p>
+                    {isUnsupportedBusiness && (
+                      <div className='mt-4 space-y-2 text-red-600'>
+                        <p>
+                          {language === 'fi'
+                            ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
+                            : 'Unfortunately, we cannot provide funding for this business sector.'}
+                        </p>
+                        {unsupportedReason && (
+                          <p className='text-xs'>
+                            {language === 'fi' ? 'Syy: ' : 'Reason: '}
+                            {unsupportedReason}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                 ) : null}
               </div>

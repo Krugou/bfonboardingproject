@@ -4,8 +4,7 @@ interface BusinessLine {
   descriptionEn: string;
 }
 
-const acceptedBusinessLines: BusinessLine[] = [
-
+export const acceptedBusinessLines: BusinessLine[] = [
   {
     code: '000',
     descriptionFi: 'Toimiala tuntematon',

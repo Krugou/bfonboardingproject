@@ -28,7 +28,10 @@ interface FetchOptions {
  * @returns Promise with the parsed response data
  * @throws Error if the fetch fails or returns non-200 status
  */
-export const doFetch = async <T>(url: string, options?: FetchOptions): Promise<T> => {
+export const doFetch = async <T>(
+  url: string,
+  options?: FetchOptions,
+): Promise<T> => {
   try {
     if (!url) {
       throw new Error('URL is required');
@@ -38,17 +41,20 @@ export const doFetch = async <T>(url: string, options?: FetchOptions): Promise<T
     const defaultHeaders = {
       'accept': 'application/json',
       'Content-Type': 'application/json',
+      'method': 'GET',
     };
 
     const response = await fetch(formattedUrl, {
       method: options?.method || 'GET',
-      headers: { ...defaultHeaders, ...options?.headers },
-      ...(options?.body && { body: options.body }),
+      headers: {...defaultHeaders, ...options?.headers},
+      ...(options?.body && {body: options.body}),
     });
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+      throw new Error(
+        errorData.error || `HTTP error! status: ${response.status}`,
+      );
     }
 
     const data = await response.json();
