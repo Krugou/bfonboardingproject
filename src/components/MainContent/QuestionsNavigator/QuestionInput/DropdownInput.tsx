@@ -1,6 +1,6 @@
 import {QuestionItem} from '@/app/types';
 import React, {useEffect, useState} from 'react';
-import Select, {MultiValue, SingleValue} from 'react-select';
+import Select, {MultiValue} from 'react-select';
 import {useUserContext} from '@/context/UserContext';
 
 interface DropdownInputProps {

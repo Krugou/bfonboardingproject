@@ -2,15 +2,9 @@
 
 import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
-import {onAuthStateChanged, signOut} from 'firebase/auth';
+import {onAuthStateChanged} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useCallback,
-} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 
 // Update the context type definition
 const UserContext = createContext<

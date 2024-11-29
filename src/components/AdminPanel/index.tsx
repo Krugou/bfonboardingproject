@@ -17,7 +17,7 @@ import {db} from '@/utils/firebase';
 import {toast} from 'react-toastify';
 
 const AdminPanel: React.FC = () => {
-  const {questions, setQuestions, userInfo, language} = useUserContext();
+  const {questions, setQuestions, language} = useUserContext();
   const [currentQuestion, setCurrentQuestion] = useState<QuestionItem | null>(
     null,
   );
@@ -36,10 +36,10 @@ const AdminPanel: React.FC = () => {
       syntaxPlaceholder: {en: '', fi: ''},
       answerType: '',
       errorAnswer: {en: '', fi: ''},
-      answerOptions: [], // Optional, can be omitted if not needed
-      maxLength: 0, // Optional, can be omitted if not needed
-      validationRegex: {en: '', fi: ''}, // Optional, can be omitted if not needed
-      specialCondition: {}, // Optional, can be omitted if not needed
+      answerOptions: [],
+      maxLength: 0,
+      validationRegex: {en: '', fi: ''},
+      specialCondition: {},
     };
     setCurrentQuestion(newQuestion);
     setIsEditing(true);
@@ -93,8 +93,7 @@ const AdminPanel: React.FC = () => {
       if (subfield) {
         setCurrentQuestion({
           ...currentQuestion,
-          [field]: {
-            // @ts-ignore
+          [field as string]: {
             ...currentQuestion[field as keyof QuestionItem],
             [subfield]: value,
           },

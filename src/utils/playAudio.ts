@@ -1,9 +1,4 @@
-import {
-  AudioError,
-  AudioConfig,
-  AudioFileFormat,
-  AudioErrorCode,
-} from '@/types/audio';
+import {AudioError, AudioConfig, AudioFileFormat} from '@/types/audio';
 
 /**
  * Determines the base path for audio files based on the environment.
@@ -60,7 +55,7 @@ export const playAudio = (fileName: string): Promise<void> => {
         resolve();
       };
 
-      const onError = (e: Event) => {
+      const onError = () => {
         cleanup();
         const error = new Error('Failed to play audio') as AudioError;
         error.code = 'AUDIO_PLAY_ERROR';

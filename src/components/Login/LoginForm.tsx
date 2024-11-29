@@ -1,5 +1,4 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import GoogleIcon from '@mui/icons-material/Google';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -20,7 +19,7 @@ const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
+  const {handleEmailPasswordAuth, error} = useAuth();
   const router = useRouter();
   const {language} = useUserContext();
 
@@ -71,7 +70,7 @@ const LoginForm: React.FC = () => {
       if (e.animationName === 'onAutoFillStart') {
         setValue(target.name, target.value, {
           shouldValidate: true,
-          shouldDirty: true
+          shouldDirty: true,
         });
       }
     },

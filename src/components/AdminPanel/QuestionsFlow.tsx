@@ -36,6 +36,10 @@ const QuestionsFlow: React.FC<QuestionsFlowProps> = ({
 
   const toggleLock = async (index: number) => {
     const question = questions[index];
+    if (!question) {
+      console.error('Question not found at index:', index);
+      return;
+    }
     const newLockedStatus = !question.locked;
 
     try {

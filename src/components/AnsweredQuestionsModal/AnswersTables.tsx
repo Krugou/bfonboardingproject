@@ -1,4 +1,3 @@
-import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 

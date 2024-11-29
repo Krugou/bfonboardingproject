@@ -1,4 +1,10 @@
-const notAcceptedBusinessLines: BusinessLine[] = [
+interface BusinessLine {
+  code: string;
+  descriptionFi: string;
+  descriptionEn: string;
+}
+
+export const notAcceptedBusinessLines: BusinessLine[] = [
   {
     code: '00',
     descriptionFi: 'Toimiala tuntematon',

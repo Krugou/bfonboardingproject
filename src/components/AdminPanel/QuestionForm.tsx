@@ -41,8 +41,10 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     const updatedOptions = [...answerOptions];
     const keys = name.split('.');
     if (keys.length === 3) {
-      (updatedOptions[index][keys[0] as keyof AnswerOption] as any)[keys[1]] =
-        value;
+      if (updatedOptions[index][keys[0] as keyof AnswerOption]) {
+        (updatedOptions[index][keys[0] as keyof AnswerOption] as any)[keys[1]] =
+      }
+    } else {
     } else {
       if (keys[0] in updatedOptions[index]) {
         (updatedOptions[index] as any)[keys[0]] = value;

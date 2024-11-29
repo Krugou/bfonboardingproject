@@ -8,7 +8,7 @@ import {playAudio} from '@/utils/playAudio';
 import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
 import {CompanyInfo} from '@/types/user';
-import {notAcceptedBusinessLines} from '@/data/noBusinessLines';
+import {notAcceptedBusinessLines} from '@/data/noBusinesssLines';
 
 const QuestionDisplay = () => {
   const {
@@ -52,12 +52,15 @@ const QuestionDisplay = () => {
 
       // Check if business line is not supported
       const businessLineCode = data.mainBusinessLine;
-      const unsupportedLine = notAcceptedBusinessLines.find(
-        (line) => line.code === businessLineCode,
+      const unsupportedLine:
+        | {code: string; descriptionFi: string; descriptionEn: string}
+        | undefined = notAcceptedBusinessLines.find(
+        (line: {code: string; descriptionFi: string; descriptionEn: string}) =>
+          line.code === businessLineCode,
       );
 
       const isUnsupported = !!unsupportedLine;
-      setIsUnsupportedBusiness(isUnsupported); // Update context
+      setIsUnsupportedBusiness(isUnsupported);
       setUnsupportedReason(
         unsupportedLine
           ? language === 'fi'
@@ -69,7 +72,11 @@ const QuestionDisplay = () => {
       setCompanyInfo(data);
       setUserInfo((prev) => ({
         ...prev!,
-        companyInfoResult: data,
+        companyInfoResult: {
+          ...data,
+          registrationDate: data.registrationDate || new Date(),
+          createdAt: data.createdAt || new Date(),
+        },
       }));
 
       toast.success(

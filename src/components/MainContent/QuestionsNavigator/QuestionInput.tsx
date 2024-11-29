@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import SpecialInput from './QuestionInput/SpecialInput';
@@ -17,7 +17,6 @@ interface QuestionInputProps {
 const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
   const {userInfo, setAnswer, setCurrentStep, currentStep, listeningMode} =
     useUserContext();
-  const [sliderValue, setSliderValue] = useState<number>(0);
   const {language} = useUserContext();
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
@@ -26,29 +25,19 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     setCurrentStep,
     currentStep,
   );
-  const {handleSingleChoiceClick, handleMultiChoiceClick, handleSliderChange} =
+  const {handleSingleChoiceClick, handleMultiChoiceClick} =
     useCommand(question);
-  const {recognition, transcriptContent, startListening, stopListening} =
-    useSpeechRecognition(
-      language as 'en' | 'fi',
-      handleVoiceCommand,
-      listeningMode,
-    );
+  const {transcriptContent} = useSpeechRecognition(
+    language as 'en' | 'fi',
+    handleVoiceCommand,
+    listeningMode,
+  );
 
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-
-  useEffect(() => {
-    if (userInfo && userInfo.questionAnswers[question.id]) {
-      const answer = userInfo.questionAnswers[question.id];
-      if (question.answerType === 'slider') {
-        setSliderValue(answer);
-      }
-    }
-  }, [userInfo, question]);
 
   const renderInput = () => {
     if (!userInfo) {
@@ -83,15 +72,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
             setAnswer={setAnswer}
           />
         );
-      // case 'slider':
-      //   return (
-      //     <SliderInput
-      //       question={question}
-      //       language={language as 'en' | 'fi'}
-      //       sliderValue={sliderValue}
-      //       handleSliderChange={handleSliderChange}
-      //     />
-      //   );
+
       case 'singleChoice':
         return (
           <ChoiceInput

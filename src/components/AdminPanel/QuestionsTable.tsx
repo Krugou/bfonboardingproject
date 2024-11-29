@@ -3,10 +3,10 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import EditIcon from '@mui/icons-material/Edit';
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
-import { QuestionItem } from '../../app/types';
-import { db } from '../../utils/firebase';
+import {doc, getDoc, updateDoc} from 'firebase/firestore';
+import React from 'react';
+import {QuestionItem} from '../../app/types';
+import {db} from '../../utils/firebase';
 interface QuestionsTableProps {
   questions: QuestionItem[];
   language: 'en' | 'fi';
@@ -19,12 +19,13 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
   language,
   handleEdit,
   moveQuestion,
-
 }) => {
-
-
   const toggleLock = async (index: number) => {
     const question = questions[index];
+    if (!question) {
+      console.error('Question not found at index:', index);
+      return;
+    }
     const newLockedStatus = !question.locked;
 
     try {
@@ -39,7 +40,9 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
           questions: oldQuestions,
         });
 
-        console.log(`Question ${question.id} lock status updated to ${newLockedStatus}`);
+        console.log(
+          `Question ${question.id} lock status updated to ${newLockedStatus}`,
+        );
       } else {
         console.error('No such document!');
       }
@@ -64,15 +67,18 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
             <tr key={question.id}>
               <td className='border px-4 py-2'>{index + 1}</td>
               <td className='border px-4 py-2'>{question.id}</td>
-              <td className='border px-4 py-2'>{question.question[language]}</td>
+              <td className='border px-4 py-2'>
+                {question.question[language]}
+              </td>
               <td className='border px-4 py-2'>{question.answerType}</td>
               <td className='border px-4 py-2'>
-              <button
+                <button
                   className={`mb-4 py-2 px-4 rounded text-white font-bold ${
-                    question.locked ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700'
+                    question.locked
+                      ? 'bg-red-500 hover:bg-red-700'
+                      : 'bg-blue-500 hover:bg-blue-700'
                   }`}
-                  onClick={() => toggleLock(index)}
-                >
+                  onClick={() => toggleLock(index)}>
                   {question.locked ? <LockOpenIcon /> : <LockIcon />}
                 </button>
                 {!question.locked && (
@@ -80,22 +86,19 @@ const QuestionsTable: React.FC<QuestionsTableProps> = ({
                     <button
                       title='Edit question'
                       className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4'
-                      onClick={() => handleEdit(question)}
-                    >
+                      onClick={() => handleEdit(question)}>
                       <EditIcon />
                     </button>
                     <button
                       title='Move question up'
                       className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mb-4 ml-2'
-                      onClick={() => moveQuestion(index, 'up')}
-                    >
+                      onClick={() => moveQuestion(index, 'up')}>
                       <ArrowUpwardIcon />
                     </button>
                     <button
                       title='Move question down'
                       className='bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mb-4 ml-2'
-                      onClick={() => moveQuestion(index, 'down')}
-                    >
+                      onClick={() => moveQuestion(index, 'down')}>
                       <ArrowDownwardIcon />
                     </button>
                   </>
