@@ -1,42 +1,129 @@
 import {useUserContext} from '@/context/UserContext';
 import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useQuestionsLogic} from '@/hooks/useQuestionsLogic';
-import {useCompanyInfo} from '@/hooks/useCompanyInfo';
+import {fetchCompanyInfo} from '@/hooks/api';
 import {playAudio} from '@/utils/playAudio';
+import LoadingBox from '../LoadingBox';
+import {toast} from 'react-toastify';
+import {CompanyInfo} from '@/types/user';
+import {notAcceptedBusinessLines} from '@/data/noBusinessLines';
 
 const QuestionDisplay = () => {
-  const {language, userInfo, questions, currentStep} = useUserContext();
-  const {companyInfo, isLoading, isUnsupportedBusiness, unsupportedReason} = useCompanyInfo();
+  const {
+    language,
+    userInfo,
+    questions,
+    currentStep,
+    setUserInfo,
+    isLoading,
+    setIsLoading,
+    setIsUnsupportedBusiness,
+    isUnsupportedBusiness,
+  } = useUserContext();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
+  const [unsupportedReason, setUnsupportedReason] = useState<string | null>(
+    null,
+  );
 
   useQuestionsLogic();
 
+  // New function to handle company info fetching
+  const fetchCompanyData = async () => {
+    const businessId = userInfo?.questionAnswers['k1'];
+    if (!businessId) return;
+    setIsLoading(true);
+
+    const currentQuestion = questions[currentStep];
+    if (currentQuestion?.id !== 'k1.1') {
+      setCompanyInfo(null);
+      setIsUnsupportedBusiness(false);
+      return;
+    }
+
+    try {
+      const data = await fetchCompanyInfo(businessId);
+
+      if (!data) {
+        throw new Error('Company information not found');
+      }
+
+      // Check if business line is not supported
+      const businessLineCode = data.mainBusinessLine;
+      const unsupportedLine = notAcceptedBusinessLines.find(
+        (line) => line.code === businessLineCode,
+      );
+
+      const isUnsupported = !!unsupportedLine;
+      setIsUnsupportedBusiness(isUnsupported); // Update context
+      setUnsupportedReason(
+        unsupportedLine
+          ? language === 'fi'
+            ? unsupportedLine.descriptionFi
+            : unsupportedLine.descriptionEn
+          : null,
+      );
+
+      setCompanyInfo(data);
+      setUserInfo((prev) => ({
+        ...prev!,
+        companyInfoResult: data,
+      }));
+
+      toast.success(
+        language === 'fi'
+          ? 'Yrityksen tiedot haettu onnistuneesti'
+          : 'Company information fetched successfully',
+      );
+    } catch (error) {
+      toast.error(
+        language === 'fi'
+          ? 'Virhe yritystietojen haussa'
+          : 'Error fetching company information',
+      );
+      console.error('Error fetching company data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanyData();
+  }, [currentStep]);
+
   const handleAudioClick = async () => {
     const currentQuestion = questions[currentStep];
-    if (!currentQuestion) return;
-
-    const textToSpeak = `${currentQuestion.question[language]}. ${currentQuestion.tooltip[language]}`;
-
     if (currentQuestion.ttsAudio) {
+      // If question has TTS audio file, play it
       try {
-        await playAudio(currentQuestion.id + '.wav');
+        await playAudio(questions[currentStep].id + '.wav');
       } catch (error) {
         console.error('Failed to play audio:', error);
-        // Fallback to speakContent with proper language
-        await speakContent(textToSpeak, language);
+        // Fallback to speakContent if audio playback fails
+        speakContent(
+          currentQuestion.question[language] +
+            ' ' +
+            currentQuestion.tooltip[language],
+        );
       }
     } else {
-      // Use text-to-speech with proper language
-      await speakContent(textToSpeak, language);
+      // Use text-to-speech as fallback
+      speakContent(
+        currentQuestion.question[language] +
+          ' ' +
+          currentQuestion.tooltip[language],
+      );
     }
   };
 
   if (!userInfo) {
     return null;
   }
-
+  if (isLoading) {
+    <LoadingBox />;
+  }
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 '>
       {currentStep <= questions.length ? (

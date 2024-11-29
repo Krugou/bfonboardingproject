@@ -44,7 +44,14 @@ export interface UserContextState {
   listeningMode: boolean;
   setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
   currentStep: number;
+  isLoading: boolean;
+  isUnsupportedBusiness: boolean;
+  setIsUnsupportedBusiness: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  saveDropdownSelection: (questionId: string, selectedOptions: string[]) => void;
+  saveDropdownSelection: (
+    questionId: string,
+    selectedOptions: string[],
+  ) => void;
   updateUser: (updates: Partial<UserProfile>) => void;
 }

@@ -5,8 +5,14 @@ import QuestionInput from './QuestionsNavigator/QuestionInput';
 interface QuestionNavigatorProps {}
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
-  const {language, setCurrentStep, currentStep, questions, userInfo} =
-    useUserContext();
+  const {
+    language,
+    setCurrentStep,
+    currentStep,
+    questions,
+    userInfo,
+    isUnsupportedBusiness,
+  } = useUserContext();
 
   const handleReset = () => {
     setCurrentStep(0);
@@ -18,6 +24,11 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
 
     const currentQuestion = questions[currentStep];
     const hasAnswer = !!userInfo.questionAnswers[currentQuestion.id];
+
+    // Check for unsupported business on company info step
+    if (currentQuestion.id === 'k1.1' && isUnsupportedBusiness) {
+      return true;
+    }
 
     // Special validation for first question (k1)
     if (currentStep === 1) {

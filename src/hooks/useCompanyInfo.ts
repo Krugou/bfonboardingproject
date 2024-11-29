@@ -6,10 +6,16 @@ import {toast} from 'react-toastify';
 import {notAcceptedBusinessLines} from '@/data/noBusinessLines';
 
 export const useCompanyInfo = () => {
-  const {language, userInfo, questions, currentStep, setUserInfo} =
-    useUserContext();
+  const {
+    language,
+    userInfo,
+    questions,
+    currentStep,
+    isLoading,
+    setIsLoading,
+    setUserInfo,
+  } = useUserContext();
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [isUnsupportedBusiness, setIsUnsupportedBusiness] = useState(false);
   const [unsupportedReason, setUnsupportedReason] = useState<string | null>(
     null,
@@ -19,6 +25,7 @@ export const useCompanyInfo = () => {
     const fetchCompanyData = async () => {
       const businessId = userInfo?.questionAnswers['k1'];
       if (!businessId) return;
+      setIsLoading(true);
 
       const currentQuestion = questions[currentStep];
       if (currentQuestion?.id !== 'k1.1') {
@@ -28,7 +35,6 @@ export const useCompanyInfo = () => {
       }
 
       try {
-        setIsLoading(true);
         const data = await fetchCompanyInfo(businessId);
 
         if (!data) {
@@ -49,8 +55,9 @@ export const useCompanyInfo = () => {
               : unsupportedLine.descriptionEn
             : null,
         );
-
+        //@ts-ignore
         setCompanyInfo(data);
+        //@ts-ignore
         setUserInfo((prev) => ({
           ...prev!,
           companyInfoResult: data,
@@ -76,5 +83,10 @@ export const useCompanyInfo = () => {
     fetchCompanyData();
   }, [currentStep, questions, userInfo, language, setUserInfo]);
 
-  return {companyInfo, isLoading, isUnsupportedBusiness, unsupportedReason};
+  return {
+    companyInfo,
+    isLoading,
+    isUnsupportedBusiness,
+    unsupportedReason,
+  };
 };

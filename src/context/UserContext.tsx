@@ -4,9 +4,22 @@ import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
-import React, {createContext, useContext, useEffect, useState} from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 
-const UserContext = createContext<UserContextState | undefined>(undefined);
+// Update the context type definition
+const UserContext = createContext<
+  | (UserContextState & {
+      fetchedBusinessIds: Set<string>;
+      addFetchedBusinessId: (id: string) => void;
+    })
+  | undefined
+>(undefined);
 
 export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   children,
@@ -16,11 +29,12 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [questions, setQuestions] = useState<any[]>([]);
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUnsupportedBusiness, setIsUnsupportedBusiness] = useState(false);
   const updateUser = (updates: Partial<UserProfile>) => {
     if (!userInfo || !auth.currentUser?.uid) return;
 
-    setUserInfo(prev => ({...prev!, ...updates}));
+    setUserInfo((prev) => ({...prev!, ...updates}));
   };
 
   useEffect(() => {
@@ -184,6 +198,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         currentStep,
         saveDropdownSelection,
         updateUser,
+        isLoading,
+        setIsLoading,
+        isUnsupportedBusiness,
+        setIsUnsupportedBusiness,
       }}>
       {children}
     </UserContext.Provider>
