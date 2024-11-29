@@ -2,7 +2,7 @@ import {QuestionItem, CompanyInfo} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {useQuestionsLogic} from '@/hooks/useQuestionsLogic';
 import {useCompanyInfo} from '@/hooks/useCompanyInfo';
 import {playAudio} from '@/utils/playAudio';
@@ -16,28 +16,21 @@ const QuestionDisplay = () => {
 
   const handleAudioClick = async () => {
     const currentQuestion = questions[currentStep];
+    if (!currentQuestion) return;
+
+    const textToSpeak = `${currentQuestion.question[language]}. ${currentQuestion.tooltip[language]}`;
+
     if (currentQuestion.ttsAudio) {
-      // If question has TTS audio file, play it
       try {
-        await playAudio(questions[currentStep].id + '.wav');
+        await playAudio(currentQuestion.id + '.wav');
       } catch (error) {
         console.error('Failed to play audio:', error);
-        // Fallback to speakContent if audio playback fails
-        speakContent(
-          currentQuestion.question[language] +
-            ' ' +
-            currentQuestion.tooltip[language],
-          language,
-        );
+        // Fallback to speakContent with proper language
+        await speakContent(textToSpeak, language);
       }
     } else {
-      // Use text-to-speech as fallback
-      speakContent(
-        currentQuestion.question[language] +
-          ' ' +
-          currentQuestion.tooltip[language],
-        language,
-      );
+      // Use text-to-speech with proper language
+      await speakContent(textToSpeak, language);
     }
   };
 

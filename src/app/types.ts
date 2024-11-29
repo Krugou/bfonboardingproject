@@ -105,6 +105,7 @@ export interface CompanyInfo {
   }; // Main business line information
   industry?: string; // Industry sector
   numberOfEmployees?: string; // Number of employees, if available
+  name: string;
 }
 /**
  * Interface for Condition with both Finnish and English names

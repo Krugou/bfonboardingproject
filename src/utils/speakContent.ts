@@ -1,7 +1,7 @@
 import {toast} from 'react-toastify';
 
 interface SpeakOptions {
-  language?: 'en' | 'fi';
+  language?: 'en' | 'fi' | string;
   rate?: number;
   pitch?: number;
 }
@@ -9,6 +9,7 @@ interface SpeakOptions {
 const LANGUAGE_MAP = {
   en: 'en-US',
   fi: 'fi-FI',
+  default: 'en-US'
 } as const;
 
 /**
@@ -17,11 +18,11 @@ const LANGUAGE_MAP = {
  * @param language - The language code ('en' or 'fi')
  * @param options - Optional speaking parameters
  */
-export const speakContent = (
+export const speakContent = async (
   content: string,
-  language: keyof typeof LANGUAGE_MAP = 'en',
+  language: string = 'en',
   options: SpeakOptions = {},
-): void => {
+): Promise<void> => {
   if (!content) {
     console.error('Content is empty or undefined');
     toast.error('Content is empty or undefined');
@@ -31,15 +32,22 @@ export const speakContent = (
   // Cancel any ongoing speech
   speechSynthesis.cancel();
 
+  // Ensure voices are loaded
+  if (speechSynthesis.getVoices().length === 0) {
+    await new Promise<void>((resolve) => {
+      speechSynthesis.addEventListener('voiceschanged', () => resolve(), { once: true });
+    });
+  }
+
   const utterance = new SpeechSynthesisUtterance(content);
-  utterance.lang = LANGUAGE_MAP[language];
+  utterance.lang = LANGUAGE_MAP[language as keyof typeof LANGUAGE_MAP] || LANGUAGE_MAP.default;
   utterance.rate = options.rate ?? 1;
   utterance.pitch = options.pitch ?? 1;
 
   // Try to find the best matching voice
   const voices = speechSynthesis.getVoices();
   const preferredVoice = voices.find(
-    (voice) => voice.lang === LANGUAGE_MAP[language],
+    (voice) => voice.lang === LANGUAGE_MAP[language as keyof typeof LANGUAGE_MAP],
   );
   if (preferredVoice) {
     utterance.voice = preferredVoice;
