@@ -1,23 +1,43 @@
 import {AudioError, AudioConfig} from '@/types/audio';
 
+/**
+ * Determines the base path for audio files based on the environment.
+ * @returns {string} The base path for audio files.
+ */
+const getBasePath = (): string => {
+  if (process.env.NODE_ENV === 'production') {
+    return 'https://krugou.github.io/bfonboardingproject/audio';
+  }
+  return '/audio';
+};
+
 const audioConfig: AudioConfig = {
-  basePath: '/audio',
+  basePath: getBasePath(),
   allowedFormats: ['mp3', 'wav', 'ogg'],
 };
 
 /**
- * Validates and plays an audio file from the public directory
- * @param fileName - The name of the audio file including extension
- * @returns Promise that resolves when audio finishes playing
- * @throws {AudioError} If audio file cannot be loaded or played
+ * Validates and plays an audio file from the public directory.
+ * @param fileName - The name of the audio file including extension.
+ * @returns Promise that resolves when audio finishes playing.
+ * @throws {AudioError} If audio file cannot be loaded or played.
  */
 export const playAudio = (fileName: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
       // Validate file extension
       const fileExtension = fileName.split('.').pop()?.toLowerCase();
-      if (!fileExtension || !audioConfig.allowedFormats.includes(fileExtension as any)) {
-        throw new Error(`Invalid audio format. Allowed formats: ${audioConfig.allowedFormats.join(', ')}`);
+      if (
+        !fileExtension ||
+        !audioConfig.allowedFormats.includes(fileExtension as any)
+      ) {
+        const error = new Error(
+          `Invalid audio format. Allowed formats: ${audioConfig.allowedFormats.join(
+            ', ',
+          )}`,
+        ) as AudioError;
+        error.code = 'AUDIO_FORMAT_ERROR';
+        throw error;
       }
 
       const audioPath = `${audioConfig.basePath}/${fileName}`;
@@ -49,7 +69,6 @@ export const playAudio = (fileName: string): Promise<void> => {
         playError.code = 'AUDIO_PLAY_ERROR';
         reject(playError);
       });
-
     } catch (error) {
       const audioError = new Error('Audio playback failed') as AudioError;
       audioError.code = 'AUDIO_LOAD_ERROR';
