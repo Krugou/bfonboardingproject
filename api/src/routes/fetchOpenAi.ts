@@ -11,11 +11,14 @@ router.post(
   // @ts-expect-error
   async (req: Request, res: Response, next: NextFunction) => {
     const startTime = Date.now();
-    console.log(`[${new Date().toISOString()}] POST /fetch-website - Request received:`, {
-      url: req.body.url,
-      ip: req.ip,
-      userAgent: req.headers['user-agent']
-    });
+    console.log(
+      `[${new Date().toISOString()}] POST /fetch-website - Request received:`,
+      {
+        url: req.body.url,
+        ip: req.ip,
+        userAgent: req.headers['user-agent'],
+      },
+    );
 
     const {password, url} = req.body;
 
@@ -65,7 +68,11 @@ router.post(
         res.status(500).json({error: 'Failed to fetch the website content'});
       }
     } finally {
-      console.log(`[${new Date().toISOString()}] POST /fetch-website - Request completed in ${Date.now() - startTime}ms`);
+      console.log(
+        `[${new Date().toISOString()}] POST /fetch-website - Request completed in ${
+          Date.now() - startTime
+        }ms`,
+      );
     }
   },
 );
@@ -75,16 +82,21 @@ router.post(
   // @ts-expect-error
   async (req: Request, res: Response, next: NextFunction) => {
     const startTime = Date.now();
-    console.log(`[${new Date().toISOString()}] POST /user-info - Request received:`, {
-      ip: req.ip,
-      userAgent: req.headers['user-agent'],
-      userInfoKeys: Object.keys(req.body.userInfo || {})
-    });
+    console.log(
+      `[${new Date().toISOString()}] POST /user-info - Request received:`,
+      {
+        ip: req.ip,
+        userAgent: req.headers['user-agent'],
+        userInfoKeys: Object.keys(req.body.userInfo || {}),
+      },
+    );
 
     const {password, userInfo} = req.body;
 
     if (!password || !userInfo) {
-      return res.status(400).json({error: 'Password and user info are required'});
+      return res
+        .status(400)
+        .json({error: 'Password and user info are required'});
     }
 
     if (password !== BF_INNO_PASSWORD) {
@@ -96,7 +108,9 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information: ${JSON.stringify(userInfo)}`,
+            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information: "${JSON.stringify(
+              userInfo,
+            )}" in json format`,
           },
         ],
         model: 'gpt-4o',
@@ -121,7 +135,11 @@ router.post(
         res.status(500).json({error: 'Failed to create the user profile'});
       }
     } finally {
-      console.log(`[${new Date().toISOString()}] POST /user-info - Request completed in ${Date.now() - startTime}ms`);
+      console.log(
+        `[${new Date().toISOString()}] POST /user-info - Request completed in ${
+          Date.now() - startTime
+        }ms`,
+      );
     }
   },
 );

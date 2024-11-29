@@ -12,23 +12,6 @@ const AccountInfo: React.FC = () => {
   const pathname = usePathname();
   useFetchUserInfo();
 
-  const buttonText =
-    pathname === '/account'
-      ? language === 'fi'
-        ? 'Takaisin kysymyksiin'
-        : 'Back to questions'
-      : language === 'fi'
-      ? 'Oma tili'
-      : 'My account';
-
-  const handleAccountClick = () => {
-    if (pathname === '/account') {
-      router.push('/');
-    } else {
-      router.push('/account');
-    }
-  };
-
   if (!userInfo) {
     return (
       <div className='flex flex-col items-center justify-center min-h-screen bg-gray-100'>

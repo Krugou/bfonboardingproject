@@ -117,11 +117,11 @@ const Header: React.FC = () => {
         </div>
         {process.env.NODE_ENV === 'development' && (
           <div className='flex w-full justify-center items-center'>
-            <p className='mx-2 text-white font-bold '>
+            <p className='mx-2 text-white text-2xl font-bold animate-pulse '>
               {language === 'fi' ? 'Paikallinen' : 'Local'}
             </p>
             <p
-              className='mx-2 text-white font-bold '
+              className='mx-2 text-white font-bold text-xl animate-pulse'
               title={questions[currentStep]?.question[language]}>
               {questions[currentStep]?.id}
             </p>

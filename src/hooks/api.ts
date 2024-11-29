@@ -1,5 +1,4 @@
 import {doFetch} from '@/utils/apiUtils';
-const baseurl
 interface CompanyInfo {
   businessId: string;
   name: string;

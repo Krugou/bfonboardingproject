@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -18,8 +18,6 @@ const loginSchema = z.object({
 
 const LoginForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
   const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
@@ -29,6 +27,7 @@ const LoginForm: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: {errors},
   } = useForm({
     resolver: zodResolver(loginSchema),
@@ -41,6 +40,7 @@ const LoginForm: React.FC = () => {
 
   const handleFormSubmit = useCallback(
     async (data: any) => {
+      console.log('🚀 ~ data:', data);
       if (isLoading) return;
       try {
         setIsLoading(true);
@@ -63,6 +63,33 @@ const LoginForm: React.FC = () => {
     },
     [handleEmailPasswordAuth, router, isLoading],
   );
+
+  // Update handler for autofill detection
+  const handleAutoFill = useCallback(
+    (e: React.AnimationEvent<HTMLInputElement>) => {
+      const target = e.target as HTMLInputElement;
+      if (e.animationName === 'onAutoFillStart') {
+        setValue(target.name, target.value, {
+          shouldValidate: true,
+          shouldDirty: true
+        });
+      }
+    },
+    [setValue],
+  );
+
+  // Update CSS styles for autofill detection
+  useEffect(() => {
+    const style = document.createElement('style');
+    style.innerHTML = `
+      @keyframes onAutoFillStart { from {} to {} }
+      input:-webkit-autofill {
+        animation-name: onAutoFillStart;
+      }
+    `;
+    document.head.appendChild(style);
+    return () => style.remove();
+  }, []);
 
   return (
     <div
@@ -90,12 +117,11 @@ const LoginForm: React.FC = () => {
             <input
               type='email'
               id='email'
-              {...register('email', {
-                onChange: (e) => setEmail(e.target.value),
-              })}
-              defaultValue={email}
+              {...register('email')}
+              onAnimationStart={handleAutoFill}
               className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
               required
+              autoComplete='username email'
               aria-invalid={errors.email ? true : false}
               aria-describedby={errors.email ? 'email-error' : undefined}
             />
@@ -104,7 +130,9 @@ const LoginForm: React.FC = () => {
                 id='email-error'
                 className='mt-1 text-red-600 text-sm'
                 role='alert'>
-                {typeof errors.email.message === 'string' ? errors.email.message : ''}
+                {typeof errors.email.message === 'string'
+                  ? errors.email.message
+                  : ''}
               </p>
             )}
           </div>
@@ -120,11 +148,12 @@ const LoginForm: React.FC = () => {
               <input
                 {...register('password')}
                 id='password'
+                name='password'
                 type={showPassword ? 'text' : 'password'}
-                defaultValue={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onAnimationStart={handleAutoFill}
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
                 required
+                autoComplete='current-password'
                 aria-invalid={errors.password ? 'true' : 'false'}
                 aria-describedby={
                   errors.password ? 'password-error' : undefined
@@ -147,7 +176,9 @@ const LoginForm: React.FC = () => {
                 id='password-error'
                 className='mt-1 text-red-600 text-sm'
                 role='alert'>
-                {typeof errors.password.message === 'string' ? errors.password.message : ''}
+                {typeof errors.password.message === 'string'
+                  ? errors.password.message
+                  : ''}
               </p>
             )}
           </div>

@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import QuestionDisplay from './QuestionDisplay';
 import QuestionsNavigator from './QuestionsNavigator';
 import UpperPanel from './UpperPanel';
+import LoadingBox from '../LoadingBox';
 
 /**
  * Props for the MainContent component.
@@ -46,6 +47,9 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
     setResetQuestions(false);
   };
 
+  if (!userInfo) {
+    return <LoadingBox />;
+  }
   // Modified condition to show dialog
   if (resetQuestions === null && hasExistingAnswers) {
     return (

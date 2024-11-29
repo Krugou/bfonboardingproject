@@ -43,7 +43,7 @@ app.use(fetchOpenAiRouter);
 
 // New route to respond with "Hello World"
 app.get('/', (_req, res) => {
-  res.send('Hello World');
+  res.send('Hello cutie, how are you doing?');
 });
 
 // Middleware for centralized error handling

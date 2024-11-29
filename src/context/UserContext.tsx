@@ -1,79 +1,18 @@
 'use client';
 
+import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
-interface UserContextType {
-  userInfo: {
-    email: string;
-    questionAnswers: Record<string, any>;
-    lastLogin?: Date;
-    createdAt: Date;
-    browserInfo?: {
-      platform: string;
-      language: string;
-    };
-    lastName?: string;
-    firstName?: string;
-    totalScore?: number;
-    businessId?: string;
-    preferredLanguage?: string;
-  } | null;
-  setUserInfo: React.Dispatch<
-    React.SetStateAction<{
-      email: string;
-      questionAnswers: Record<string, any>;
-      lastLogin?: Date;
-      createdAt: Date;
-      browserInfo?: {
-        platform: string;
-        language: string;
-      };
-      lastName?: string;
-      firstName?: string;
-      totalScore?: number;
-      businessId?: string;
-      preferredLanguage?: string;
-    } | null>
-  >;
-  setAnswer: (questionId: string, answer: any) => void;
-  language: 'en' | 'fi' | string;
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
-  questions: any[];
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
-  listeningMode: boolean;
-  setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
-  currentStep: number;
-  setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
-  saveDropdownSelection: (
-    questionId: string,
-    selectedOptions: string[],
-  ) => void;
-}
-
-const UserContext = createContext<UserContextType | undefined>(undefined);
+const UserContext = createContext<UserContextState | undefined>(undefined);
 
 export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
   const [language, setLanguage] = useState('en');
-  const [userInfo, setUserInfo] = useState<{
-    email: string;
-    questionAnswers: Record<string, any>;
-    lastLogin?: Date;
-    createdAt: Date;
-    browserInfo?: {
-      platform: string;
-      language: string;
-    };
-    lastName?: string;
-    firstName?: string;
-    totalScore?: number;
-    businessId?: string;
-    preferredLanguage?: string;
-  } | null>(null);
+  const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   const [questions, setQuestions] = useState<any[]>([]);
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
@@ -105,12 +44,10 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           console.error('Error fetching user info: ', error);
         }
       } else {
-        x;
         setUserInfo(null);
         setLanguage('en');
       }
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -118,7 +55,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     if (userInfo) {
       if (auth.currentUser?.uid) {
         const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
-        const updateData: Partial<UserContextType['userInfo']> = {
+        const updateData: Partial<UserContextState['userInfo']> = {
           email: userInfo.email,
           questionAnswers: userInfo.questionAnswers,
           lastLogin: userInfo.lastLogin,

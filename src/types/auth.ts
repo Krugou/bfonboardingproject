@@ -21,26 +21,6 @@ export interface BaseAuthFormProps {
   setPreferredLanguage: (value: string) => void;
 }
 
-export interface AccountData {
-  email: string;
-
-  firstName: string;
-
-  lastName: string;
-
-  businessId: string;
-
-  preferredLanguage: string;
-
-  questionAnswers: Record<string, string>;
-
-  createdAt: Date;
-
-  lastLogin: Date;
-
-  browserInfo: BrowserInfo;
-}
-
 export interface BrowserInfo {
   userAgent: string;
   platform: string;

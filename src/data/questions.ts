@@ -76,6 +76,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
   },
   {
     id: 'k1.2',

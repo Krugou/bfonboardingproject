@@ -86,6 +86,7 @@ export interface QuestionItem {
   weight?: number;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;
+  ttsAudio?: boolean;
 }
 export interface CompanyInfo {
   businessId: {value: string}; // Unique identifier for the business

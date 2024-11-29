@@ -1,10 +1,10 @@
 'use client';
 
-import {UserInfo} from '@/types/user';
+import {UserProfile} from '@/types/user';
 
 interface AccountDetailsProps {
   label: string;
-  value: string | number;
+  value: string;
   className?: string;
 }
 
@@ -22,7 +22,7 @@ export const AccountDetailsField: React.FC<AccountDetailsProps> = ({
 );
 
 interface UserDetailsProps {
-  userInfo: UserInfo;
+  userInfo: UserProfile;
   language: string;
 }
 
@@ -70,7 +70,11 @@ export const UserDetails: React.FC<UserDetailsProps> = ({
         />
         <AccountDetailsField
           label={language === 'fi' ? 'Kokonaispisteet:' : 'Total Score:'}
-          value={userInfo.totalScore}
+          value={
+            userInfo.totalScore !== undefined
+              ? userInfo.totalScore.toString()
+              : 'N/A'
+          }
         />
       </div>
     </div>

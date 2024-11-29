@@ -5,6 +5,7 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useEffect, useState} from 'react';
 import {useQuestionsLogic} from '@/hooks/useQuestionsLogic';
 import {useCompanyInfo} from '@/hooks/useCompanyInfo';
+import {playAudio} from '@/utils/playAudio';
 
 const QuestionDisplay = () => {
   const {language, userInfo, questions, currentStep} = useUserContext();
@@ -12,6 +13,33 @@ const QuestionDisplay = () => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   useQuestionsLogic();
+
+  const handleAudioClick = async () => {
+    const currentQuestion = questions[currentStep];
+    if (currentQuestion.ttsAudio) {
+      // If question has TTS audio file, play it
+      try {
+        await playAudio(questions[currentStep].id + '.wav');
+      } catch (error) {
+        console.error('Failed to play audio:', error);
+        // Fallback to speakContent if audio playback fails
+        speakContent(
+          currentQuestion.question[language] +
+            ' ' +
+            currentQuestion.tooltip[language],
+          language,
+        );
+      }
+    } else {
+      // Use text-to-speech as fallback
+      speakContent(
+        currentQuestion.question[language] +
+          ' ' +
+          currentQuestion.tooltip[language],
+        language,
+      );
+    }
+  };
 
   if (!userInfo) {
     return null;
@@ -33,14 +61,7 @@ const QuestionDisplay = () => {
               title={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'
               }
-              onClick={() => {
-                speakContent(
-                  questions[currentStep].question[language] +
-                    ' ' +
-                    questions[currentStep].tooltip[language],
-                  language,
-                );
-              }}
+              onClick={handleAudioClick}
               className='p-2 text-bf-brand-primary'
               aria-label={
                 language === 'fi' ? 'Kuuntele tooltip' : 'Listen to tooltip'

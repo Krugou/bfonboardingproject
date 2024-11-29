@@ -13,7 +13,8 @@ import {doc, getDoc, setDoc} from 'firebase/firestore';
 import {toast} from 'react-toastify';
 import {db} from '@/utils/firebase';
 import {useUserContext} from '@/context/UserContext';
-import {AccountData, AuthError, BrowserInfo} from '@/types/auth';
+import {AuthError, BrowserInfo} from '@/types/auth';
+import {UserProfile} from '@/types/user';
 
 const getBrowserInfo = (): BrowserInfo => ({
   userAgent: navigator.userAgent,
@@ -21,13 +22,13 @@ const getBrowserInfo = (): BrowserInfo => ({
   language: navigator.language,
 });
 
-const createAccountData = (
+const createUserProfile = (
   email: string,
   firstName: string,
   lastName: string,
   businessId: string,
   preferredLanguage: string,
-): Omit<AccountData, 'browserInfo'> => ({
+): Omit<UserProfile, 'browserInfo'> => ({
   email: email ?? 'default@example.com',
   firstName,
   lastName,
@@ -98,14 +99,20 @@ export const useAuth = () => {
       try {
         const accountDoc = await getDoc(accountRef);
         if (accountDoc.exists()) {
-          const accountData = accountDoc.data() as AccountData;
-          console.log("🚀 ~ accountData:", accountData)
-          setUserInfo({...accountData, browserInfo});
+          const UserProfile = accountDoc.data() as UserProfile;
+          console.log('🚀 ~ UserProfile:', UserProfile);
+          setUserInfo({...UserProfile, browserInfo});
         } else {
-          const accountData = createAccountData(user.email ?? '', '', '', '', '');
-          console.log("🚀 ~ accountData:", accountData)
-          await setDoc(accountRef, {...accountData, browserInfo});
-          setUserInfo({...accountData, browserInfo});
+          const UserProfile = createUserProfile(
+            user.email ?? '',
+            '',
+            '',
+            '',
+            '',
+          );
+          console.log('🚀 ~ UserProfile:', UserProfile);
+          await setDoc(accountRef, {...UserProfile, browserInfo});
+          setUserInfo({...UserProfile, browserInfo});
           toast.success('Account created successfully');
         }
 
@@ -136,7 +143,7 @@ export const useAuth = () => {
     console.log('🚀 ~ useAuth ~ password:', password);
     console.log('🚀 ~ useAuth ~ email:', email);
     console.log('🚀 ~ useAuth ~ businessId:', businessId);
-    console.log('🚀 ~ useAuth ~ preferredLanguage:', preferredLanguage)
+    console.log('🚀 ~ useAuth ~ preferredLanguage:', preferredLanguage);
     setError(null);
     const auth = getAuth();
 
@@ -149,8 +156,8 @@ export const useAuth = () => {
 
       // Create account data with provided first and last name
       const browserInfo = getBrowserInfo();
-      const accountData = {
-        ...createAccountData(
+      const UserProfile = {
+        ...createUserProfile(
           userCredential.user.email ?? '',
           firstName || '',
           lastName || '',
@@ -163,8 +170,8 @@ export const useAuth = () => {
       // Save the account data to Firestore for new registrations
       if (!isLogin) {
         const accountRef = doc(db, 'accounts', userCredential.user.uid);
-        await setDoc(accountRef, accountData);
-        setUserInfo(accountData);
+        await setDoc(accountRef, UserProfile);
+        setUserInfo(UserProfile);
       } else {
         await handleAuthResult(userCredential);
       }
