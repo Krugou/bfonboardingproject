@@ -25,10 +25,14 @@ const createAccountData = (
   email: string,
   firstName: string,
   lastName: string,
+  businessId: string,
+  preferredLanguage: string,
 ): Omit<AccountData, 'browserInfo'> => ({
   email: email ?? 'default@example.com',
   firstName,
   lastName,
+  businessId,
+  preferredLanguage,
   questionAnswers: {},
   createdAt: new Date(),
   lastLogin: new Date(),
@@ -71,6 +75,10 @@ const getAuthErrorMessage = (
       en: 'Too many attempts. Please try again later.',
       fi: 'Liian monta yritystä. Yritä myöhemmin uudelleen.',
     },
+    'auth/missing-identifier': {
+      en: 'Missing identifier. Please provide the required information.',
+      fi: 'Puuttuva tunniste. Ole hyvä ja anna vaaditut tiedot.',
+    },
   };
 
   const code = error.code as keyof typeof errorMessages;
@@ -91,9 +99,11 @@ export const useAuth = () => {
         const accountDoc = await getDoc(accountRef);
         if (accountDoc.exists()) {
           const accountData = accountDoc.data() as AccountData;
+          console.log("🚀 ~ accountData:", accountData)
           setUserInfo({...accountData, browserInfo});
         } else {
-          const accountData = createAccountData(user.email ?? '', '', '');
+          const accountData = createAccountData(user.email ?? '', '', '', '', '');
+          console.log("🚀 ~ accountData:", accountData)
           await setDoc(accountRef, {...accountData, browserInfo});
           setUserInfo({...accountData, browserInfo});
           toast.success('Account created successfully');
@@ -117,9 +127,16 @@ export const useAuth = () => {
     isLogin: boolean,
     firstName?: string,
     lastName?: string,
+    businessId?: string,
+    preferredLanguage?: string,
   ): Promise<boolean> => {
     console.log('🚀 ~ useAuth ~ lastName:', lastName);
     console.log('🚀 ~ useAuth ~ firstName:', firstName);
+    console.log('🚀 ~ useAuth ~ isLogin:', isLogin);
+    console.log('🚀 ~ useAuth ~ password:', password);
+    console.log('🚀 ~ useAuth ~ email:', email);
+    console.log('🚀 ~ useAuth ~ businessId:', businessId);
+    console.log('🚀 ~ useAuth ~ preferredLanguage:', preferredLanguage)
     setError(null);
     const auth = getAuth();
 
@@ -137,6 +154,8 @@ export const useAuth = () => {
           userCredential.user.email ?? '',
           firstName || '',
           lastName || '',
+          businessId || '',
+          preferredLanguage || '',
         ),
         browserInfo,
       };

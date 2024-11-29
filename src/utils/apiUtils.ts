@@ -16,29 +16,39 @@ const formatUrl = (url: string): string => {
   return `${baseUrl}/${url.replace(/^\/+/, '')}`;
 };
 
+interface FetchOptions {
+  method?: string;
+  headers?: Record<string, string>;
+  body?: string;
+}
+
 /**
  * Generic fetch wrapper with error handling and typing
  * @param url The URL to fetch from
  * @returns Promise with the parsed response data
  * @throws Error if the fetch fails or returns non-200 status
  */
-export const doFetch = async <T>(url: string): Promise<T> => {
+export const doFetch = async <T>(url: string, options?: FetchOptions): Promise<T> => {
   try {
     if (!url) {
       throw new Error('URL is required');
     }
 
     const formattedUrl = formatUrl(url);
+    const defaultHeaders = {
+      'accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
 
     const response = await fetch(formattedUrl, {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-      },
+      method: options?.method || 'GET',
+      headers: { ...defaultHeaders, ...options?.headers },
+      ...(options?.body && { body: options.body }),
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
     }
 
     const data = await response.json();

@@ -271,4 +271,9 @@ const notAcceptedBusinessLines: BusinessLine[] = [
     descriptionFi: 'Muun nautakarjan ja puhvelien kasvatus',
     descriptionEn: 'Other cattle and buffalo farming',
   },
+  {
+    code: '84301',
+    descriptionFi: 'Kansaneläkelaitoksen vakuutustoiminta',
+    descriptionEn: 'Activities of the Social Insurance Institution',
+  },
 ];

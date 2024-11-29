@@ -13,7 +13,7 @@ import {useUserContext} from '@/context/UserContext';
 // Validation schema
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password must be at least 1 characters'),
+  password: z.string().min(4, 'Password must be at least 4 characters'),
 });
 
 const LoginForm: React.FC = () => {
@@ -64,22 +64,6 @@ const LoginForm: React.FC = () => {
     [handleEmailPasswordAuth, router, isLoading],
   );
 
-  const handleGoogleAuthAndRedirect = useCallback(async () => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      const success = await handleGoogleLogin();
-      if (success) {
-        await new Promise((resolve) => setTimeout(resolve, 0));
-        await router.replace('/');
-      }
-    } catch (error) {
-      console.error('Google authentication error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [handleGoogleLogin, router, isLoading]);
-
   return (
     <div
       className='flex items-center justify-center'
@@ -93,15 +77,6 @@ const LoginForm: React.FC = () => {
             className='text-2xl text-bf-brand-primary font-bold mb-4'>
             {language === 'fi' ? 'Kirjaudu' : 'Login'}
           </h2>
-          <button
-            className='bg-bf-brand-primary hover:bg-blue-700 text-white font-bold py-4 px-4 rounded-full flex justify-center items-center'
-            onClick={handleGoogleAuthAndRedirect}
-            disabled={isLoading}
-            title={
-              language === 'fi' ? 'Kirjaudu Googlella' : 'Login with Google'
-            }>
-            <GoogleIcon />
-          </button>
         </div>
 
         <form onSubmit={handleSubmit(handleFormSubmit)} noValidate>
@@ -118,7 +93,7 @@ const LoginForm: React.FC = () => {
               {...register('email', {
                 onChange: (e) => setEmail(e.target.value),
               })}
-              value={email}
+              defaultValue={email}
               className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
               required
               aria-invalid={errors.email ? true : false}
@@ -129,7 +104,7 @@ const LoginForm: React.FC = () => {
                 id='email-error'
                 className='mt-1 text-red-600 text-sm'
                 role='alert'>
-                {errors.email.message}
+                {typeof errors.email.message === 'string' ? errors.email.message : ''}
               </p>
             )}
           </div>
@@ -146,7 +121,7 @@ const LoginForm: React.FC = () => {
                 {...register('password')}
                 id='password'
                 type={showPassword ? 'text' : 'password'}
-                value={password}
+                defaultValue={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
                 required
@@ -172,7 +147,7 @@ const LoginForm: React.FC = () => {
                 id='password-error'
                 className='mt-1 text-red-600 text-sm'
                 role='alert'>
-                {errors.password.message}
+                {typeof errors.password.message === 'string' ? errors.password.message : ''}
               </p>
             )}
           </div>

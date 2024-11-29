@@ -675,7 +675,7 @@ const questions: QuestionItem[] = [
       },
       {
         key: 'yes_domestic_and_international',
-        score: 2,
+        score: 1,
         text: {
           en: 'Yes (domestic and international markets)',
           fi: 'Kyllä (koti- ja kansainvälisillä markkinoilla)',
@@ -683,7 +683,7 @@ const questions: QuestionItem[] = [
       },
       {
         key: 'yes_international_only',
-        score: 3,
+        score: 1,
         text: {
           en: 'Yes (only international markets)',
           fi: 'Kyllä (ainoastaan kansainvälisillä markkinoilla)',

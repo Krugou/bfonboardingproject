@@ -43,8 +43,6 @@ interface UserContextType {
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
   questions: any[];
   setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
-  lastInteractionTime: number;
-  setLastInteractionTime: React.Dispatch<React.SetStateAction<number>>;
   listeningMode: boolean;
   setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
   currentStep: number;
@@ -77,7 +75,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     preferredLanguage?: string;
   } | null>(null);
   const [questions, setQuestions] = useState<any[]>([]);
-  const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [listeningMode, setListeningMode] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -85,11 +82,9 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {
-          // User is signed in, fetch user info from Firestore
           const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
           if (accountDoc.exists()) {
             const accountData = accountDoc.data();
-            // Set user's preferred language if available
             if (accountData.preferredLanguage) {
               setLanguage(accountData.preferredLanguage);
             }
@@ -110,13 +105,12 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           console.error('Error fetching user info: ', error);
         }
       } else {
-        // User is signed out, clear user info
+        x;
         setUserInfo(null);
-        setLanguage('en'); // Reset to default language when user signs out
+        setLanguage('en');
       }
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -137,7 +131,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
           preferredLanguage: userInfo.preferredLanguage,
         };
 
-        // Remove undefined fields
         Object.keys(updateData).forEach(
           (key) =>
             updateData[key as keyof typeof updateData] === undefined &&
@@ -175,7 +168,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       },
     );
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -207,24 +199,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     }
   };
 
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      setLastInteractionTime(Date.now());
-    };
-
-    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
-
-    events.forEach((event) =>
-      window.addEventListener(event, handleUserInteraction),
-    );
-
-    return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, handleUserInteraction),
-      );
-    };
-  }, []);
-
   const saveDropdownSelection = async (
     questionId: string,
     selectedOptions: string[],
@@ -251,19 +225,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     }
   };
 
-  // automatically sign out user after 1 hour of inactivity
-  useEffect(() => {
-    const checkInactivity = () => {
-      if (Date.now() - lastInteractionTime > 3600000) {
-        signOut(auth);
-      }
-    };
-
-    const interval = setInterval(checkInactivity, 60000);
-
-    return () => clearInterval(interval);
-  }, [lastInteractionTime]);
-
   return (
     <UserContext.Provider
       value={{
@@ -274,8 +235,6 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setLanguage,
         questions,
         setQuestions,
-        lastInteractionTime,
-        setLastInteractionTime,
         listeningMode,
         setListeningMode,
         setCurrentStep,

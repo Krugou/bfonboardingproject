@@ -1,42 +1,31 @@
 'use client';
 
-import React, {useRef, useState, useEffect} from 'react';
+import React from 'react';
 import {useUserContext} from '@/context/UserContext';
 import useFetchUserInfo from '@/hooks/useFetchUserInfo';
-import {useRouter} from 'next/navigation';
-import {signOut} from 'firebase/auth';
-import {auth} from '@/utils/firebase';
-import {toast} from 'react-toastify';
+import {UserDetails} from './AccountDetails';
+import LogoutButton from './LogoutButton';
+import {usePathname} from 'next/navigation';
 
-/**
- * AccountInfo component that displays user account information.
- *
- * @returns {JSX.Element} The rendered AccountInfo component.
- */
 const AccountInfo: React.FC = () => {
   const {userInfo, setUserInfo, language} = useUserContext();
-  const router = useRouter();
+  const pathname = usePathname();
   useFetchUserInfo();
 
-  /**
-   * Handles user logout.
-   */
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      setUserInfo(null);
-      toast.success(
-        language === 'fi'
-          ? 'Kirjauduttu ulos onnistuneesti'
-          : 'Logged out successfully',
-      );
+  const buttonText =
+    pathname === '/account'
+      ? language === 'fi'
+        ? 'Takaisin kysymyksiin'
+        : 'Back to questions'
+      : language === 'fi'
+      ? 'Oma tili'
+      : 'My account';
+
+  const handleAccountClick = () => {
+    if (pathname === '/account') {
       router.push('/');
-    } catch (error) {
-      toast.error(
-        language === 'fi'
-          ? 'Uloskirjautuminen epäonnistui'
-          : 'Failed to logout',
-      );
+    } else {
+      router.push('/account');
     }
   };
 
@@ -55,69 +44,20 @@ const AccountInfo: React.FC = () => {
     );
   }
 
-  const createdAt = new Date(userInfo.createdAt);
-  const lastLogin = userInfo.lastLogin ? new Date(userInfo.lastLogin) : null;
-
   return (
-    <div className='flex flex-col items-center justify-center min-h-screen '>
-      <div className='bg-bf-white border-2 border-bf-brand-primary  rounded-lg p-8 max-w-md w-full'>
-        <h1 className='text-2xl text-bf-brand-primary font-bold mb-4'>
-          {language === 'fi' ? 'Tilin tiedot' : 'Account Information'}
-        </h1>
-        {userInfo.firstName && userInfo.lastName && (
-          <div className='mb-4'>
-            <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
-              {language === 'fi' ? 'Nimi:' : 'Name:'}
-            </label>
-            <p className='text-bf-brand-primary'>
-              {`${userInfo.firstName} ${userInfo.lastName}`}
-            </p>
-          </div>
-        )}
-        <div className='mb-4'>
-          <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
-            {language === 'fi' ? 'Sähköposti:' : 'Email:'}
-          </label>
-          <p className='text-bf-brand-primary'>{userInfo.email}</p>
+    <div className='flex flex-col items-center justify-center min-h-screen'>
+      <div className='bg-bf-white border-2 border-bf-brand-primary rounded-lg p-8 max-w-md w-full'>
+        <div className='flex justify-between items-center mb-4'>
+          <h1 className='text-2xl text-bf-brand-primary font-bold'>
+            {language === 'fi' ? 'Tilin tiedot' : 'Account Information'}
+          </h1>
         </div>
-        <div className='flex justify-between w-1/2'>
-          <div className='mb-4'>
-            <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
-              {language === 'fi' ? 'Luotu:' : 'Created At:'}
-            </label>
-            <p className='text-bf-brand-primary'>
-              {createdAt.toLocaleDateString()}
-            </p>
-          </div>
-          <div className='mb-4'>
-            <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
-              {language === 'fi' ? 'Viimeisin kirjautuminen:' : 'Last Login:'}
-            </label>
-            <p className='text-bf-brand-primary'>
-              {lastLogin
-                ? lastLogin.toLocaleDateString()
-                : language === 'fi'
-                ? 'Ei tietoja'
-                : 'N/A'}
-            </p>
-          </div>
-        </div>
-        <div className='mb-4'>
-          <label className='block text-bf-brand-primary text-sm font-bold mb-2'>
-            {language === 'fi'
-              ? 'Vastattuja kysymyksiä:'
-              : 'Answered Questions:'}
-          </label>
-          <p className='text-bf-brand-primary'>
-            {userInfo.questionAnswers.length || 0}
-          </p>
-        </div>
+        <UserDetails userInfo={userInfo} language={language} />
         <div className='flex justify-end'>
-          <button
-            onClick={handleLogout}
-            className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'>
-            {language === 'fi' ? 'Kirjaudu ulos' : 'Logout'}
-          </button>
+          <LogoutButton
+            language={language}
+            onLogout={() => setUserInfo(null)}
+          />
         </div>
       </div>
     </div>

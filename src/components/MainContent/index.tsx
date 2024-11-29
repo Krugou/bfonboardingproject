@@ -50,7 +50,7 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   if (resetQuestions === null && hasExistingAnswers) {
     return (
       <div className='flex flex-col justify-center items-center h-screen'>
-        <div className='w-full bg-bf-brand-primary dark:bg-gray-800 p-4 rounded-xl'>
+        <div className='w-full bg-bf-brand-primary  p-4 rounded-xl'>
           <p className='text-xl font-bold text-white mb-4'>
             {language === 'fi'
               ? 'Olet jo vastannut joihinkin kysymyksiin. Haluatko nollata kysymykset vai jatkaa?'

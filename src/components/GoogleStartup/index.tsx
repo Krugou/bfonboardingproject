@@ -11,25 +11,6 @@ const GoogleStartup: React.FC = () => {
       }
     });
   }, []);
-  const { setLastInteractionTime } = useUserContext();
-
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      setLastInteractionTime(Date.now());
-    };
-
-    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
-
-    events.forEach((event) =>
-      window.addEventListener(event, handleUserInteraction)
-    );
-
-    return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, handleUserInteraction)
-      );
-    };
-  }, [setLastInteractionTime]);
   return (
     <div>
 

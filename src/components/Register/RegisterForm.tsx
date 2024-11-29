@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import GoogleIcon from '@mui/icons-material/Google';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -9,13 +9,13 @@ import Link from 'next/link';
 import {useAuth} from '@/hooks/useAuth';
 import {useRouter} from 'next/navigation';
 import {useUserContext} from '@/context/UserContext';
-
+import {toast} from 'react-toastify';
 // Password validation schema
 const passwordSchema = z
   .object({
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters')
+      .min(4, 'Password must be at least 8 characters')
       .regex(/[a-z]/, 'Password must contain at least one lowercase letter'),
     confirmPassword: z.string(),
     businessId: z.string().min(9, 'Business ID is required'),
@@ -30,15 +30,16 @@ const RegisterForm: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [businessId, setBusinessId] = useState('');
   const [preferredLanguage, setPreferredLanguage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-
-  const {handleEmailPasswordAuth, handleGoogleLogin, error} = useAuth();
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const {handleEmailPasswordAuth, error} = useAuth();
   const router = useRouter();
+
   const {language} = useUserContext();
 
   const {
@@ -64,11 +65,13 @@ const RegisterForm: React.FC = () => {
       try {
         setIsLoading(true);
         const success = await handleEmailPasswordAuth(
-          data.email,
+          email,
           data.password,
-          false, // isLogin
+          false,
           firstName,
           lastName,
+          businessId,
+          preferredLanguage,
         );
         if (success) {
           await new Promise((resolve) => setTimeout(resolve, 0));
@@ -82,22 +85,6 @@ const RegisterForm: React.FC = () => {
     },
     [handleEmailPasswordAuth, router, isLoading, firstName, lastName],
   );
-
-  const handleGoogleAuthAndRedirect = useCallback(async () => {
-    if (isLoading) return;
-    try {
-      setIsLoading(true);
-      const success = await handleGoogleLogin();
-      if (success) {
-        await new Promise((resolve) => setTimeout(resolve, 0));
-        await router.replace('/');
-      }
-    } catch (error) {
-      console.error('Google authentication error:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [handleGoogleLogin, router, isLoading]);
 
   return (
     <div className='flex flex-col items-center justify-center h-full w-full'>
@@ -274,6 +261,13 @@ const RegisterForm: React.FC = () => {
                   aria-describedby={
                     errors.password ? 'password-error' : undefined
                   }
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={
+                    language === 'fi'
+                      ? 'Syötä salasanasi'
+                      : 'Enter your password'
+                  }
                   className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
                 />
                 <button
@@ -308,13 +302,15 @@ const RegisterForm: React.FC = () => {
                   {...register('confirmPassword', {
                     required: true,
                     validate: (value) =>
-                      value === watch('password') || 'Passwords do not match',
+                      value === password || 'Passwords do not match',
                   })}
                   id='confirmPassword'
                   name='confirmPassword'
                   type={showConfirmPassword ? 'text' : 'password'}
                   autoComplete='new-password'
                   required
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   className='shadow appearance-none border rounded w-full py-2 px-3 text-bf-brand-primary leading-tight focus:outline-none focus:shadow-outline'
                   placeholder={
                     language === 'fi'

@@ -1,5 +1,5 @@
-import { doFetch } from '@/utils/apiUtils';
-
+import {doFetch} from '@/utils/apiUtils';
+const baseurl
 interface CompanyInfo {
   businessId: string;
   name: string;
@@ -8,22 +8,24 @@ interface CompanyInfo {
   mainBusinessLine: string;
 }
 
+interface UserProfileInfo {
+  companyProfile: string;
+  fundingFeasibility: string;
+  recommendations: string[];
+  riskFactors: string[];
+  [key: string]: unknown;
+}
+
 const fetchCompanyInfo = async (
   businessId: string,
 ): Promise<CompanyInfo | undefined> => {
   try {
-    const data = await doFetch<{ companies: CompanyInfo[] }>(
+    return await doFetch<{companies: CompanyInfo[]}>(
       `https://avoindata.prh.fi/opendata-ytj-api/v3/companies?businessId=${businessId}`,
-    );
-    if (!data.companies) {
-      console.error('No company data found');
-      return;
-    }
-    const companyInfo = data.companies[0];
-    console.log('Company info:', companyInfo);
-    return companyInfo;
+    ).then((data) => data.companies?.[0]);
   } catch (error) {
     console.error('Error fetching company info:', error);
+    return undefined;
   }
 };
 
@@ -44,28 +46,34 @@ interface WebsiteInfo {
  */
 const fetchWebsiteInfoOpenAI = async (
   url: string,
-  password: string
+  password: string,
 ): Promise<WebsiteInfo | undefined> => {
   try {
-    const response = await fetch('/api/fetch-website', {
+    return await doFetch<WebsiteInfo>('/fetch-website', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url, password }),
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({url, password}),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Failed to fetch website info');
-    }
-
-    const data = await response.json();
-    return data as WebsiteInfo;
   } catch (error) {
     console.error('Error fetching website info:', error);
     throw error;
   }
 };
 
-export { fetchCompanyInfo, fetchWebsiteInfoOpenAI };
+const fetchUserInfoOpenAI = async (
+  userInfo: Record<string, unknown>,
+  password: string,
+): Promise<UserProfileInfo | undefined> => {
+  try {
+    return await doFetch<UserProfileInfo>('/user-info', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({userInfo, password}),
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    throw error;
+  }
+};
+
+export {fetchCompanyInfo, fetchWebsiteInfoOpenAI, fetchUserInfoOpenAI};

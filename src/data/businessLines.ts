@@ -7707,11 +7707,7 @@ const acceptedBusinessLines: BusinessLine[] = [
     descriptionFi: 'Pakollinen sosiaalivakuutustoiminta',
     descriptionEn: 'Compulsory social security activities',
   },
-  {
-    code: '84301',
-    descriptionFi: 'Kansaneläkelaitoksen vakuutustoiminta',
-    descriptionEn: 'Activities of the Social Insurance Institution',
-  },
+
   {
     code: '84302',
     descriptionFi: 'Lakisääteinen työeläkevakuutus',

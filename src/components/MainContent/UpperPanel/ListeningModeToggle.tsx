@@ -43,12 +43,12 @@ const ListeningModeToggle: React.FC<ListeningModeToggleProps> = ({}) => {
       </label>
       {listeningMode ? (
         <MicIcon
-          className='text-green-600 dark:text-green-400 cursor-pointer'
+          className='text-green-600  cursor-pointer'
           onClick={() => setListeningMode(!listeningMode)}
         />
       ) : (
         <MicOffIcon
-          className='text-gray-600 dark:text-gray-400 cursor-pointer'
+          className='text-gray-600  cursor-pointer'
           onClick={() => setListeningMode(!listeningMode)}
         />
       )}

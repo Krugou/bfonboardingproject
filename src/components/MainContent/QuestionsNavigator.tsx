@@ -30,10 +30,8 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight' && !isNextButtonDisabled()) {
-        // @ts-expect-error
         setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
       } else if (event.key === 'ArrowLeft' && currentStep > 1) {
-        // @ts-expect-error
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
@@ -45,7 +43,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
   }, [setCurrentStep, questions.length, currentStep, isNextButtonDisabled]);
 
   return (
-    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
+    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
       <button
         className={`w-auto secondary-button uppercase ${
           currentStep === 0 ? 'opacity-50 invisible cursor-not-allowed' : ''
@@ -82,7 +80,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
         </>
       ) : (
         <button
-          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800 uppercase'
+          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg  uppercase'
           onClick={handleReset}
           aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
           role='button'>

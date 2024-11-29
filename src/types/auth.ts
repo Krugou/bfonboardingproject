@@ -23,12 +23,22 @@ export interface BaseAuthFormProps {
 
 export interface AccountData {
   email: string;
-  questionAnswers: Record<string, any>;
-  lastLogin: Date;
-  createdAt: Date;
-  browserInfo: BrowserInfo;
+
   firstName: string;
+
   lastName: string;
+
+  businessId: string;
+
+  preferredLanguage: string;
+
+  questionAnswers: Record<string, string>;
+
+  createdAt: Date;
+
+  lastLogin: Date;
+
+  browserInfo: BrowserInfo;
 }
 
 export interface BrowserInfo {
