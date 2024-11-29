@@ -1,9 +1,9 @@
 import GoogleStartup from '@/components/GoogleStartup';
-import { UserProvider } from '@/context/UserContext';
-import type { Metadata } from 'next';
+import {UserProvider} from '@/context/UserContext';
+import type {Metadata} from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
-import { Bounce, ToastContainer } from 'react-toastify';
+import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
 import './globals.css';
@@ -29,7 +29,9 @@ export const metadata: Metadata = {
 };
 // console.log('Website rendered in ' + process.env.NODE_ENV);
 const RootLayout = ({children}: {children: React.ReactNode}) => {
-  const prefersDarkMode = typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const prefersDarkMode =
+    typeof window !== 'undefined' &&
+    window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   return (
     <html lang='en' className={prefersDarkMode ? 'dark' : ''}>

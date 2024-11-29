@@ -1,96 +1,53 @@
 'use client';
 
+import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
 import {onAuthStateChanged, signOut} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
-interface UserContextType {
-  userInfo: {
-    email: string;
-    questionAnswers: Record<string, any>;
-    lastLogin?: Date;
-    createdAt: Date;
-  } | null;
-  setUserInfo: React.Dispatch<
-    React.SetStateAction<{
-      email: string;
-      questionAnswers: Record<string, any>;
-      lastLogin?: Date;
-      createdAt: Date;
-    } | null>
-  >;
-  currentQuestion: number;
-  setCurrentQuestion: React.Dispatch<React.SetStateAction<number>>;
-  setAnswer: (questionId: string, answer: any) => void;
-  language: 'en' | 'fi' | string;
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
-  isDarkmode: boolean;
-  setIsDarkmode: React.Dispatch<React.SetStateAction<boolean>>;
-  highContrast: boolean;
-  setHighContrast: React.Dispatch<React.SetStateAction<boolean>>;
-  fontSize: number;
-  setFontSize: React.Dispatch<React.SetStateAction<number>>;
-  questions: any[];
-  setQuestions: React.Dispatch<React.SetStateAction<any[]>>;
-  lastInteractionTime: number;
-  setLastInteractionTime: React.Dispatch<React.SetStateAction<number>>;
-  listeningMode: boolean;
-  setListeningMode: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentStep: (step: number) => void;
-  currentStep: number;
-  saveDropdownSelection: (
-    questionId: string,
-    selectedOptions: string[],
-  ) => void;
-}
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+const UserContext = createContext<UserContextState | undefined>(undefined);
 
 export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   children,
 }) => {
   const [language, setLanguage] = useState('en');
-  const [userInfo, setUserInfo] = useState<{
-    email: string;
-    questionAnswers: Record<string, any>;
-    lastLogin?: Date;
-    createdAt: Date;
-  } | null>(null);
-  const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [isDarkmode, setIsDarkmode] = useState(false);
-  const [highContrast, setHighContrast] = useState(false);
-  const [fontSize, setFontSize] = useState(16);
+  const [userInfo, setUserInfo] = useState<UserProfile | null>(null);
   const [questions, setQuestions] = useState<any[]>([]);
-  const [lastInteractionTime, setLastInteractionTime] = useState(Date.now());
   const [listeningMode, setListeningMode] = useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      console.log('🚀 ~ unsubscribe ~ auth:', auth);
       if (user) {
         try {
-          // User is signed in, fetch user info from Firestore
           const accountDoc = await getDoc(doc(db, 'accounts', user.uid));
           if (accountDoc.exists()) {
             const accountData = accountDoc.data();
+            if (accountData.preferredLanguage) {
+              setLanguage(accountData.preferredLanguage);
+            }
             setUserInfo({
               email: accountData.email ?? 'default@example.com',
               questionAnswers: accountData.questionAnswers,
               lastLogin: accountData.lastLogin?.toDate(),
               createdAt: accountData.createdAt.toDate(),
+              browserInfo: accountData.browserInfo,
+              lastName: accountData.lastName,
+              firstName: accountData.firstName,
+              totalScore: accountData.totalScore ?? 0,
+              businessId: accountData.businessId,
+              preferredLanguage: accountData.preferredLanguage,
             });
           }
         } catch (error) {
           console.error('Error fetching user info: ', error);
         }
       } else {
-        // User is signed out, clear user info
         setUserInfo(null);
+        setLanguage('en');
       }
     });
-
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
@@ -98,11 +55,27 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
     if (userInfo) {
       if (auth.currentUser?.uid) {
         const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
-        updateDoc(accountDocRef, {
+        const updateData: Partial<UserContextState['userInfo']> = {
           email: userInfo.email,
           questionAnswers: userInfo.questionAnswers,
           lastLogin: userInfo.lastLogin,
           createdAt: userInfo.createdAt,
+          browserInfo: userInfo.browserInfo,
+          lastName: userInfo.lastName,
+          firstName: userInfo.firstName,
+          totalScore: userInfo.totalScore ?? 0,
+          businessId: userInfo.businessId,
+          preferredLanguage: userInfo.preferredLanguage,
+        };
+
+        Object.keys(updateData).forEach(
+          (key) =>
+            updateData[key as keyof typeof updateData] === undefined &&
+            delete updateData[key as keyof typeof updateData],
+        );
+
+        updateDoc(accountDocRef, updateData).catch((error) => {
+          console.error('Error updating user info: ', error);
         });
       }
     }
@@ -132,38 +105,37 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       },
     );
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
   const setAnswer = async (questionId: string, answer: any) => {
-    //@ts-expect-error
-    await setUserInfo((prevUserInfo) => ({
-      ...prevUserInfo,
-      questionAnswers: {
-        ...prevUserInfo?.questionAnswers,
+    if (!userInfo) return;
+
+    try {
+      const updatedAnswers = {
+        ...userInfo.questionAnswers,
         [questionId]: answer,
-      },
-    }));
+      };
+
+      // Calculate new total score from all answers
+      const newTotalScore = Object.values(updatedAnswers).reduce(
+        (total: number, ans: any) => {
+          return total + (ans?.score || 0);
+        },
+        0,
+      );
+
+      setUserInfo((prevUserInfo) => ({
+        ...prevUserInfo!,
+        questionAnswers: updatedAnswers,
+        totalScore: newTotalScore,
+      }));
+    } catch (error) {
+      console.error('Error updating answer and total score:', error);
+      throw error;
+    }
   };
 
-  useEffect(() => {
-    const handleUserInteraction = () => {
-      setLastInteractionTime(Date.now());
-    };
-
-    const events = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
-
-    events.forEach((event) =>
-      window.addEventListener(event, handleUserInteraction),
-    );
-
-    return () => {
-      events.forEach((event) =>
-        window.removeEventListener(event, handleUserInteraction),
-      );
-    };
-  }, []);
   const saveDropdownSelection = async (
     questionId: string,
     selectedOptions: string[],
@@ -189,39 +161,17 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       }
     }
   };
-  // automatically sign out user after 1 hour of inactivity
-  useEffect(() => {
-    const checkInactivity = () => {
-      if (Date.now() - lastInteractionTime > 3600000) {
-        signOut(auth);
-      }
-    };
-
-    const interval = setInterval(checkInactivity, 60000);
-
-    return () => clearInterval(interval);
-  }, [lastInteractionTime]);
 
   return (
     <UserContext.Provider
       value={{
         userInfo,
         setUserInfo,
-        currentQuestion,
-        setCurrentQuestion,
         setAnswer,
         language,
         setLanguage,
-        isDarkmode,
-        setIsDarkmode,
-        highContrast,
-        setHighContrast,
-        fontSize,
-        setFontSize,
         questions,
         setQuestions,
-        lastInteractionTime,
-        setLastInteractionTime,
         listeningMode,
         setListeningMode,
         setCurrentStep,

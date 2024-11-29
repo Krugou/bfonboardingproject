@@ -12,22 +12,36 @@
     "dev": "npm i && concurrently \"tsc --watch\" \"nodemon --delay 1s bfinno/main.js\" \"cd .. && npm run start\"",
     "tsc": "tsc",
     "tscW": "tsc --watch",
-    "copyApi": "python copy_api.py"
+    "copyApi": "python copy_api.py",
+    "pm2:start": "pm2 start bfinno/main.js --name bfinno-api",
+    "pm2:stop": "pm2 stop bfinno-api",
+    "pm2:restart": "pm2 restart bfinno-api",
+    "pm2:logs": "pm2 logs bfinno-api",
+    "docker:build": "docker build -t bfinno-api .",
+    "docker:run": "docker run -p 3007:3007 bfinno-api",
+    "docker:compose": "docker compose up",
+    "docker:compose:build": "docker compose up --build",
+    "docker:logs": "docker compose logs -f",
+    "docker:restart": "docker compose restart",
+    "docker:stop": "docker compose down"
   },
   "author": "bfinno",
   "license": "ISC",
   "dependencies": {
     "@types/cors": "^2.8.17",
-    "concurrently": "^9.0.1",
+    "concurrently": "^9.1.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
+    "express-rate-limit": "^7.4.1",
     "nodemon": "^3.1.7",
-    "openai": "^4.68.4",
-    "typescript": "^5.6.3"
+    "openai": "^4.73.1",
+    "pm2": "^5.4.3",
+    "typescript": "^5.7.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
+    "@types/express-rate-limit": "^6.0.2",
     "@types/jest": "^29.5.14",
     "jest": "^29.7.0",
     "ts-jest": "^29.2.5"

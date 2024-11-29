@@ -36,9 +36,10 @@ const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
         <tbody className=''>
           {answeredQuestions.length > 0 ? (
             answeredQuestions.map((q) => {
-              // Find the current step by locating the question index
-              const currentStep =
-                questions.findIndex((question) => question.id === q.id) + 1;
+              // find the step index of array of questions
+              const stepIndex = questions.findIndex(
+                (question) => question.id === q.id,
+              );
 
               return (
                 <tr key={q.id}>
@@ -73,10 +74,10 @@ const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
                     <button
                       className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded'
                       onClick={() => {
-                        setCurrentStep(currentStep);
+                        setCurrentStep(stepIndex);
                         onClose();
                       }}
-                      aria-label={`Go back to question ${currentStep}`}>
+                      aria-label={`Go back to question ${stepIndex}`}>
                       {language === 'fi'
                         ? 'Palaa tähän kysymykseen'
                         : 'Go Back to this Question'}

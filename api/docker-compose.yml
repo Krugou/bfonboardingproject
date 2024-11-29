@@ -1,0 +1,20 @@
+services:
+  api:
+    build:
+      context: .
+      args:
+        NODE_ENV: production
+    ports:
+      - '3007:3007'
+    environment:
+      - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - BFINNO_PASSWORD=${BFINNO_PASSWORD}
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/usr/src/app/logs
+      - pm2_data:/root/.pm2
+volumes:
+  pm2_data:

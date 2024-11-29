@@ -4,7 +4,6 @@
 export interface AnswerOption {
   key: string;
   score: number;
-  weight: number;
   text: {
     en: string;
     fi: string;
@@ -84,10 +83,30 @@ export interface QuestionItem {
   };
   locked?: boolean;
   maxLength?: number;
+  weight?: number;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;
+  ttsAudio?: boolean;
 }
-
+export interface CompanyInfo {
+  businessId: {value: string}; // Unique identifier for the business
+  names: {name: string}[]; // Array of names (localized or alternative names)
+  addresses: {
+    street: string;
+    city?: string;
+    postalCode?: string;
+  }[]; // Address details with optional city and postal code
+  website?: {
+    url: string;
+    description?: string;
+  }; // Website URL and optional description
+  mainBusinessLine?: {
+    descriptions: {description: string}[]; // Descriptions of the business line
+  }; // Main business line information
+  industry?: string; // Industry sector
+  numberOfEmployees?: string; // Number of employees, if available
+  name: string;
+}
 /**
  * Interface for Condition with both Finnish and English names
  */

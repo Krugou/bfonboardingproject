@@ -49,6 +49,7 @@ const TextInput: React.FC<TextInputProps> = ({
       setError(true);
     } else {
       const companyInfo = await fetchCompanyInfo(value);
+      console.log("🚀 ~ handleChange ~ companyInfo:", companyInfo)
       if (companyInfo) {
         setError(false);
         setFound(true);

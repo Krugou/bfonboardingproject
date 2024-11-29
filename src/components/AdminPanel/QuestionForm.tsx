@@ -27,7 +27,7 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
   const handleAddOption = () => {
     setAnswerOptions([
       ...answerOptions,
-      {key: '', score: 0, weight: 0, text: {en: '', fi: ''}},
+      {key: '', score: 0, text: {en: '', fi: ''}},
     ]);
   };
 
@@ -117,22 +117,6 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
             onChange={(e) => handleOptionChange(e, index)}
             className='w-full p-2 border rounded'
             placeholder='Score'
-          />
-        </div>
-        <div className='mb-2'>
-          <label
-            className='block text-gray-700'
-            htmlFor={`answerOptions.${index}.weight`}>
-            Weight
-          </label>
-          <input
-            type='number'
-            id={`answerOptions.${index}.weight`}
-            name={`answerOptions.${index}.weight`}
-            value={option.weight}
-            onChange={(e) => handleOptionChange(e, index)}
-            className='w-full p-2 border rounded'
-            placeholder='Weight'
           />
         </div>
       </div>

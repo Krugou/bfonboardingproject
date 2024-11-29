@@ -5,25 +5,18 @@ import QuestionInput from './QuestionsNavigator/QuestionInput';
 interface QuestionNavigatorProps {}
 
 const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
-  const {
-    language,
-    setCurrentQuestion,
-    setCurrentStep,
-    currentStep,
-    questions,
-    userInfo,
-  } = useUserContext();
+  const {language, setCurrentStep, currentStep, questions, userInfo} =
+    useUserContext();
 
   const handleReset = () => {
-    setCurrentStep(1);
-    setCurrentQuestion(1);
+    setCurrentStep(0);
   };
 
   const isNextButtonDisabled = () => {
     if (currentStep === questions.length) return true;
     if (!userInfo?.questionAnswers) return true;
 
-    const currentQuestion = questions[currentStep - 1];
+    const currentQuestion = questions[currentStep];
     const hasAnswer = !!userInfo.questionAnswers[currentQuestion.id];
 
     // Special validation for first question (k1)
@@ -37,15 +30,9 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'ArrowRight' && !isNextButtonDisabled()) {
-        // @ts-expect-error
         setCurrentStep((prevStep) => Math.min(prevStep + 1, questions.length));
-        setCurrentQuestion((prevStep) =>
-          Math.min(prevStep + 1, questions.length),
-        );
       } else if (event.key === 'ArrowLeft' && currentStep > 1) {
-        // @ts-expect-error
         setCurrentStep((prevStep) => Math.max(prevStep - 1, 1));
-        setCurrentQuestion((prevStep) => Math.max(prevStep - 1, 1));
       }
     };
 
@@ -53,27 +40,20 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [
-    setCurrentStep,
-    setCurrentQuestion,
-    questions.length,
-    currentStep,
-    isNextButtonDisabled,
-  ]);
+  }, [setCurrentStep, questions.length, currentStep, isNextButtonDisabled]);
 
   return (
-    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4 dark:bg-gray-700 dark:text-white'>
+    <div className='flex flex-col sm:flex-row h-full justify-center gap-4 items-center p-4'>
       <button
         className={`w-auto secondary-button uppercase ${
-          currentStep === 1 ? 'opacity-50 invisible cursor-not-allowed' : ''
+          currentStep === 0 ? 'opacity-50 invisible cursor-not-allowed' : ''
         }`}
         onClick={() => {
-          if (currentStep > 1) {
+          if (currentStep > 0) {
             setCurrentStep(currentStep - 1);
-            setCurrentQuestion(currentStep - 1);
           }
         }}
-        disabled={currentStep === 1}
+        disabled={currentStep === 0}
         aria-label={language === 'fi' ? 'Edellinen' : 'Previous'}
         role='button'>
         {language === 'fi' ? 'EDELLINEN' : 'PREVIOUS'}
@@ -81,7 +61,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
       {currentStep <= questions.length ? (
         <>
           <div className='w-full sm:w-3/4'>
-            <QuestionInput question={questions[currentStep - 1]} />
+            <QuestionInput question={questions[currentStep]} />
           </div>
           <button
             className={`primary-button w-auto uppercase ${
@@ -90,7 +70,6 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
             onClick={() => {
               if (!isNextButtonDisabled()) {
                 setCurrentStep(currentStep + 1);
-                setCurrentQuestion(currentStep + 1);
               }
             }}
             disabled={isNextButtonDisabled()}
@@ -101,7 +80,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
         </>
       ) : (
         <button
-          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg dark:bg-gray-600 dark:hover:bg-gray-800 uppercase'
+          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg  uppercase'
           onClick={handleReset}
           aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
           role='button'>
