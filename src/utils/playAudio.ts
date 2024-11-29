@@ -1,4 +1,9 @@
-import {AudioError, AudioConfig} from '@/types/audio';
+import {
+  AudioError,
+  AudioConfig,
+  AudioFileFormat,
+  AudioErrorCode,
+} from '@/types/audio';
 
 /**
  * Determines the base path for audio files based on the environment.
@@ -26,10 +31,12 @@ export const playAudio = (fileName: string): Promise<void> => {
   return new Promise((resolve, reject) => {
     try {
       // Validate file extension
-      const fileExtension = fileName.split('.').pop()?.toLowerCase();
+      const fileExtension = fileName.split('.').pop()?.toLowerCase() as
+        | AudioFileFormat
+        | undefined;
       if (
         !fileExtension ||
-        !audioConfig.allowedFormats.includes(fileExtension as any)
+        !audioConfig.allowedFormats.includes(fileExtension)
       ) {
         const error = new Error(
           `Invalid audio format. Allowed formats: ${audioConfig.allowedFormats.join(
@@ -53,7 +60,7 @@ export const playAudio = (fileName: string): Promise<void> => {
         resolve();
       };
 
-      const onError = (e: ErrorEvent) => {
+      const onError = (e: Event) => {
         cleanup();
         const error = new Error('Failed to play audio') as AudioError;
         error.code = 'AUDIO_PLAY_ERROR';
@@ -70,7 +77,9 @@ export const playAudio = (fileName: string): Promise<void> => {
         reject(playError);
       });
     } catch (error) {
-      const audioError = new Error('Audio playback failed') as AudioError;
+      const audioError = new Error(
+        error instanceof Error ? error.message : 'Audio playback failed',
+      ) as AudioError;
       audioError.code = 'AUDIO_LOAD_ERROR';
       reject(audioError);
     }
