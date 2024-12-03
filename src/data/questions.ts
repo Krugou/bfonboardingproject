@@ -20,6 +20,7 @@ const questions: QuestionItem[] = [
       en: 'Please provide your company’s business ID.',
       fi: 'Anna yrityksesi Y-tunnus.',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: 'Business ID format (validation) ',
@@ -49,6 +50,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -92,6 +94,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -135,6 +138,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.5,
     syntaxPlaceholder: {
       en: '',
@@ -180,6 +184,7 @@ const questions: QuestionItem[] = [
       en: 'What is own free capital? Own free capital is capital that does not have a repayment obligation, such as accumulated profits and investments made in the company (e.g., invested unrestricted equity fund - SVOP). For example, possible dividends are paid from the company’s free capital.',
       fi: 'Mikä on oma vapaa pääoma? Oma vapaa pääomaa on pääomaa, jolla ei ole takaisinmaksuvelvoitetta kuten yritykseen kertyneet voittovarat ja yritykseen tehdyt sijoitukset (ns. sijoitetun vapaan oman pääoman rahasto - SVOP). Esimerkiksi mahdolliset osingot maksetaan yrityksen vapaasta pääomasta.',
     },
+    ttsAudio: true,
     weight: 1.2,
     syntaxPlaceholder: {
       en: '',
@@ -238,6 +243,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -284,6 +290,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.5,
     syntaxPlaceholder: {
       en: '',
@@ -330,6 +337,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.5,
     syntaxPlaceholder: {
       en: '',
@@ -376,6 +384,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -401,6 +410,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -429,6 +439,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -473,6 +484,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.5,
     syntaxPlaceholder: {
       en: '',
@@ -517,6 +529,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -546,6 +559,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.2,
     syntaxPlaceholder: {
       en: '',
@@ -590,6 +604,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -634,6 +649,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -676,6 +692,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -726,6 +743,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1.5,
     syntaxPlaceholder: {
       en: '',
@@ -775,6 +793,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -800,6 +819,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: 1,
     syntaxPlaceholder: {
       en: '',
@@ -825,6 +845,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -850,6 +871,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -875,6 +897,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -899,6 +922,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',
@@ -924,6 +948,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
+    ttsAudio: true,
     weight: null,
     syntaxPlaceholder: {
       en: '',

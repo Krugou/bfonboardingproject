@@ -48,9 +48,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
         prop in updatedOptions[index] &&
         typeof updatedOptions[index][prop as keyof AnswerOption] === 'object'
       ) {
-        (updatedOptions[index][prop as keyof AnswerOption] as Record<string, string>)[
-          nestedProp
-        ] = value;
+        (
+          updatedOptions[index][prop as keyof AnswerOption] as Record<
+            string,
+            string
+          >
+        )[nestedProp] = value;
       }
     } else if (keys.length === 2) {
       // Handle direct properties like 'key' or 'score'

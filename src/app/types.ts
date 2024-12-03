@@ -87,7 +87,7 @@ export interface QuestionItem {
   weight?: number | null;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;
-  ttsAudio?: boolean;
+  ttsAudio: boolean;
   originalOrder: number;
 }
 export interface CompanyInfo {

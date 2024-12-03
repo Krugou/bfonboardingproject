@@ -195,7 +195,7 @@ const AdminPanel: React.FC = () => {
               onClick={handleRestoreClick}>
               {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
             </button>
-            <InsertMockData />
+            {/* <InsertMockData /> */}
           </div>
           <QuestionsFlow
             questions={questions}

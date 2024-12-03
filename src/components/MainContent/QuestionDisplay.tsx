@@ -102,10 +102,11 @@ const QuestionDisplay = () => {
 
   const handleAudioClick = async () => {
     const currentQuestion = questions[currentStep];
+    console.log('currentQuestion', currentQuestion);
     if (currentQuestion.ttsAudio) {
       // If question has TTS audio file, play it
       try {
-        await playAudio(questions[currentStep].id + '.wav');
+        await playAudio(questions[currentStep].id + '-' + language + '.wav');
       } catch (error) {
         console.error('Failed to play audio:', error);
         // Fallback to speakContent if audio playback fails
