@@ -19,7 +19,7 @@ const questions: QuestionItem[] = [
       en: 'Please provide your company’s business ID.',
       fi: 'Anna yrityksesi Y-tunnus.',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: 'Business ID format (validation) ',
       fi: 'Y-tunnus formaatti (validointi) ',
@@ -47,7 +47,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -89,7 +89,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -131,7 +131,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.5,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -175,7 +175,7 @@ const questions: QuestionItem[] = [
       en: 'What is own free capital? Own free capital is capital that does not have a repayment obligation, such as accumulated profits and investments made in the company (e.g., invested unrestricted equity fund - SVOP). For example, possible dividends are paid from the company’s free capital.',
       fi: 'Mikä on oma vapaa pääoma? Oma vapaa pääomaa on pääomaa, jolla ei ole takaisinmaksuvelvoitetta kuten yritykseen kertyneet voittovarat ja yritykseen tehdyt sijoitukset (ns. sijoitetun vapaan oman pääoman rahasto - SVOP). Esimerkiksi mahdolliset osingot maksetaan yrityksen vapaasta pääomasta.',
     },
-    weight: 1,
+    weight: 1.2,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -277,7 +277,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.5,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -322,7 +322,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.5,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -367,7 +367,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -391,7 +391,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -435,7 +435,7 @@ const questions: QuestionItem[] = [
       },
       {
         key: 'no',
-        score: 0,
+        score: 1,
         text: {
           en: 'No',
           fi: 'Ei',
@@ -461,7 +461,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.5,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -532,7 +532,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.2,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -708,7 +708,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: 1.5,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -725,7 +725,7 @@ const questions: QuestionItem[] = [
       },
       {
         key: 'yes_strengthening_current_markets',
-        score: 2,
+        score: 1,
         text: {
           en: 'Yes (strengthening current markets)',
           fi: 'Kyllä (nykymarkkinoita vahvistamalla)',
@@ -733,7 +733,7 @@ const questions: QuestionItem[] = [
       },
       {
         key: 'yes_opening_new_markets',
-        score: 3,
+        score: 2,
         text: {
           en: 'Yes (opening new markets)',
           fi: 'Kyllä (uusia markkinoita avaamalla)',
@@ -804,7 +804,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -828,7 +828,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -852,7 +852,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -875,7 +875,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
@@ -899,7 +899,7 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    weight: 1,
+    weight: null,
     syntaxPlaceholder: {
       en: '',
       fi: '',
