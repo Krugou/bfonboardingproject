@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import {db} from '@/utils/firebase';
 import {toast} from 'react-toastify';
-
+import InsertMockData from '../InsertMockData';
 const AdminPanel: React.FC = () => {
   const {questions, setQuestions, language} = useUserContext();
   const [currentQuestion, setCurrentQuestion] = useState<QuestionItem | null>(
@@ -195,6 +195,7 @@ const AdminPanel: React.FC = () => {
               onClick={handleRestoreClick}>
               {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
             </button>
+            <InsertMockData />
           </div>
           <QuestionsFlow
             questions={questions}

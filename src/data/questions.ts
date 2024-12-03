@@ -9,6 +9,7 @@ import {companyTypes} from './companyTypes';
 
 const questions: QuestionItem[] = [
   {
+    originalOrder: 1,
     id: 'k1',
     question: {
       en: 'What is your company’s business ID?',
@@ -37,6 +38,7 @@ const questions: QuestionItem[] = [
     maxLength: 9,
   },
   {
+    originalOrder: 2,
     id: 'k1.1',
     question: {
       en: 'Is the business information correct?',
@@ -79,6 +81,7 @@ const questions: QuestionItem[] = [
     ttsAudio: true,
   },
   {
+    originalOrder: 3,
     id: 'k1.2',
     question: {
       en: 'Please correct your company basic data',
@@ -121,6 +124,7 @@ const questions: QuestionItem[] = [
   },
 
   {
+    originalOrder: 4,
     id: 'k1.4',
     question: {
       en: 'Do you plan to recruit staff in the next year?',
@@ -165,6 +169,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 5,
     id: 'k2',
     question: {
       en: 'How much of your company’s own free capital are you prepared to use for development and internationalization in the next 12 months?',
@@ -222,6 +227,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 6,
     id: 'k2.1',
     question: {
       en: 'Do the founders or core team have previous experience in establishing or managing international, scalable business?',
@@ -267,6 +273,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 7,
     id: 'k2.2',
     question: {
       en: 'Does the company have intangible rights that are protected or intended to be protected by patents, trademarks, design rights, or other means?',
@@ -312,6 +319,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 8,
     id: 'k2.3',
     question: {
       en: 'Is your business idea based on research conducted in universities or research institutes?',
@@ -357,6 +365,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 9,
     id: 'k2.4',
     question: {
       en: 'How much external investment has the company received?',
@@ -381,6 +390,7 @@ const questions: QuestionItem[] = [
     maxLength: 9,
   },
   {
+    originalOrder: 10,
     id: 'k2.5',
     question: {
       en: 'How many employees does the company have in Finland?',
@@ -408,6 +418,7 @@ const questions: QuestionItem[] = [
     maxLength: 9,
   },
   {
+    originalOrder: 11,
     id: 'k2.6',
     question: {
       en: 'Has the organization developed a product development and innovation strategy?',
@@ -451,6 +462,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 12,
     id: 'k2.7',
     question: {
       en: 'Are you actively seeking partners to advance your innovation strategy?',
@@ -494,6 +506,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 13,
     id: 'k2.8',
     question: {
       en: 'Define the type of partners you are looking for?',
@@ -522,6 +535,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 14,
     id: 'k2.9',
     question: {
       en: 'Has the housing company prepared an energy saving survey?',
@@ -565,6 +579,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 15,
     id: 'k2.91',
     question: {
       en: 'Has the housing company received or have you submitted an energy grant application?',
@@ -608,6 +623,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 16,
     id: 'k3.1',
     question: {
       en: 'Does the company have a recognized competitive advantage in international markets?',
@@ -649,6 +665,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 17,
     id: 'k3.2',
     question: {
       en: 'Is the company currently operating in international markets?',
@@ -698,6 +715,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 18,
     id: 'k3.3',
     question: {
       en: 'Is the company aiming for growth in international markets within 1-3 years?',
@@ -746,6 +764,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 19,
     id: 'k3.4',
     question: {
       en: 'How do you plan to achieve revenue and export growth?',
@@ -770,6 +789,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 20,
     id: 'k4',
     question: {
       en: 'What stage is your company in? What is relevant for your company now?',
@@ -794,6 +814,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 21,
     id: 'k5',
     question: {
       en: 'Which markets are you interested in?',
@@ -818,6 +839,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 22,
     id: 'k6',
     question: {
       en: 'Which industries are you interested in?',
@@ -842,6 +864,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 23,
     id: 'k7',
     question: {
       en: 'Which current topics are you interested in?',
@@ -865,6 +888,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 24,
     id: 'k8',
     question: {
       en: 'Which Business Finland or Team Finland services are you primarily interested in?',
@@ -889,6 +913,7 @@ const questions: QuestionItem[] = [
     },
   },
   {
+    originalOrder: 25,
     id: 'k9',
     question: {
       en: 'Please freely describe your needs (max 500 characters)',

@@ -84,10 +84,11 @@ export interface QuestionItem {
   };
   locked?: boolean;
   maxLength?: number;
-  weight?: number;
+  weight?: number | null;
   validationRegex?: ValidationRegex;
   specialCondition?: SpecialCondition;
   ttsAudio?: boolean;
+  originalOrder: number;
 }
 export interface CompanyInfo {
   businessId: {value: string}; // Unique identifier for the business
