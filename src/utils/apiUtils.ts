@@ -10,7 +10,7 @@ const formatUrl = (url: string): string => {
 
   const baseUrl =
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3007'
+      ? 'http://localhost:3007/'
       : 'https://bfinno-7094a0361315.herokuapp.com/';
 
   return `${baseUrl}/${url.replace(/^\/+/, '')}`;
