@@ -2,6 +2,8 @@
 
 import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
+import {fetchHealthStatus} from '@/hooks/api';
+import {toast} from 'react-toastify';
 import {onAuthStateChanged} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
@@ -24,6 +26,30 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
 
     setUserInfo((prev) => ({...prev!, ...updates}));
   };
+
+  // Add health check on mount
+  useEffect(() => {
+    const checkApiHealth = async () => {
+      try {
+        setIsLoading(true);
+        const health = await fetchHealthStatus();
+        if (!health?.status) {
+          toast.error(
+            'API service is currently unavailable. Some features may not work.',
+          );
+        }
+      } catch (error) {
+        toast.error(
+          'Unable to connect to the API service. Please try again later.',
+        );
+        console.error('Health check failed:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkApiHealth();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {

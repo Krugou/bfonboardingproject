@@ -73,4 +73,23 @@ const fetchUserInfoOpenAI = async (
   }
 };
 
-export {fetchCompanyInfo, fetchWebsiteInfoOpenAI, fetchUserInfoOpenAI};
+interface HealthCheckResponse {
+  status: boolean;
+  startTime: string;
+}
+
+/**
+ * Fetches the API server health status
+ * @returns Promise<HealthCheckResponse | undefined> - The server health status
+ * @throws Error if the health check fails
+ */
+const fetchHealthStatus = async (): Promise<HealthCheckResponse | undefined> => {
+  try {
+    return await doFetch<HealthCheckResponse>('health');
+  } catch (error) {
+    console.error('Error checking API health:', error);
+    throw error;
+  }
+};
+
+export {fetchCompanyInfo, fetchWebsiteInfoOpenAI, fetchUserInfoOpenAI, fetchHealthStatus};

@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import fetchOpenAiRouter from './routes/fetchOpenAi.js';
 import companyInfoRouter from './routes/companyInfo.js';
+import { Request, Response } from 'express';
 const app = express();
 const port = process.env.PORT || 3007;
 
@@ -45,6 +46,14 @@ app.use(companyInfoRouter);
 // New route to respond with "Hello World"
 app.get('/', (_req, res) => {
   res.send('Hello cutie, how are you doing?');
+});
+
+// Health check route
+app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({
+    status: true,
+    startTime: startTime.toLocaleString(),
+  });
 });
 
 // Middleware for centralized error handling
