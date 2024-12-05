@@ -7,13 +7,7 @@ import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
 
 // Update the context type definition
-const UserContext = createContext<
-  | (UserContextState & {
-      fetchedBusinessIds: Set<string>;
-      addFetchedBusinessId: (id: string) => void;
-    })
-  | undefined
->(undefined);
+const UserContext = createContext<UserContextState | undefined>(undefined);
 
 export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   children,

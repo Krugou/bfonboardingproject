@@ -6,21 +6,6 @@ interface BusinessLine {
 
 export const acceptedBusinessLines: BusinessLine[] = [
   {
-    code: '000',
-    descriptionFi: 'Toimiala tuntematon',
-    descriptionEn: 'Industry unknown',
-  },
-  {
-    code: '0000',
-    descriptionFi: 'Toimiala tuntematon',
-    descriptionEn: 'Industry unknown',
-  },
-  {
-    code: '00000',
-    descriptionFi: 'Toimiala tuntematon',
-    descriptionEn: 'Industry unknown',
-  },
-  {
     code: '02',
     descriptionFi: 'Metsätalous ja puunkorjuu',
     descriptionEn: 'Forestry and logging',

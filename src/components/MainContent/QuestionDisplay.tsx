@@ -7,9 +7,26 @@ import {fetchCompanyInfo} from '@/hooks/api';
 import {playAudio} from '@/utils/playAudio';
 import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
-import {CompanyInfo} from '@/types/user';
-import {notAcceptedBusinessLines} from '@/data/noBusinesssLines';
+import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinesssLines';
 
+interface Question {
+  id: string;
+  question: Record<string, string>;
+  tooltip: Record<string, string>;
+  ttsAudio?: boolean;
+}
+interface MainBusinessLine {
+  type: string;
+  descriptions: {description: string}[];
+}
+interface CompanyInfo {
+  businessId: {value: string};
+  names?: {name: string}[];
+  addresses?: {street: string}[];
+  website?: {url: string};
+  mainBusinessLine: MainBusinessLine;
+  registrationDate?: string;
+}
 const QuestionDisplay = () => {
   const {
     language,
@@ -30,11 +47,40 @@ const QuestionDisplay = () => {
 
   useQuestionsLogic();
 
-  // New function to handle company info fetching
+  const validateBusinessLine = (
+    data: any,
+  ): {isUnsupported: boolean; reason: string | null} => {
+    console.log(data);
+    try {
+      if (!data?.mainBusinessLine?.type) {
+        console.warn('Business line type is missing from company data');
+        return {isUnsupported: false, reason: null};
+      }
+
+      const businessLineCode = data.mainBusinessLine.type;
+      console.log('🚀 ~ QuestionDisplay ~ businessLineCode:', businessLineCode);
+      const unsupportedLine = notAcceptedBusinessLines.find(
+        (line: BusinessLine) => line.code === businessLineCode,
+      );
+      console.log('🚀 ~ QuestionDisplay ~ unsupportedLine:', unsupportedLine);
+
+      return {
+        isUnsupported: !!unsupportedLine,
+        reason: unsupportedLine
+          ? language === 'fi'
+            ? unsupportedLine.descriptionFi
+            : unsupportedLine.descriptionEn
+          : null,
+      };
+    } catch (error) {
+      console.error('Error validating business line:', error);
+      return {isUnsupported: false, reason: null};
+    }
+  };
+
   const fetchCompanyData = async () => {
     const businessId = userInfo?.questionAnswers['k1'];
     if (!businessId) return;
-    setIsLoading(true);
 
     const currentQuestion = questions[currentStep];
     if (currentQuestion?.id !== 'k1.1') {
@@ -45,39 +91,16 @@ const QuestionDisplay = () => {
 
     try {
       const data = await fetchCompanyInfo(businessId);
+      if (!data) throw new Error('Company information not found');
 
-      if (!data) {
-        throw new Error('Company information not found');
+      const {isUnsupported, reason} = validateBusinessLine(data);
+      if (!isUnsupported) {
+        setIsUnsupportedBusiness(isUnsupported);
+        setUnsupportedReason(reason);
+        return;
       }
-
-      // Check if business line is not supported
-      const businessLineCode = data.mainBusinessLine;
-      const unsupportedLine:
-        | {code: string; descriptionFi: string; descriptionEn: string}
-        | undefined = notAcceptedBusinessLines.find(
-        (line: {code: string; descriptionFi: string; descriptionEn: string}) =>
-          line.code === businessLineCode,
-      );
-
-      const isUnsupported = !!unsupportedLine;
-      setIsUnsupportedBusiness(isUnsupported);
-      setUnsupportedReason(
-        unsupportedLine
-          ? language === 'fi'
-            ? unsupportedLine.descriptionFi
-            : unsupportedLine.descriptionEn
-          : null,
-      );
-
+      //@ts-expect-error
       setCompanyInfo(data);
-      setUserInfo((prev) => ({
-        ...prev!,
-        companyInfoResult: {
-          ...data,
-          registrationDate: data.registrationDate || new Date(),
-          createdAt: data.createdAt || new Date(),
-        },
-      }));
 
       toast.success(
         language === 'fi'
@@ -85,12 +108,12 @@ const QuestionDisplay = () => {
           : 'Company information fetched successfully',
       );
     } catch (error) {
+      console.error('Error fetching company data:', error);
       toast.error(
         language === 'fi'
           ? 'Virhe yritystietojen haussa'
           : 'Error fetching company information',
       );
-      console.error('Error fetching company data:', error);
     } finally {
       setIsLoading(false);
     }
@@ -130,8 +153,26 @@ const QuestionDisplay = () => {
     return null;
   }
   if (isLoading) {
-    <LoadingBox />;
+    return <LoadingBox />;
   }
+  if (isUnsupportedBusiness) {
+    return (
+      <div className='mt-4 space-y-2 text-red-600'>
+        <p>
+          {language === 'fi'
+            ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
+            : 'Unfortunately, we cannot provide funding for this business sector.'}
+        </p>
+        {unsupportedReason && (
+          <p className='text-xs'>
+            {language === 'fi' ? 'Syy: ' : 'Reason: '}
+            {unsupportedReason}
+          </p>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 '>
       {currentStep <= questions.length ? (
@@ -225,21 +266,6 @@ const QuestionDisplay = () => {
                         </>
                       )}
                     </p>
-                    {isUnsupportedBusiness && (
-                      <div className='mt-4 space-y-2 text-red-600'>
-                        <p>
-                          {language === 'fi'
-                            ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
-                            : 'Unfortunately, we cannot provide funding for this business sector.'}
-                        </p>
-                        {unsupportedReason && (
-                          <p className='text-xs'>
-                            {language === 'fi' ? 'Syy: ' : 'Reason: '}
-                            {unsupportedReason}
-                          </p>
-                        )}
-                      </div>
-                    )}
                   </div>
                 ) : null}
               </div>

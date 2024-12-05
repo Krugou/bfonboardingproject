@@ -7,10 +7,10 @@ export interface BusinessLine {
 export interface CompanyInfo {
   businessId: string;
   name: string;
-  registrationDate: string;
+  registrationDate?: string;
   companyForm?: string;
   mainBusinessLine?: BusinessLine;
-  createdAt: string;
+  createdAt?: string;
   status?: string;
 }
 
@@ -30,7 +30,7 @@ export interface UserProfile {
   totalScore?: number;
   businessId?: string;
   preferredLanguage?: string;
-  companyInfoResult?: CompanyInfo;
+  companyInfoResult?: CompanyInfo[];
 }
 
 export interface UserContextState {

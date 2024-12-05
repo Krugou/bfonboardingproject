@@ -41,15 +41,17 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     const updatedOptions = [...answerOptions];
     const keys = name.split('.');
 
-    if (keys.length === 3) {
-      // Handle nested properties like 'text.en' or 'text.fi'
-      const [prop, nestedProp] = keys.slice(1); // Skip the array index part
+    if (keys.length === 3 && index < updatedOptions.length) {
+      const [propKey, nestedProp] = keys.slice(1);
       if (
-        prop in updatedOptions[index] &&
-        typeof updatedOptions[index][prop as keyof AnswerOption] === 'object'
+        propKey &&
+        nestedProp &&
+        updatedOptions[index] &&
+        propKey in updatedOptions[index] &&
+        typeof updatedOptions[index][propKey as keyof AnswerOption] === 'object'
       ) {
         (
-          updatedOptions[index][prop as keyof AnswerOption] as Record<
+          updatedOptions[index][propKey as keyof AnswerOption] as Record<
             string,
             string
           >
@@ -58,9 +60,12 @@ const QuestionForm: React.FC<QuestionFormProps> = ({
     } else if (keys.length === 2) {
       // Handle direct properties like 'key' or 'score'
       const [, prop] = keys;
-      if (prop in updatedOptions[index]) {
+      if (prop && updatedOptions[index] && prop in updatedOptions[index]) {
         if (prop === 'score') {
-          updatedOptions[index][prop] = parseInt(value, 10);
+          updatedOptions[index][prop as keyof AnswerOption] = parseInt(
+            value,
+            10,
+          ) as never;
         } else {
           updatedOptions[index][prop as keyof AnswerOption] = value as never;
         }

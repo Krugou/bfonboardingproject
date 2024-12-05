@@ -80,7 +80,6 @@ const questions: QuestionItem[] = [
       en: '',
       fi: '',
     },
-    ttsAudio: true,
   },
   {
     originalOrder: 3,

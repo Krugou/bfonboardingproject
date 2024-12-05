@@ -40,6 +40,8 @@ const AdminPanel: React.FC = () => {
       maxLength: 0,
       validationRegex: {en: '', fi: ''},
       specialCondition: {},
+      ttsAudio: false,
+      originalOrder: 0,
     };
     setCurrentQuestion(newQuestion);
     setIsEditing(true);
@@ -91,13 +93,16 @@ const AdminPanel: React.FC = () => {
       const {name, value} = e.target;
       const [field, subfield] = name.split('.');
       if (subfield) {
-        setCurrentQuestion({
-          ...currentQuestion,
-          [field as string]: {
-            ...currentQuestion[field as keyof QuestionItem],
-            [subfield]: value,
-          },
-        });
+        const fieldValue = currentQuestion[field as keyof QuestionItem];
+        if (typeof fieldValue === 'object' && fieldValue !== null) {
+          setCurrentQuestion({
+            ...currentQuestion,
+            [field as string]: {
+              ...(fieldValue as Record<string, unknown>),
+              [subfield]: value,
+            },
+          });
+        }
       } else {
         setCurrentQuestion({
           ...currentQuestion,
