@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
 import './LoadingElement.css';
 
-const LoadingElement = forwardRef<HTMLDivElement, {}>((props, ref) => {
+const LoadingElement = forwardRef<HTMLDivElement, {}>((_props, ref) => {
   return (
     <div className='container' ref={ref}>
       <div className='cloud front'>

@@ -44,6 +44,7 @@ const TextInput: React.FC<TextInputProps> = ({
 
       return;
     }
+    // @ts-expect-error
     const regex = new RegExp(question.validationRegex[language]);
     if (regex instanceof RegExp && !regex.test(value)) {
       setError(true);

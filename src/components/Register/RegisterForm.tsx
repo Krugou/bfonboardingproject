@@ -1,5 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
-import GoogleIcon from '@mui/icons-material/Google';
+import React, {useState, useCallback} from 'react';
 import {useForm} from 'react-hook-form';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -9,7 +8,6 @@ import Link from 'next/link';
 import {useAuth} from '@/hooks/useAuth';
 import {useRouter} from 'next/navigation';
 import {useUserContext} from '@/context/UserContext';
-import {toast} from 'react-toastify';
 // Password validation schema
 const passwordSchema = z
   .object({
@@ -46,7 +44,6 @@ const RegisterForm: React.FC = () => {
     register,
     handleSubmit,
     formState: {errors},
-    watch,
   } = useForm({
     resolver: zodResolver(passwordSchema),
     mode: 'onChange',

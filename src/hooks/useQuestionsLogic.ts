@@ -21,12 +21,20 @@ export const useQuestionsLogic = () => {
       // Check company age condition
       if (specialCondition.companyAge) {
         const companyCreatedAt = userInfo.createdAt;
-        const ageInYears = (new Date().getTime() - new Date(companyCreatedAt).getTime()) / (1000 * 60 * 60 * 24 * 365);
+        const ageInYears =
+          (new Date().getTime() - new Date(companyCreatedAt).getTime()) /
+          (1000 * 60 * 60 * 24 * 365);
 
-        if (specialCondition.companyAge.maxYears && ageInYears > specialCondition.companyAge.maxYears) {
+        if (
+          specialCondition.companyAge.maxYears &&
+          ageInYears > specialCondition.companyAge.maxYears
+        ) {
           return true;
         }
-        if (specialCondition.companyAge.minYears && ageInYears < specialCondition.companyAge.minYears) {
+        if (
+          specialCondition.companyAge.minYears &&
+          ageInYears < specialCondition.companyAge.minYears
+        ) {
           return true;
         }
       }
@@ -41,8 +49,12 @@ export const useQuestionsLogic = () => {
 
       // Check dependent question condition
       if (specialCondition.questionId && specialCondition.allowedAnswers) {
-        const dependentAnswer = userInfo.questionAnswers[specialCondition.questionId];
-        if (!dependentAnswer || !specialCondition.allowedAnswers.includes(dependentAnswer)) {
+        const dependentAnswer =
+          userInfo.questionAnswers[specialCondition.questionId];
+        if (
+          !dependentAnswer ||
+          !specialCondition.allowedAnswers.includes(dependentAnswer)
+        ) {
           return true;
         }
       }
@@ -56,15 +68,8 @@ export const useQuestionsLogic = () => {
       toast.info(
         language === 'fi'
           ? 'Siirrytään seuraavaan soveltuvaan kysymykseen'
-          : 'Moving to next applicable question'
+          : 'Moving to next applicable question',
       );
     }
-  }, [
-    userInfo?.questionAnswers,
-    currentStep,
-    questions,
-    setCurrentStep,
-    language,
-    userInfo?.createdAt
-  ]);
+  }, [currentStep]);
 };

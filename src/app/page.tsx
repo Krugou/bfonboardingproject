@@ -1,4 +1,5 @@
 'use client';
+import WelcomeMessage from '@/components/WelcomeMessage';
 import AnsweredQuestionsModal from '@/components/AnsweredQuestionsModal';
 import Header from '@/components/Header';
 import LoadingElement from '@/components/LoadingElement';
@@ -17,6 +18,7 @@ import {gsap} from 'gsap';
  */
 const Home: React.FC = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [isFirstVisit, setIsFirstVisit] = useState(true);
   const {userInfo, language} = useUserContext();
   const textRef = useRef<HTMLHeadingElement>(null);
   const subTextRef = useRef<HTMLHeadingElement>(null);
@@ -26,6 +28,19 @@ const Home: React.FC = () => {
   const toggleModal = () => {
     setModalOpen((prev) => !prev);
   };
+
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('hasVisited');
+    if (!hasVisited) {
+      localStorage.setItem('hasVisited', 'true');
+      setIsFirstVisit(true);
+      setTimeout(() => {
+        setIsFirstVisit(false);
+      }, 5000);
+    } else {
+      setIsFirstVisit(false);
+    }
+  }, []);
 
   useEffect(() => {
     const animateText = () => {
@@ -88,7 +103,7 @@ const Home: React.FC = () => {
         gsap.killTweensOf(subElementRef.current);
       }
     };
-  }, []);
+  }, [isFirstVisit]);
 
   return (
     <>
@@ -107,7 +122,8 @@ const Home: React.FC = () => {
       />
       <div className='flex flex-col w-full bg-bf-gray h-screen items-center'>
         <Header />
-        {!userInfo && (
+        {isFirstVisit && <WelcomeMessage language={language} />}
+        {!userInfo && !isFirstVisit ? (
           <div className='flex flex-col justify-center items-center h-screen'>
             <h2
               ref={textRef}
@@ -124,7 +140,7 @@ const Home: React.FC = () => {
                 : 'Please login to start'}
             </p>
           </div>
-        )}
+        ) : null}
         {userInfo && (
           <>
             <MainContent handleOpenModal={toggleModal} />

@@ -3,7 +3,6 @@ import {UserProvider} from '@/context/UserContext';
 import type {Metadata} from 'next';
 import localFont from 'next/font/local';
 import React from 'react';
-import {Bounce, ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Favicon from './favicon.webp';
 import './globals.css';

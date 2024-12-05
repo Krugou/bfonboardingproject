@@ -1,8 +1,8 @@
 import questions from '@/data/questions';
 import {db} from '@/utils/firebase';
-import {collection, doc, getDoc, setDoc} from 'firebase/firestore';
+import {collection, doc, setDoc} from 'firebase/firestore';
 import React from 'react';
-import {Bounce, toast, ToastContainer} from 'react-toastify';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /**

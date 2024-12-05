@@ -4,7 +4,7 @@ import express from 'express';
 import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import fetchOpenAiRouter from './routes/fetchOpenAi.js';
-
+import companyInfoRouter from './routes/companyInfo.js';
 const app = express();
 const port = process.env.PORT || 3007;
 
@@ -40,6 +40,7 @@ app.use(limiter);
 const startTime: Date = new Date();
 
 app.use(fetchOpenAiRouter);
+app.use(companyInfoRouter);
 
 // New route to respond with "Hello World"
 app.get('/', (_req, res) => {

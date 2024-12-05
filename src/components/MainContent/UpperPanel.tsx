@@ -1,4 +1,3 @@
-import {useUserContext} from '@/context/UserContext';
 import React from 'react';
 import BFStepper from './UpperPanel/BFStepper';
 import HistoryButton from './UpperPanel/HistoryButton';

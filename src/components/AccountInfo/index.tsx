@@ -5,11 +5,9 @@ import {useUserContext} from '@/context/UserContext';
 import useFetchUserInfo from '@/hooks/useFetchUserInfo';
 import {UserDetails} from './AccountDetails';
 import LogoutButton from './LogoutButton';
-import {usePathname} from 'next/navigation';
 
 const AccountInfo: React.FC = () => {
   const {userInfo, setUserInfo, language} = useUserContext();
-  const pathname = usePathname();
   useFetchUserInfo();
 
   if (!userInfo) {

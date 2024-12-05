@@ -5,6 +5,7 @@ import QuestionDisplay from './QuestionDisplay';
 import QuestionsNavigator from './QuestionsNavigator';
 import UpperPanel from './UpperPanel';
 import LoadingBox from '../LoadingBox';
+import ResetQuestionsDialog from './ResetQuestionsDialog';
 
 /**
  * Props for the MainContent component.
@@ -50,30 +51,14 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
   if (!userInfo) {
     return <LoadingBox />;
   }
-  // Modified condition to show dialog
+
   if (resetQuestions === null && hasExistingAnswers) {
     return (
-      <div className='flex flex-col justify-center items-center h-screen'>
-        <div className='w-full bg-bf-brand-primary  p-4 rounded-xl'>
-          <p className='text-xl font-bold text-white mb-4'>
-            {language === 'fi'
-              ? 'Olet jo vastannut joihinkin kysymyksiin. Haluatko nollata kysymykset vai jatkaa?'
-              : 'You have already answered some questions. Do you want to reset the questions or continue?'}
-          </p>
-          <div className='flex gap-4 justify-between'>
-            <button
-              className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded'
-              onClick={handleReset}>
-              {language === 'fi' ? 'Nollaa kysymykset' : 'Reset Questions'}
-            </button>
-            <button
-              className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'
-              onClick={handleContinue}>
-              {language === 'fi' ? 'Jatka' : 'Continue'}
-            </button>
-          </div>
-        </div>
-      </div>
+      <ResetQuestionsDialog
+        language={language}
+        onReset={handleReset}
+        onContinue={handleContinue}
+      />
     );
   }
 
