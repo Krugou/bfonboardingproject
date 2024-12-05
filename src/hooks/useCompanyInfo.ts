@@ -3,7 +3,7 @@ import {CompanyInfo} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import {fetchCompanyInfo} from '@/hooks/api';
 import {toast} from 'react-toastify';
-import {notAcceptedBusinessLines} from '@/data/noBusinesssLines';
+import {notAcceptedBusinessLines} from '@/data/noBusinessLines';
 
 export const useCompanyInfo = () => {
   const {

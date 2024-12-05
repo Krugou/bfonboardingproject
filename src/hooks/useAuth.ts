@@ -137,13 +137,13 @@ export const useAuth = () => {
     businessId?: string,
     preferredLanguage?: string,
   ): Promise<boolean> => {
-    console.log('🚀 ~ useAuth ~ lastName:', lastName);
-    console.log('🚀 ~ useAuth ~ firstName:', firstName);
-    console.log('🚀 ~ useAuth ~ isLogin:', isLogin);
-    console.log('🚀 ~ useAuth ~ password:', password);
-    console.log('🚀 ~ useAuth ~ email:', email);
-    console.log('🚀 ~ useAuth ~ businessId:', businessId);
-    console.log('🚀 ~ useAuth ~ preferredLanguage:', preferredLanguage);
+    // console.log('🚀 ~ useAuth ~ lastName:', lastName);
+    // console.log('🚀 ~ useAuth ~ firstName:', firstName);
+    // console.log('🚀 ~ useAuth ~ isLogin:', isLogin);
+    // console.log('🚀 ~ useAuth ~ password:', password);
+    // console.log('🚀 ~ useAuth ~ email:', email);
+    // console.log('🚀 ~ useAuth ~ businessId:', businessId);
+    // console.log('🚀 ~ useAuth ~ preferredLanguage:', preferredLanguage);
     setError(null);
     const auth = getAuth();
 
