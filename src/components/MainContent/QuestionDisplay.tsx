@@ -7,7 +7,7 @@ import {fetchCompanyInfo} from '@/hooks/api';
 import {playAudio} from '@/utils/playAudio';
 import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
-import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinesssLines';
+import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
 
 interface Question {
   id: string;
@@ -94,7 +94,7 @@ const QuestionDisplay = () => {
       if (!data) throw new Error('Company information not found');
 
       const {isUnsupported, reason} = validateBusinessLine(data);
-      if (!isUnsupported) {
+      if (isUnsupported) {
         setIsUnsupportedBusiness(isUnsupported);
         setUnsupportedReason(reason);
         return;

@@ -13,7 +13,7 @@ const formatUrl = (url: string): string => {
       ? 'http://localhost:3007/'
       : 'https://bfinno-7094a0361315.herokuapp.com/';
 
-  return `${baseUrl}/${url.replace(/^\/+/, '')}`;
+  return `${baseUrl}/${url}`;
 };
 
 interface FetchOptions {
