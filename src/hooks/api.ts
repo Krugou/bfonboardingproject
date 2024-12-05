@@ -19,7 +19,7 @@ const fetchCompanyInfo = async (
   businessId: string,
 ): Promise<CompanyInfo | undefined> => {
   try {
-    return await doFetch<CompanyInfo>(`/company/${businessId}`);
+    return await doFetch<CompanyInfo>(`company/${businessId}`);
   } catch (error) {
     console.error('Error fetching company info:', error);
     return undefined;
@@ -46,7 +46,7 @@ const fetchWebsiteInfoOpenAI = async (
   password: string,
 ): Promise<WebsiteInfo | undefined> => {
   try {
-    return await doFetch<WebsiteInfo>('/fetch-website', {
+    return await doFetch<WebsiteInfo>('fetch-website', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({url, password}),
@@ -62,7 +62,7 @@ const fetchUserInfoOpenAI = async (
   password: string,
 ): Promise<UserProfileInfo | undefined> => {
   try {
-    return await doFetch<UserProfileInfo>('/user-info', {
+    return await doFetch<UserProfileInfo>('user-info', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({userInfo, password}),
