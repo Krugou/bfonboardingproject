@@ -2,9 +2,39 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {FetchURLError, OpenAIError} from '../utils/customErrors';
 import {fetchOpenAIResponse} from '../utils/openaiUtils';
 import {industries} from '../data/industries';
-
+import * as cheerio from 'cheerio';
 const router = Router();
 const BF_INNO_PASSWORD = process.env.BFINNO_PASSWORD;
+
+/**
+ * Cleans and extracts relevant text content from HTML
+ * @param $ - Cheerio instance
+ * @returns cleaned text content
+ */
+const extractRelevantContent = ($: cheerio.CheerioAPI): string => {
+  // Remove unwanted elements
+  $(
+    'script, style, noscript, iframe, img, svg, [style*="display:none"]',
+  ).remove();
+
+  // Get main content areas
+  const mainContent = $(
+    'main, article, .content, .main, #main, #content',
+  ).text();
+  if (mainContent.length > 100) {
+    return mainContent;
+  }
+
+  // Fallback to body content if no main content found
+  const bodyText = $('body').text();
+
+  // Clean the text
+  return bodyText
+    .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+    .replace(/\n\s*/g, '\n') // Clean up newlines
+    .replace(/\t/g, ' ') // Replace tabs with spaces
+    .trim();
+};
 
 router.post(
   '/fetch-website',
@@ -39,16 +69,32 @@ router.post(
       }
       const data = await response.text();
 
+      let $;
+      try {
+        $ = cheerio.load(data, {
+          xml: false,
+        });
+      } catch (parseError) {
+        throw new FetchURLError('Failed to parse website content');
+      }
+
+      const textContent = extractRelevantContent($);
+
+      if (!textContent || textContent.length < 50) {
+        throw new FetchURLError('Insufficient content found on the page');
+      }
+
       const openAIRequest = {
         messages: [
           {
             role: 'system',
-            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create 500 word summary about the company": ${data}`,
+            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create few sentence word summary about the company": ${textContent}`,
           },
         ],
         model: 'gpt-4o',
       };
       const openAIResponse = await fetchOpenAIResponse(openAIRequest);
+      console.log('🚀 ~ openAIResponse:', openAIResponse.costInfo);
       const summaryText = openAIResponse.choices[0].message.content;
       console.log('🚀 ~ summaryText:', summaryText);
 
@@ -110,7 +156,7 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information: "${JSON.stringify(
+            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information in two sentences: "${JSON.stringify(
               userInfo,
             )}" in json format`,
           },
@@ -119,12 +165,8 @@ router.post(
       };
       const openAIResponse = await fetchOpenAIResponse(openAIRequest);
       const profileText = openAIResponse.choices[0].message.content;
-      const jsonStartIndex = profileText.indexOf('{');
-      const jsonEndIndex = profileText.lastIndexOf('}') + 1;
-      const jsonString = profileText.substring(jsonStartIndex, jsonEndIndex);
-      const profileJson = JSON.parse(jsonString);
 
-      res.status(200).json(profileJson);
+      res.status(200).json(profileText);
     } catch (error) {
       if (error instanceof OpenAIError) {
         console.error(`Error: ${error.message}`);

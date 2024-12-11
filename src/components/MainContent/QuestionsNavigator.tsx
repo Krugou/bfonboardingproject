@@ -69,7 +69,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
         role='button'>
         {language === 'fi' ? 'EDELLINEN' : 'PREVIOUS'}
       </button>
-      {currentStep <= questions.length ? (
+      {currentStep < questions.length ? (
         <>
           <div className='w-full sm:w-3/4'>
             <QuestionInput question={questions[currentStep]} />

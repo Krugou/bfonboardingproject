@@ -1,24 +1,31 @@
-
-import { QuestionItem } from '@/app/types';
-import React, { useEffect, useState } from 'react';
-import { useUserContext } from '@/context/UserContext';
+import {QuestionItem} from '@/app/types';
+import React, {useEffect, useState} from 'react';
+import {useUserContext} from '@/context/UserContext';
 
 interface NumberInputProps {
   question: QuestionItem;
   setAnswer: (questionId: string, answer: any) => void;
 }
 
-const NumberInput: React.FC<NumberInputProps> = ({ question, setAnswer }) => {
-  const { language, userInfo } = useUserContext();
+const NumberInput: React.FC<NumberInputProps> = ({question, setAnswer}) => {
+  const {language, userInfo} = useUserContext();
   const [inputValue, setInputValue] = useState<string>('');
   const [charCount, setCharCount] = useState<number>(0);
   const [error, setError] = useState<boolean>(false);
-
   useEffect(() => {
     // Reset input when question changes
     setInputValue('');
     setCharCount(0);
   }, [question.id]);
+  // check from userinfo if question is already answered
+  useEffect(() => {
+    if (userInfo) {
+      if (userInfo.questionAnswers[question.id]) {
+        setInputValue(userInfo.questionAnswers[question.id]);
+        setCharCount(userInfo.questionAnswers[question.id].length);
+      }
+    }
+  }, [userInfo]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(false);

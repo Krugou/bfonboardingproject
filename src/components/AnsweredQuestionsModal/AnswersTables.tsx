@@ -7,14 +7,34 @@ interface AnswersTableProps {
 
 const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
   const {userInfo, language, questions, setCurrentStep} = useUserContext();
+
   if (!userInfo) {
-    return null; // or return a loading indicator or a message
+    return null;
   }
 
-  // Filter to get only answered questions
   const answeredQuestions = questions.filter(
     (q) => userInfo.questionAnswers[q.id] !== undefined,
   );
+
+  const formatAnswer = (answer: any): string => {
+    if (typeof answer === 'string' || typeof answer === 'number') {
+      return String(answer);
+    }
+    if (Array.isArray(answer)) {
+      return answer.map(item => formatAnswer(item)).join(', ');
+    }
+    if (typeof answer === 'object' && answer !== null) {
+      // Handle multilingual objects
+      if ('fi' in answer && 'en' in answer) {
+        return answer[language];
+      }
+      // Handle other objects
+      return Object.entries(answer)
+        .map(([key, value]) => `${key}: ${formatAnswer(value)}`)
+        .join(', ');
+    }
+    return '';
+  };
 
   return (
     <div className='overflow-x-auto max-h-96'>
@@ -32,13 +52,13 @@ const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
             </th>
           </tr>
         </thead>
-        <tbody className=''>
+        <tbody>
           {answeredQuestions.length > 0 ? (
             answeredQuestions.map((q) => {
-              // find the step index of array of questions
               const stepIndex = questions.findIndex(
                 (question) => question.id === q.id,
               );
+              const answer = userInfo.questionAnswers[q.id];
 
               return (
                 <tr key={q.id}>
@@ -46,28 +66,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
                     {q.question[language]}
                   </td>
                   <td className='border border-gray-300 px-4 py-2'>
-                    {Array.isArray(userInfo.questionAnswers[q.id]) ? (
-                      <ul>
-                        {userInfo.questionAnswers[q.id].map(
-                          (item: any, index: number) => (
-                            <li key={index}>{item}</li>
-                          ),
-                        )}
-                      </ul>
-                    ) : typeof userInfo.questionAnswers[q.id] === 'object' ? (
-                      <ul>
-                        {Object.entries(userInfo.questionAnswers[q.id]).map(
-                          ([key, value]) => (
-                            <li key={key}>
-                              {/* @ts-ignore */}
-                              {key}: {value}
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    ) : (
-                      userInfo.questionAnswers[q.id]
-                    )}
+                    {formatAnswer(answer)}
                   </td>
                   <td className='border border-gray-300 px-4 py-2'>
                     <button
@@ -87,7 +86,7 @@ const AnswersTable: React.FC<AnswersTableProps> = ({onClose}) => {
             })
           ) : (
             <tr>
-              <td className='border border-gray-300 px-4 py-2 text-center'>
+              <td colSpan={3} className='border border-gray-300 px-4 py-2 text-center'>
                 {language === 'fi' ? 'Ei vastauksia' : 'No answers available'}
               </td>
             </tr>

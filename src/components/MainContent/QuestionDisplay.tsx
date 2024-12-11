@@ -8,6 +8,7 @@ import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
 import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
 import CompanyInfoDisplay from './CompanyInfoDisplay';
+import {fetchUserInfoOpenAI} from '@/hooks/api';
 
 interface Question {
   id: string;
@@ -38,6 +39,8 @@ const QuestionDisplay = () => {
     fetchCompanyData,
   } = useUserContext();
   const [showTooltip, setShowTooltip] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [profileAnalysis, setProfileAnalysis] = useState<string | null>(null);
 
   useQuestionsLogic();
 
@@ -50,7 +53,6 @@ const QuestionDisplay = () => {
 
   const handleAudioClick = async () => {
     const currentQuestion = questions[currentStep];
-    console.log('currentQuestion', currentQuestion);
     if (currentQuestion.ttsAudio) {
       // If question has TTS audio file, play it
       try {
@@ -74,16 +76,52 @@ const QuestionDisplay = () => {
     }
   };
 
+  const handleFetchingUserInfo = async () => {
+    if (!userInfo?.questionAnswers) {
+      toast.error('No user information available');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      const response = await fetchUserInfoOpenAI(
+        userInfo.questionAnswers,
+        'password',
+      );
+
+      if (response) {
+        // @ts-expect-error
+        setProfileAnalysis(response);
+        toast.success('Profile analysis completed successfully');
+      }
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+      toast.error(
+        language === 'fi'
+          ? 'Virhe profiilin analysoinnissa'
+          : 'Error analyzing profile',
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (currentStep === questions.length && !isProcessing) {
+      handleFetchingUserInfo();
+    }
+  }, [currentStep, questions.length]);
+
   if (!userInfo) {
     return null;
   }
   if (isLoading) {
     return <LoadingBox />;
   }
-
+  // if  currentStep < questions.length then fetchuserinfo
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 '>
-      {currentStep <= questions.length ? (
+      {currentStep < questions.length ? (
         <div className='flex flex-col justify-center items-center h-full w-full rounded-lg p-3 '>
           <div className='flex justify-end w-full items-center rounded-lg mb-2'>
             <button
@@ -109,12 +147,12 @@ const QuestionDisplay = () => {
           <div className='group space-y-2'>
             <h2
               className='text-center w-full font-medium text-base lg:text-lg text-bf-brand-primary break-words'
-              title={questions[currentStep].tooltip[language]}
+              title={questions[currentStep]?.tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep].question[language]}
+              {questions[currentStep]?.question[language]}
             </h2>
-            {questions[currentStep].id === 'k1.1' && (
+            {questions[currentStep]?.id === 'k1.1' && (
               <CompanyInfoDisplay
                 isLoading={isLoading}
                 // @ts-expect-error
@@ -129,17 +167,21 @@ const QuestionDisplay = () => {
               } `}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep].tooltip[language]}
+              {questions[currentStep]?.tooltip[language]}
             </h3>
           </div>
         </div>
       ) : (
-        <h2 className='text-center text-base sm:text-lg md:text-xl lg:text-2xl '>
-          {language === 'fi'
-            ? 'Kiitos vastauksistasi!'
-            : 'Thank you for your answers!'}
-        </h2>
+        <>
+          <h2 className='text-center text-base sm:text-lg md:text-xl lg:text-2xl '>
+            {language === 'fi'
+              ? 'Kiitos vastauksistasi!'
+              : 'Thank you for your answers!'}
+          </h2>
+          <p> {profileAnalysis}</p>
+        </>
       )}
+      {isProcessing && <LoadingBox />}
     </div>
   );
 };

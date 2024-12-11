@@ -19,8 +19,9 @@ const AreaInput: React.FC<AreaInputProps> = ({
 
   useEffect(() => {
     if (answers[question.id]) {
-      setInputValue(answers[question.id]);
-      setCharCount(answers[question.id].length);
+      console.log('answers[question.id]', answers[question.id]);
+      setInputValue(answers[question.id].summary);
+      setCharCount(answers[question.id].summary.length);
     }
   }, [answers, question.id]);
 
