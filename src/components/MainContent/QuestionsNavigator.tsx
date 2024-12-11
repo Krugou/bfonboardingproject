@@ -11,10 +11,17 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     currentStep,
     questions,
     userInfo,
+    setUserInfo,
     isUnsupportedBusiness,
   } = useUserContext();
 
   const handleReset = () => {
+    //@ts-ignore
+    setUserInfo({
+      ...userInfo,
+      questionAnswers: {},
+      isUnsupportedBusiness: false,
+    });
     setCurrentStep(0);
   };
 
