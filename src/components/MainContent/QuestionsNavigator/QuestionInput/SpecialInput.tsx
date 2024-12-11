@@ -114,6 +114,10 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
           numberOfEmployees: websiteInfo.numberOfEmployees,
           wwwAddress: url,
         });
+        debouncedSetAnswer('k9', {
+          ...answers['k9'],
+          summary: websiteInfo.summary,
+        });
       }
     } catch (err) {
       setError(
