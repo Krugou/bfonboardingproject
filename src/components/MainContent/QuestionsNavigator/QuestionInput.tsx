@@ -44,7 +44,7 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     if (!userInfo) {
       return null;
     }
-    switch (question.answerType) {
+    switch (question?.answerType) {
       case 'specialInput':
         return (
           <SpecialInput

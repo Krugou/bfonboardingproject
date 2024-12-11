@@ -88,7 +88,7 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create 500 word summary about the company": ${textContent}`,
+            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create few sentence word summary about the company": ${textContent}`,
           },
         ],
         model: 'gpt-4o',
@@ -156,7 +156,7 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information: "${JSON.stringify(
+            content: `Create a profile about the user's company and assess the feasibility of getting funding based on the following information in two sentences: "${JSON.stringify(
               userInfo,
             )}" in json format`,
           },
@@ -165,12 +165,8 @@ router.post(
       };
       const openAIResponse = await fetchOpenAIResponse(openAIRequest);
       const profileText = openAIResponse.choices[0].message.content;
-      const jsonStartIndex = profileText.indexOf('{');
-      const jsonEndIndex = profileText.lastIndexOf('}') + 1;
-      const jsonString = profileText.substring(jsonStartIndex, jsonEndIndex);
-      const profileJson = JSON.parse(jsonString);
 
-      res.status(200).json(profileJson);
+      res.status(200).json(profileText);
     } catch (error) {
       if (error instanceof OpenAIError) {
         console.error(`Error: ${error.message}`);

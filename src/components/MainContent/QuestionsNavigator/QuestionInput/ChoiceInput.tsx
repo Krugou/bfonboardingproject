@@ -67,7 +67,9 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
             <button
               key={index}
               className={`${
-                userInfo?.questionAnswers[question.id]?.includes(option.trim())
+                userInfo?.questionAnswers[question.id]?.answer[
+                  language
+                ].includes(option.trim())
                   ? 'primary-badge-button-selected '
                   : 'primary-badge-button-unselected'
               } sm:w-auto text-sm sm:text-lg`}

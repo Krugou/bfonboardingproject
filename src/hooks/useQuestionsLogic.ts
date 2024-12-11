@@ -1,19 +1,22 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {toast} from 'react-toastify';
 import {useUserContext} from '@/context/UserContext';
 
 export const useQuestionsLogic = () => {
   const {userInfo, questions, currentStep, setCurrentStep, language} =
     useUserContext();
+  const previousStep = useRef(currentStep);
 
   useEffect(() => {
-    // Skip if no questions or userInfo
     if (!questions.length || !userInfo) return;
 
     const currentQuestion = questions[currentStep];
     if (!currentQuestion) return;
 
-    // Check special conditions
+    // Determine navigation direction
+    const isMovingForward = currentStep > previousStep.current;
+    previousStep.current = currentStep;
+
     const shouldSkip = (() => {
       const specialCondition = currentQuestion.specialCondition;
       if (!specialCondition) return false;
@@ -65,9 +68,14 @@ export const useQuestionsLogic = () => {
       return false;
     })();
 
-    // Skip to next question if conditions not met
     if (shouldSkip) {
-      setCurrentStep((prev) => Math.min(prev + 1, questions.length));
+      setCurrentStep((prev) => {
+        const nextStep = isMovingForward
+          ? Math.min(prev + 1, questions.length)
+          : Math.max(prev - 1, 0);
+        return nextStep;
+      });
+
       toast.info(
         language === 'fi'
           ? 'Siirrytään seuraavaan soveltuvaan kysymykseen'
