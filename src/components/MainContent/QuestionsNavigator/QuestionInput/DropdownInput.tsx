@@ -5,11 +5,10 @@ import {useUserContext} from '@/context/UserContext';
 
 interface DropdownInputProps {
   question: QuestionItem;
-  language: 'en' | 'fi';
 }
 
-const DropdownInput: React.FC<DropdownInputProps> = ({question, language}) => {
-  const {saveDropdownSelection, userInfo} = useUserContext();
+const DropdownInput: React.FC<DropdownInputProps> = ({question}) => {
+  const {saveDropdownSelection, userInfo, language} = useUserContext();
   const [selectedOptions, setSelectedOptions] = useState<
     MultiValue<{value: string; label: string}>
   >([]);

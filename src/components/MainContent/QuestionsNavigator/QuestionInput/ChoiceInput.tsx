@@ -4,18 +4,16 @@ import React from 'react';
 
 interface ChoiceInputProps {
   question: QuestionItem;
-  language: 'en' | 'fi';
   handleSingleChoiceClick: (option: string) => void;
   handleMultiChoiceClick: (option: string) => void;
 }
 
 const ChoiceInput: React.FC<ChoiceInputProps> = ({
   question,
-  language,
   handleSingleChoiceClick,
   handleMultiChoiceClick,
 }) => {
-  const {userInfo} = useUserContext();
+  const {userInfo, language} = useUserContext();
 
   if (!question.answerOptions || !question.answerOptions.length) {
     return <div className='ml-4 p-2 text-red-500'>No options provided</div>;
@@ -38,7 +36,8 @@ const ChoiceInput: React.FC<ChoiceInputProps> = ({
             <button
               key={index}
               className={` ${
-                userInfo?.questionAnswers[question.id] === option.trim()
+                userInfo?.questionAnswers[question.id]?.answer[language] ===
+                option.trim()
                   ? 'primary-badge-button-selected '
                   : 'primary-badge-button-unselected'
               }  sm:w-auto text-sm sm:text-lg`}

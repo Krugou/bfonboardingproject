@@ -1,21 +1,15 @@
 import {QuestionItem} from '@/app/types';
 import {fetchCompanyInfo} from '@/hooks/api';
 import React, {useEffect, useState} from 'react';
-
+import {useUserContext} from '@/context/UserContext';
 interface TextInputProps {
   question: QuestionItem;
-  language: 'en' | 'fi';
-  answers: {[key: string]: any};
   // eslint-disable-next-line no-unused-vars
   setAnswer: (questionId: string, answer: any) => void;
 }
 
-const TextInput: React.FC<TextInputProps> = ({
-  question,
-  language,
-  answers,
-  setAnswer,
-}) => {
+const TextInput: React.FC<TextInputProps> = ({question, setAnswer}) => {
+  const {language, userInfo} = useUserContext();
   const [inputValue, setInputValue] = useState<string>('');
   const [charCount, setCharCount] = useState<number>(0);
   const [error, setError] = useState<boolean>(false);
@@ -23,11 +17,40 @@ const TextInput: React.FC<TextInputProps> = ({
   const [found, setFound] = useState<boolean>(false);
 
   useEffect(() => {
-    if (answers[question.id]) {
-      setInputValue(answers[question.id]);
-      setCharCount(answers[question.id].length);
-    }
-  }, [answers, question.id]);
+    const validateAndFetchCompanyInfo = async () => {
+      setInputValue(userInfo?.businessId || '');
+      setCharCount(userInfo?.businessId?.length || 0);
+
+      if (!question.validationRegex) {
+        setAnswer(question.id, userInfo?.businessId);
+        return;
+      }
+      // @ts-expect-error
+      const regex = new RegExp(question.validationRegex[language]);
+      if (regex instanceof RegExp && !regex.test(userInfo?.businessId || '')) {
+        setError(true);
+      } else {
+        try {
+          const companyInfo = await fetchCompanyInfo(
+            userInfo?.businessId || '',
+          );
+          // console.log('🚀 ~ handleChange ~ companyInfo:', companyInfo);
+          if (companyInfo) {
+            setError(false);
+            setFound(true);
+            setAnswer(question.id, userInfo?.businessId);
+          } else {
+            setNotFound(true);
+          }
+        } catch (error) {
+          console.error('Error fetching company info:', error);
+          setError(true);
+        }
+      }
+    };
+
+    validateAndFetchCompanyInfo();
+  }, [userInfo?.businessId]);
 
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setError(false);
@@ -41,7 +64,6 @@ const TextInput: React.FC<TextInputProps> = ({
     setCharCount(value.length);
     if (!question.validationRegex) {
       setAnswer(question.id, value);
-
       return;
     }
     // @ts-expect-error
@@ -50,7 +72,7 @@ const TextInput: React.FC<TextInputProps> = ({
       setError(true);
     } else {
       const companyInfo = await fetchCompanyInfo(value);
-      console.log("🚀 ~ handleChange ~ companyInfo:", companyInfo)
+      console.log('🚀 ~ handleChange ~ companyInfo:', companyInfo);
       if (companyInfo) {
         setError(false);
         setFound(true);
@@ -68,7 +90,7 @@ const TextInput: React.FC<TextInputProps> = ({
       </label>
       <input
         type='text'
-        value={inputValue}
+        defaultValue={userInfo?.businessId}
         onChange={handleChange}
         className='p-2 border-bf-brand-primary text-bf-brand-primary border-2 rounded w-full sm:w-3/4 lg:w-1/2'
         placeholder={question.syntaxPlaceholder[language]}

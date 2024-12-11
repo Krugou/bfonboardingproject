@@ -10,6 +10,7 @@
     "autoOpen": "wait-on http://localhost:3008 && start http://localhost:3008",
     "build": "next build",
     "startB": "next start",
+    "apidev": "cd api && npm run apidev",
     "lint": "next lint",
     "tsc": "tsc --noEmit",
     "tsc:watch": "tsc --noEmit --watch",
@@ -52,7 +53,7 @@
     "eslint-config-next": "^15.0.3",
     "jest": "^29.7.0",
     "postcss": "^8.4.49",
-    "tailwindcss": "^3.4.15",
+    "tailwindcss": "^3.4.16",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.2",
     "wait-on": "^8.0.1"

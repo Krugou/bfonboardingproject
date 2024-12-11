@@ -4,16 +4,19 @@
  * @returns Properly formatted URL string
  */
 const formatUrl = (url: string): string => {
-  if (url.startsWith('https')) {
+  if (url.startsWith('https') || url.startsWith('http')) {
     return url;
   }
+
+  // Remove leading slash if exists to prevent double slashes
+  const cleanUrl = url.startsWith('/') ? url.substring(1) : url;
 
   const baseUrl =
     process.env.NODE_ENV === 'development'
       ? 'http://localhost:3007'
       : 'https://bfinno-7094a0361315.herokuapp.com';
 
-  return `${baseUrl}/${url}`;
+  return `${baseUrl}/${cleanUrl}`;
 };
 
 interface FetchOptions {
@@ -39,7 +42,6 @@ export const doFetch = async <T>(
 
     const formattedUrl = formatUrl(url);
     const defaultHeaders = {
-      'accept': 'application/json',
       'Content-Type': 'application/json',
       'method': 'GET',
     };

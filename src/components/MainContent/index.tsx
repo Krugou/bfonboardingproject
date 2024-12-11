@@ -22,7 +22,15 @@ interface MainContentProps {
  * @returns {JSX.Element} The rendered MainContent component.
  */
 const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
-  const {userInfo, setUserInfo, language} = useUserContext();
+  const {
+    userInfo,
+    setUserInfo,
+    language,
+    isUnsupportedBusiness,
+    isUnsupportedReason,
+    currentStep,
+    setCurrentStep,
+  } = useUserContext();
   const [resetQuestions, setResetQuestions] = useState<boolean | null>(null);
   const [hasExistingAnswers, setHasExistingAnswers] = useState<boolean>(false);
 
@@ -37,10 +45,17 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
     // Log page view
     logEvent('page_view', {page: 'MainContent'});
   }, []); // Empty dependency array ensures this only runs once
-
+  const handleFullReset = () => {
+    setCurrentStep(0);
+    handleReset();
+  };
   const handleReset = () => {
     //@ts-ignore
-    setUserInfo({...userInfo, questionAnswers: {}});
+    setUserInfo({
+      ...userInfo,
+      questionAnswers: {},
+      isUnsupportedBusiness: false,
+    });
     setResetQuestions(true);
   };
 
@@ -50,6 +65,43 @@ const MainContent: React.FC<MainContentProps> = ({handleOpenModal}) => {
 
   if (!userInfo) {
     return <LoadingBox />;
+  }
+
+  if (isUnsupportedBusiness && currentStep !== 0) {
+    return (
+      <div className='flex justify-center items-center h-screen w-full p-4 bg-bf-gray'>
+        <div className='bg-white p-8 rounded-xl shadow-lg max-w-md w-full border-4 border-bf-brand-primary'>
+          <h2 className='text-2xl font-bold text-bf-brand-primary mb-6 font-sans'>
+            {language === 'fi'
+              ? 'Toimiala ei sovellu'
+              : 'Unsupported Business Sector'}
+          </h2>
+          <div className='space-y-6'>
+            <p className='text-bf-brand-primary font-sans text-lg'>
+              {language === 'fi'
+                ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
+                : 'Unfortunately, we cannot provide funding for this business sector.'}
+            </p>
+            {isUnsupportedReason && (
+              <div className='bg-bf-gray p-4 rounded-lg'>
+                <p className='text-bf-brand-primary font-sans'>
+                  <span className='font-bold'>
+                    {language === 'fi' ? 'Syy: ' : 'Reason: '}
+                  </span>
+                  {isUnsupportedReason[language]}
+                </p>
+              </div>
+            )}
+            {/* button for reseting questions and unsupported */}
+            <button
+              onClick={handleFullReset}
+              className='bg-bf-brand-primary text-white font-bold py-2 px-4 rounded-lg'>
+              {language === 'fi' ? 'Aloita alusta' : 'Start over'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (resetQuestions === null && hasExistingAnswers) {
