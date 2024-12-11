@@ -88,7 +88,7 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create few sentence word summary about the company": ${textContent}`,
+            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create one sentence word summary about the company how it could improve by getting funding": ${textContent}`,
           },
         ],
         model: 'gpt-4o',

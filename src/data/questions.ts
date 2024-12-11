@@ -939,8 +939,8 @@ const questions: QuestionItem[] = [
     originalOrder: 25,
     id: 'k9',
     question: {
-      en: 'Please freely describe your needs (max 500 characters)',
-      fi: 'Kerro vapaasti mikä on tarpeesi (max 500 merkkiä)?',
+      en: 'Please freely describe your business and needs (max 500 characters)',
+      fi: 'Kerro vapaasti millainen yrityksesi on ja mikä on tarpeesi (max 500 merkkiä)?',
     },
     conditions: ['all'],
     tooltip: {

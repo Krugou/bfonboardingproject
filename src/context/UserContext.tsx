@@ -146,6 +146,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
             if (accountData.preferredLanguage) {
               setLanguage(accountData.preferredLanguage);
             }
+            console.log('🚀 ~ unsubscribe ~ accountData:', accountData);
             // @ts-expect-error
             setUserInfo({...accountData, uid: user.uid});
           }
