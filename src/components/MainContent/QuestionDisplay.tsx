@@ -108,7 +108,11 @@ const QuestionDisplay = () => {
   };
 
   useEffect(() => {
-    if (currentStep === questions.length && !isProcessing) {
+    if (
+      currentStep === questions.length &&
+      !isProcessing &&
+      currentStep === 25
+    ) {
       handleFetchingUserInfo();
     }
   }, [currentStep, questions.length]);
