@@ -9,6 +9,7 @@ import {toast} from 'react-toastify';
 import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
 import CompanyInfoDisplay from './CompanyInfoDisplay';
 import {fetchUserInfoOpenAI} from '@/hooks/api';
+import CompletionMessage from './CompletionMessage';
 
 interface Question {
   id: string;
@@ -118,7 +119,6 @@ const QuestionDisplay = () => {
   if (isLoading) {
     return <LoadingBox />;
   }
-  // if  currentStep < questions.length then fetchuserinfo
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 '>
       {currentStep < questions.length ? (
@@ -172,14 +172,7 @@ const QuestionDisplay = () => {
           </div>
         </div>
       ) : (
-        <>
-          <h2 className='text-center text-base sm:text-lg md:text-xl lg:text-2xl '>
-            {language === 'fi'
-              ? 'Kiitos vastauksistasi!'
-              : 'Thank you for your answers!'}
-          </h2>
-          <p> {profileAnalysis}</p>
-        </>
+        <CompletionMessage profileAnalysis={profileAnalysis} />
       )}
       {isProcessing && <LoadingBox />}
     </div>

@@ -11,10 +11,17 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
     currentStep,
     questions,
     userInfo,
+    setUserInfo,
     isUnsupportedBusiness,
   } = useUserContext();
 
   const handleReset = () => {
+    //@ts-ignore
+    setUserInfo({
+      ...userInfo,
+      questionAnswers: {},
+      isUnsupportedBusiness: false,
+    });
     setCurrentStep(0);
   };
 
@@ -91,7 +98,7 @@ const QuestionsNavigator: React.FC<QuestionNavigatorProps> = ({}) => {
         </>
       ) : (
         <button
-          className='bg-bf-red hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6 rounded w-full sm:w-auto text-sm sm:text-lg  uppercase'
+          className='bg-bf-red rounded-full hover:bg-red-700 primary-button text-white font-bold py-2 sm:py-3 px-4 sm:px-6  w-full sm:w-auto text-sm sm:text-lg  uppercase'
           onClick={handleReset}
           aria-label={language === 'fi' ? 'Nollaa' : 'Reset'}
           role='button'>
