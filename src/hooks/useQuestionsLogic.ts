@@ -29,12 +29,14 @@ export const useQuestionsLogic = () => {
           specialCondition.companyAge.maxYears &&
           ageInYears > specialCondition.companyAge.maxYears
         ) {
+          console.log('ageInYears', ageInYears);
           return true;
         }
         if (
           specialCondition.companyAge.minYears &&
           ageInYears < specialCondition.companyAge.minYears
         ) {
+          console.log('ageInYears', ageInYears);
           return true;
         }
       }
@@ -43,18 +45,19 @@ export const useQuestionsLogic = () => {
       if (specialCondition.numberOfEmployees?.max) {
         const employeeCount = parseInt(userInfo.questionAnswers['k2.5'] || '0');
         if (employeeCount > specialCondition.numberOfEmployees.max) {
+          console.log('employeeCount', employeeCount);
           return true;
         }
       }
 
       // Check dependent question condition
       if (specialCondition.questionId && specialCondition.allowedAnswers) {
-        const dependentAnswer =
-          userInfo.questionAnswers[specialCondition.questionId];
-        if (
-          !dependentAnswer ||
-          !specialCondition.allowedAnswers.includes(dependentAnswer)
-        ) {
+        const dependentAnswer = Number(
+          userInfo.questionAnswers[specialCondition.questionId]
+            ?.numberOfEmployees,
+        );
+
+        if (!specialCondition.allowedAnswers.includes(dependentAnswer)) {
           return true;
         }
       }

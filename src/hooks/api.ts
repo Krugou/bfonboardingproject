@@ -83,13 +83,26 @@ interface HealthCheckResponse {
  * @returns Promise<HealthCheckResponse | undefined> - The server health status
  * @throws Error if the health check fails
  */
-const fetchHealthStatus = async (): Promise<HealthCheckResponse | undefined> => {
+const fetchHealthStatus = async (): Promise<
+  HealthCheckResponse | undefined
+> => {
   try {
-    return await doFetch<HealthCheckResponse>('health');
-  } catch (error) {
-    console.error('Error checking API health:', error);
-    throw error;
+    console.log('Checking API health...');
+    const response = await doFetch<HealthCheckResponse>('/health/status');
+    console.log('Health check response:', response);
+    return response;
+  } catch (error: any) {
+    console.error('Health check failed with error:', {
+      message: error.message,
+      stack: error.stack,
+    });
+    throw new Error(`API Health check failed: ${error.message}`);
   }
 };
 
-export {fetchCompanyInfo, fetchWebsiteInfoOpenAI, fetchUserInfoOpenAI, fetchHealthStatus};
+export {
+  fetchCompanyInfo,
+  fetchWebsiteInfoOpenAI,
+  fetchUserInfoOpenAI,
+  fetchHealthStatus,
+};

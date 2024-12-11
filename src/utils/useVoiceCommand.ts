@@ -81,7 +81,8 @@ const useVoiceCommand = (
           }
         } else if (
           question.answerType === 'directInput' ||
-          question.answerType === 'directTextArea'
+          question.answerType === 'directTextArea' ||
+          question.answerType === 'firstInput'
         ) {
           setAnswer(question.id, command);
         }

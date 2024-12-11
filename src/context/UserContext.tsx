@@ -7,6 +7,8 @@ import {toast} from 'react-toastify';
 import {onAuthStateChanged} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
+import {fetchCompanyInfo} from '@/hooks/api';
+import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
 
 // Update the context type definition
 const UserContext = createContext<UserContextState | undefined>(undefined);
@@ -21,10 +23,93 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isUnsupportedBusiness, setIsUnsupportedBusiness] = useState(false);
+  const [isUnsupportedReason, setIsUnsupportedReason] = useState<string | null>(
+    null,
+  );
+  const [companyInfo, setCompanyInfo] = useState<
+    UserProfile['companyInfo'] | null
+  >(null);
+
   const updateUser = (updates: Partial<UserProfile>) => {
     if (!userInfo || !auth.currentUser?.uid) return;
 
     setUserInfo((prev) => ({...prev!, ...updates}));
+  };
+
+  const validateBusinessLine = (
+    data: any,
+  ): {isUnsupported: boolean; reason: string | null} => {
+    try {
+      if (!data?.mainBusinessLine?.type) {
+        console.warn('Business line type is missing from company data');
+        return {isUnsupported: false, reason: null};
+      }
+
+      const businessLineCode = data.mainBusinessLine.type;
+      const unsupportedLine = notAcceptedBusinessLines.find(
+        (line: BusinessLine) => line.code === businessLineCode,
+      );
+
+      return {
+        isUnsupported: !!unsupportedLine,
+        // @ts-expect-error
+        reason: unsupportedLine
+          ? {
+              fi: unsupportedLine.descriptionFi,
+              en: unsupportedLine.descriptionEn,
+            }
+          : null,
+      };
+    } catch (error) {
+      console.error('Error validating business line:', error);
+      return {isUnsupported: false, reason: null};
+    }
+  };
+
+  const fetchCompanyData = async () => {
+    const businessId = userInfo?.questionAnswers['k1'];
+    if (!businessId) return;
+
+    try {
+      setIsLoading(true);
+      const companyInfoResult = await fetchCompanyInfo(businessId);
+      if (!companyInfoResult) throw new Error('Company information not found');
+      // @ts-expect-error
+      const type = companyInfoResult.mainBusinessLine?.type;
+      const {isUnsupported, reason} = validateBusinessLine(companyInfoResult);
+      if (isUnsupported) {
+        setIsUnsupportedBusiness(isUnsupported);
+        setIsUnsupportedReason(reason);
+        // @ts-expect-error
+        setUserInfo((prev) => ({
+          ...prev!,
+          isUnsupportedBusiness,
+          isUnsupportedReason: reason,
+          isUnsupportedBusinessLine: type,
+          companyInfo: companyInfoResult,
+        }));
+        return;
+      }
+      // @ts-expect-error
+      setCompanyInfo(companyInfoResult);
+      // @ts-expect-error
+      setUserInfo((prev) => ({...prev!, companyInfo: companyInfoResult}));
+
+      toast.success(
+        language === 'fi'
+          ? 'Yrityksen tiedot haettu onnistuneesti'
+          : 'Company information fetched successfully',
+      );
+    } catch (error) {
+      console.error('Error fetching company data:', error);
+      toast.error(
+        language === 'fi'
+          ? 'Virhe yritystietojen haussa'
+          : 'Error fetching company information',
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   // Add health check on mount
@@ -61,18 +146,8 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
             if (accountData.preferredLanguage) {
               setLanguage(accountData.preferredLanguage);
             }
-            setUserInfo({
-              email: accountData.email ?? 'default@example.com',
-              questionAnswers: accountData.questionAnswers,
-              lastLogin: accountData.lastLogin?.toDate(),
-              createdAt: accountData.createdAt.toDate(),
-              browserInfo: accountData.browserInfo,
-              lastName: accountData.lastName,
-              firstName: accountData.firstName,
-              totalScore: accountData.totalScore ?? 0,
-              businessId: accountData.businessId,
-              preferredLanguage: accountData.preferredLanguage,
-            });
+            // @ts-expect-error
+            setUserInfo({...accountData, uid: user.uid});
           }
         } catch (error) {
           console.error('Error fetching user info: ', error);
@@ -86,33 +161,19 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
-      if (auth.currentUser?.uid) {
+    const updateUserInfo = async () => {
+      if (userInfo && auth.currentUser?.uid) {
         const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
-        const updateData: Partial<UserContextState['userInfo']> = {
-          email: userInfo.email,
-          questionAnswers: userInfo.questionAnswers,
-          lastLogin: userInfo.lastLogin,
-          createdAt: userInfo.createdAt,
-          browserInfo: userInfo.browserInfo,
-          lastName: userInfo.lastName,
-          firstName: userInfo.firstName,
-          totalScore: userInfo.totalScore ?? 0,
-          businessId: userInfo.businessId,
-          preferredLanguage: userInfo.preferredLanguage,
-        };
-
-        Object.keys(updateData).forEach(
-          (key) =>
-            updateData[key as keyof typeof updateData] === undefined &&
-            delete updateData[key as keyof typeof updateData],
-        );
-
-        updateDoc(accountDocRef, updateData).catch((error) => {
+        try {
+          // @ts-expect-error
+          await updateDoc(accountDocRef, userInfo);
+        } catch (error) {
           console.error('Error updating user info: ', error);
-        });
+        }
       }
-    }
+    };
+
+    updateUserInfo();
   }, [userInfo]);
 
   useEffect(() => {
@@ -216,6 +277,11 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setIsLoading,
         isUnsupportedBusiness,
         setIsUnsupportedBusiness,
+        setIsUnsupportedReason,
+        isUnsupportedReason,
+        companyInfo,
+        setCompanyInfo,
+        fetchCompanyData,
       }}>
       {children}
     </UserContext.Provider>

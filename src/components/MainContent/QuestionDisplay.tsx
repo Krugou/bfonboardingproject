@@ -3,11 +3,11 @@ import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useState, useEffect} from 'react';
 import {useQuestionsLogic} from '@/hooks/useQuestionsLogic';
-import {fetchCompanyInfo} from '@/hooks/api';
 import {playAudio} from '@/utils/playAudio';
 import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
 import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
+import CompanyInfoDisplay from './CompanyInfoDisplay';
 
 interface Question {
   id: string;
@@ -33,94 +33,19 @@ const QuestionDisplay = () => {
     userInfo,
     questions,
     currentStep,
-    setUserInfo,
     isLoading,
-    setIsLoading,
-    setIsUnsupportedBusiness,
-    isUnsupportedBusiness,
+    companyInfo,
+    fetchCompanyData,
   } = useUserContext();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
-  const [unsupportedReason, setUnsupportedReason] = useState<string | null>(
-    null,
-  );
 
   useQuestionsLogic();
 
-  const validateBusinessLine = (
-    data: any,
-  ): {isUnsupported: boolean; reason: string | null} => {
-    console.log(data);
-    try {
-      if (!data?.mainBusinessLine?.type) {
-        console.warn('Business line type is missing from company data');
-        return {isUnsupported: false, reason: null};
-      }
-
-      const businessLineCode = data.mainBusinessLine.type;
-      console.log('🚀 ~ QuestionDisplay ~ businessLineCode:', businessLineCode);
-      const unsupportedLine = notAcceptedBusinessLines.find(
-        (line: BusinessLine) => line.code === businessLineCode,
-      );
-      console.log('🚀 ~ QuestionDisplay ~ unsupportedLine:', unsupportedLine);
-
-      return {
-        isUnsupported: !!unsupportedLine,
-        reason: unsupportedLine
-          ? language === 'fi'
-            ? unsupportedLine.descriptionFi
-            : unsupportedLine.descriptionEn
-          : null,
-      };
-    } catch (error) {
-      console.error('Error validating business line:', error);
-      return {isUnsupported: false, reason: null};
-    }
-  };
-
-  const fetchCompanyData = async () => {
-    const businessId = userInfo?.questionAnswers['k1'];
-    if (!businessId) return;
-
-    const currentQuestion = questions[currentStep];
-    if (currentQuestion?.id !== 'k1.1') {
-      setCompanyInfo(null);
-      setIsUnsupportedBusiness(false);
-      return;
-    }
-
-    try {
-      const data = await fetchCompanyInfo(businessId);
-      if (!data) throw new Error('Company information not found');
-
-      const {isUnsupported, reason} = validateBusinessLine(data);
-      if (isUnsupported) {
-        setIsUnsupportedBusiness(isUnsupported);
-        setUnsupportedReason(reason);
-        return;
-      }
-      //@ts-expect-error
-      setCompanyInfo(data);
-
-      toast.success(
-        language === 'fi'
-          ? 'Yrityksen tiedot haettu onnistuneesti'
-          : 'Company information fetched successfully',
-      );
-    } catch (error) {
-      console.error('Error fetching company data:', error);
-      toast.error(
-        language === 'fi'
-          ? 'Virhe yritystietojen haussa'
-          : 'Error fetching company information',
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchCompanyData();
+    const currentQuestion = questions[currentStep];
+    if (currentQuestion?.id === 'k1.1') {
+      fetchCompanyData();
+    }
   }, [currentStep]);
 
   const handleAudioClick = async () => {
@@ -154,23 +79,6 @@ const QuestionDisplay = () => {
   }
   if (isLoading) {
     return <LoadingBox />;
-  }
-  if (isUnsupportedBusiness) {
-    return (
-      <div className='mt-4 space-y-2 text-red-600'>
-        <p>
-          {language === 'fi'
-            ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
-            : 'Unfortunately, we cannot provide funding for this business sector.'}
-        </p>
-        {unsupportedReason && (
-          <p className='text-xs'>
-            {language === 'fi' ? 'Syy: ' : 'Reason: '}
-            {unsupportedReason}
-          </p>
-        )}
-      </div>
-    );
   }
 
   return (
@@ -207,68 +115,11 @@ const QuestionDisplay = () => {
               {questions[currentStep].question[language]}
             </h2>
             {questions[currentStep].id === 'k1.1' && (
-              <div className='mt-2 text-sm font-bold text-bf-brand-primary '>
-                {isLoading ? (
-                  <div
-                    role='status'
-                    aria-label={
-                      language === 'fi' ? 'Ladataan...' : 'Loading...'
-                    }>
-                    {language === 'fi'
-                      ? 'Ladataan yritystietoja...'
-                      : 'Loading company information...'}
-                  </div>
-                ) : companyInfo ? (
-                  <div className='space-y-1'>
-                    <p>
-                      {companyInfo?.businessId?.value && (
-                        <>
-                          {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
-                          {companyInfo.businessId.value}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.names?.[0]?.name && (
-                        <>
-                          {language === 'fi' ? 'Nimi: ' : 'Name: '}
-                          {companyInfo.names[0].name}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.addresses?.[0]?.street && (
-                        <>
-                          {language === 'fi' ? 'Osoite: ' : 'Address: '}
-                          {companyInfo.addresses[0].street}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.website?.url && (
-                        <>
-                          {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
-                          {companyInfo.website.url}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.mainBusinessLine?.descriptions?.[0]
-                        ?.description && (
-                        <>
-                          {language === 'fi'
-                            ? 'Päätoimiala: '
-                            : 'Main Business Line: '}
-                          {
-                            companyInfo.mainBusinessLine.descriptions[0]
-                              .description
-                          }
-                        </>
-                      )}
-                    </p>
-                  </div>
-                ) : null}
-              </div>
+              <CompanyInfoDisplay
+                isLoading={isLoading}
+                // @ts-expect-error
+                companyInfo={companyInfo}
+              />
             )}
             <h3
               className={`text-center text-sm text-bf-brand-primary transition-opacity duration-300 break-words ${

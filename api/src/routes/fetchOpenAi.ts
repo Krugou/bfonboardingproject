@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import fetch from 'node-fetch';
 import {FetchURLError, OpenAIError} from '../utils/customErrors';
 import {fetchOpenAIResponse} from '../utils/openaiUtils';
+import {industries} from '../data/industries';
 
 const router = Router();
 const BF_INNO_PASSWORD = process.env.BFINNO_PASSWORD;
@@ -21,7 +21,6 @@ router.post(
     );
 
     const {password, url} = req.body;
-
     if (!password || !url) {
       return res.status(400).json({error: 'Password and URL are required'});
     }
@@ -29,9 +28,10 @@ router.post(
     if (password !== BF_INNO_PASSWORD) {
       return res.status(403).json({error: 'Invalid password'});
     }
+    const absoluteUrl = url.startsWith('http') ? url : `https://${url}`;
 
     try {
-      const response = await fetch(url);
+      const response = await fetch(absoluteUrl);
       if (!response.ok) {
         throw new FetchURLError(
           `Failed to fetch the URL: ${response.statusText}`,
@@ -43,13 +43,15 @@ router.post(
         messages: [
           {
             role: 'system',
-            content: `Summarize the following content in JSON format with industry, address, number of employees, www-address , keywords "first,second,third" related to the website and create 500 word summary about the company: ${data}`,
+            content: `Summarize the following content in JSON format with "select industry from these values: ${industries} as key industry" , "address guess if not clear", "numberOfEmployees in single number guess positive number if not clear", "keywords "first,second,third" related to the website" and "create 500 word summary about the company": ${data}`,
           },
         ],
         model: 'gpt-4o',
       };
       const openAIResponse = await fetchOpenAIResponse(openAIRequest);
       const summaryText = openAIResponse.choices[0].message.content;
+      console.log('🚀 ~ summaryText:', summaryText);
+
       const jsonStartIndex = summaryText.indexOf('{');
       const jsonEndIndex = summaryText.lastIndexOf('}') + 1;
       const jsonString = summaryText.substring(jsonStartIndex, jsonEndIndex);

@@ -26,7 +26,7 @@ const questions: QuestionItem[] = [
       en: 'Business ID format (validation) ',
       fi: 'Y-tunnus formaatti (validointi) ',
     },
-    answerType: 'directInput',
+    answerType: 'firstInput',
 
     errorAnswer: {
       en: 'Please provide a valid business ID.',
