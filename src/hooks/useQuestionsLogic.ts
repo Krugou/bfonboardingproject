@@ -52,6 +52,14 @@ export const useQuestionsLogic = () => {
           return true;
         }
       }
+      if (
+        // Skip housing questions if company is not eligible
+        // @ts-expect-error
+        !userInfo.companyForms?.includes('housing') &&
+        questions[currentStep]?.conditions?.includes('housing')
+      ) {
+        return true;
+      }
 
       // Check dependent question condition
       if (specialCondition.questionId && specialCondition.allowedAnswers) {

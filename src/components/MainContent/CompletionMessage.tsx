@@ -15,7 +15,7 @@ const CompletionMessage: React.FC<CompletionMessageProps> = ({
           ? 'Kiitos vastauksistasi!'
           : 'Thank you for your answers!'}
       </h2>
-      <p className='text-center text-bf-brand-primary font-bold text-base'>
+      <p className='text-center text-bf-brand-primary  text-sm'>
         {profileAnalysis} Total score: {userInfo ? userInfo.totalScore : 'N/A'}
       </p>
     </div>
