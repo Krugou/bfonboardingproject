@@ -141,6 +141,9 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       // @ts-expect-error
       setUserInfo((prev) => ({
         ...prev!,
+        isUnsupportedBusiness: false,
+        isUnsupportedReason: null,
+        isUnsupportedBusinessLine: null,
         companyInfo: companyInfoResult,
       }));
 
@@ -197,7 +200,7 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
             }
             console.log('🚀 ~ unsubscribe ~ accountData:', accountData);
             // @ts-expect-error
-            setUserInfo({...accountData, uid: user.uid});
+            setUserInfo({...accountData, uid: user.uid, lastLogin: new Date()});
           }
         } catch (error) {
           console.error('Error fetching user info: ', error);
