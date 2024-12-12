@@ -59,6 +59,18 @@ const RegisterForm: React.FC = () => {
   const handleFormSubmit = useCallback(
     async (data: any) => {
       if (isLoading) return;
+      // if values missing return
+      if (
+        !email ||
+        !firstName ||
+        !lastName ||
+        !businessId ||
+        !preferredLanguage ||
+        !password ||
+        !confirmPassword
+      ) {
+        return;
+      }
       try {
         setIsLoading(true);
         const success = await handleEmailPasswordAuth(

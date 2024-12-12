@@ -21,7 +21,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
   const [address, setAddress] = useState<string>('');
   const [numberOfEmployees, setNumberOfEmployees] = useState<string>('');
   const [wwwAddress, setWwwAddress] = useState<string>('');
-  const {language, userInfo, setUserInfo} = useUserContext();
+  const {language, userInfo, setUserInfo, currentStep} = useUserContext();
   const industryRef = useRef<HTMLSelectElement>(null);
   const addressRef = useRef<HTMLInputElement>(null);
   const numberOfEmployeesRef = useRef<HTMLInputElement>(null);
@@ -39,17 +39,17 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
     if (answers[question.id]) {
       const {industry, address, numberOfEmployees, wwwAddress} =
         answers[question.id];
-      setIndustry(industry || '');
-      setAddress(address || '');
-      setNumberOfEmployees(numberOfEmployees || '');
-      setWwwAddress(wwwAddress || '');
+      setIndustry(industry);
+      setAddress(address);
+      setNumberOfEmployees(numberOfEmployees);
+      setWwwAddress(wwwAddress);
     }
   }, [answers, question.id]);
 
   const debouncedSetAnswer = useRef(
     debounce((questionId: string, answer: any) => {
       setAnswer(questionId, answer);
-    }, 500),
+    }, 250),
   ).current;
 
   const handleIndustryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -101,11 +101,11 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
 
     try {
       const websiteInfo = await fetchWebsiteInfoOpenAI(url, 'password');
-      console.log('🚀 ~ fetchWebsiteData ~ websiteInfo:', websiteInfo);
       if (websiteInfo) {
         setIndustry(websiteInfo.industry || '');
         setAddress(websiteInfo.address || '');
         setNumberOfEmployees(websiteInfo.numberOfEmployees?.toString() || '');
+        setWwwAddress(url);
 
         debouncedSetAnswer(question.id, {
           ...answers[question.id],
@@ -140,7 +140,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({
     if (userInfo?.companyInfo?.website?.url) {
       debouncedFetchWebsite(userInfo?.companyInfo?.website?.url);
     }
-  }, [wwwAddress]);
+  }, [currentStep]);
 
   const industryOptions = industries;
   const labels = {

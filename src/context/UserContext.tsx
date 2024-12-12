@@ -65,7 +65,35 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       return {isUnsupported: false, reason: null};
     }
   };
-
+  const businessTypes = [
+    {code: 'AOY', id: 2, name: 'Asunto-osakeyhtiö', additionalInfo: 'housing'},
+    {code: 'ASH', id: 3, name: 'Asukashallintoalue'},
+    {code: 'ASY', id: 4, name: 'Asumisoikeusyhdistys'},
+    {code: 'AY', id: 5, name: 'Avoin yhtiö'},
+    {code: 'AYH', id: 6, name: 'Aatteellinen yhdistys'},
+    {code: 'ETS', id: 7, name: 'Euroopp.taloudell.etuyht.sivutoimipaikka'},
+    {code: 'ETY', id: 8, name: 'Eurooppalainen taloudellinen etuyhtymä'},
+    {code: 'SCE', id: 83, name: 'Eurooppaosuuskunta'},
+    {code: 'SCP', id: 84, name: 'Eurooppaosuuspankki'},
+    {code: 'HY', id: 9, name: 'Hypoteekkiyhdistys'},
+    {code: 'KOY', id: 10, name: 'Keskinäinen kiinteistöosakeyhtiö'},
+    {code: 'KVJ', id: 11, name: 'Julkinen keskinäinen vakuutusyhtiö'},
+    {code: 'KVY', id: 12, name: 'Keskinäinen vakuutusyhtiö'},
+    {code: 'KY', id: 13, name: 'Kommandiittiyhtiö'},
+    {code: 'OK', id: 14, name: 'Osuuskunta'},
+    {code: 'OP', id: 15, name: 'Osuuspankki'},
+    {code: 'OY', id: 16, name: 'Osakeyhtiö'},
+    {code: 'OYJ', id: 17, name: 'Julkinen osakeyhtiö'},
+    {code: 'SE', id: 80, name: 'Eurooppayhtiö'},
+    {code: 'SL', id: 19, name: 'Sivuliike'},
+    {code: 'SP', id: 20, name: 'Säästöpankki'},
+    {code: 'SÄÄ', id: 18, name: 'Säätiö'},
+    {code: 'TYH', id: 21, name: 'Taloudellinen yhdistys'},
+    {code: 'VOJ', id: 23, name: 'Julkinen vakuutusosakeyhtiö'},
+    {code: 'VOY', id: 24, name: 'Vakuutusosakeyhtiö'},
+    {code: 'VY', id: 25, name: 'Vakuutusyhdistys'},
+    {code: 'VALTLL', id: 22, name: 'Valtion liikelaitos'},
+  ];
   const fetchCompanyData = async () => {
     const businessId = userInfo?.questionAnswers['k1'];
     if (!businessId) return;
@@ -91,9 +119,30 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         return;
       }
       // @ts-expect-error
+      const updatedCompanyForms = companyInfoResult.companyForms.map(
+        (form: any) => {
+          const matchedType = businessTypes.find(
+            (type) => type.id === parseInt(form.type),
+          );
+          return matchedType
+            ? {...form, additionalInfo: matchedType.additionalInfo}
+            : form;
+        },
+      );
+      if (updatedCompanyForms.additionalInfo) {
+        setUserInfo((prev) => ({
+          ...prev!,
+          companyForms: updatedCompanyForms.additionalInfo,
+        }));
+      }
+
+      // @ts-expect-error
       setCompanyInfo(companyInfoResult);
       // @ts-expect-error
-      setUserInfo((prev) => ({...prev!, companyInfo: companyInfoResult}));
+      setUserInfo((prev) => ({
+        ...prev!,
+        companyInfo: companyInfoResult,
+      }));
 
       toast.success(
         language === 'fi'
