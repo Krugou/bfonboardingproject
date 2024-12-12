@@ -4,16 +4,17 @@ import React from 'react';
 interface BFStepperProps {}
 
 const BFStepper: React.FC<BFStepperProps> = () => {
-  const {userInfo, questions} = useUserContext();
+  const {userInfo, questions, currentStep} = useUserContext();
 
   if (!userInfo) {
-    return null; // or return a loading indicator or a message
+    return null;
   }
 
   const answeredCount = questions.filter(
     (q) => userInfo.questionAnswers[q.id] !== undefined,
   ).length;
-  const progressPercentage = (answeredCount / questions.length) * 100;
+  const progressPercentage =
+    currentStep === 25 ? 100 : (answeredCount / questions.length) * 100;
 
   return (
     <div className='w-full max-w-3xl mx-auto px-4  '>
