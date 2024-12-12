@@ -141,6 +141,9 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
       // @ts-expect-error
       setUserInfo((prev) => ({
         ...prev!,
+        isUnsupportedBusiness: false,
+        isUnsupportedReason: null,
+        isUnsupportedBusinessLine: null,
         companyInfo: companyInfoResult,
       }));
 
