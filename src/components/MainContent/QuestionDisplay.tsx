@@ -3,101 +3,53 @@ import {speakContent} from '@/utils/speakContent';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import React, {useState, useEffect} from 'react';
 import {useQuestionsLogic} from '@/hooks/useQuestionsLogic';
-import {fetchCompanyInfo} from '@/hooks/api';
 import {playAudio} from '@/utils/playAudio';
 import LoadingBox from '../LoadingBox';
 import {toast} from 'react-toastify';
-import {CompanyInfo} from '@/types/user';
-import {notAcceptedBusinessLines} from '@/data/noBusinesssLines';
+import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
+import CompanyInfoDisplay from './CompanyInfoDisplay';
+import {fetchUserInfoOpenAI} from '@/hooks/api';
+import CompletionMessage from './CompletionMessage';
 
+interface Question {
+  id: string;
+  question: Record<string, string>;
+  tooltip: Record<string, string>;
+  ttsAudio?: boolean;
+}
+interface MainBusinessLine {
+  type: string;
+  descriptions: {description: string}[];
+}
+interface CompanyInfo {
+  businessId: {value: string};
+  names?: {name: string}[];
+  addresses?: {street: string}[];
+  website?: {url: string};
+  mainBusinessLine: MainBusinessLine;
+  registrationDate?: string;
+}
 const QuestionDisplay = () => {
   const {
     language,
     userInfo,
     questions,
     currentStep,
-    setUserInfo,
     isLoading,
-    setIsLoading,
-    setIsUnsupportedBusiness,
-    isUnsupportedBusiness,
+    companyInfo,
+    fetchCompanyData,
   } = useUserContext();
   const [showTooltip, setShowTooltip] = useState(false);
-  const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
-  const [unsupportedReason, setUnsupportedReason] = useState<string | null>(
-    null,
-  );
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [profileAnalysis, setProfileAnalysis] = useState<string | null>(null);
 
   useQuestionsLogic();
 
-  // New function to handle company info fetching
-  const fetchCompanyData = async () => {
-    const businessId = userInfo?.questionAnswers['k1'];
-    if (!businessId) return;
-    setIsLoading(true);
-
-    const currentQuestion = questions[currentStep];
-    if (currentQuestion?.id !== 'k1.1') {
-      setCompanyInfo(null);
-      setIsUnsupportedBusiness(false);
-      return;
-    }
-
-    try {
-      const data = await fetchCompanyInfo(businessId);
-
-      if (!data) {
-        throw new Error('Company information not found');
-      }
-
-      // Check if business line is not supported
-      const businessLineCode = data.mainBusinessLine;
-      const unsupportedLine:
-        | {code: string; descriptionFi: string; descriptionEn: string}
-        | undefined = notAcceptedBusinessLines.find(
-        (line: {code: string; descriptionFi: string; descriptionEn: string}) =>
-          line.code === businessLineCode,
-      );
-
-      const isUnsupported = !!unsupportedLine;
-      setIsUnsupportedBusiness(isUnsupported);
-      setUnsupportedReason(
-        unsupportedLine
-          ? language === 'fi'
-            ? unsupportedLine.descriptionFi
-            : unsupportedLine.descriptionEn
-          : null,
-      );
-
-      setCompanyInfo(data);
-      setUserInfo((prev) => ({
-        ...prev!,
-        companyInfoResult: {
-          ...data,
-          registrationDate: data.registrationDate || new Date(),
-          createdAt: data.createdAt || new Date(),
-        },
-      }));
-
-      toast.success(
-        language === 'fi'
-          ? 'Yrityksen tiedot haettu onnistuneesti'
-          : 'Company information fetched successfully',
-      );
-    } catch (error) {
-      toast.error(
-        language === 'fi'
-          ? 'Virhe yritystietojen haussa'
-          : 'Error fetching company information',
-      );
-      console.error('Error fetching company data:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchCompanyData();
+    const currentQuestion = questions[currentStep];
+    if (currentQuestion?.id === 'k1.1') {
+      fetchCompanyData();
+    }
   }, [currentStep]);
 
   const handleAudioClick = async () => {
@@ -105,7 +57,7 @@ const QuestionDisplay = () => {
     if (currentQuestion.ttsAudio) {
       // If question has TTS audio file, play it
       try {
-        await playAudio(questions[currentStep].id + '.wav');
+        await playAudio(questions[currentStep].id + '-' + language + '.wav');
       } catch (error) {
         console.error('Failed to play audio:', error);
         // Fallback to speakContent if audio playback fails
@@ -125,15 +77,55 @@ const QuestionDisplay = () => {
     }
   };
 
+  const handleFetchingUserInfo = async () => {
+    if (!userInfo?.questionAnswers) {
+      toast.error('No user information available');
+      return;
+    }
+
+    try {
+      setIsProcessing(true);
+      const response = await fetchUserInfoOpenAI(
+        userInfo.questionAnswers,
+        'password',
+      );
+
+      if (response) {
+        // @ts-expect-error
+        setProfileAnalysis(response);
+        toast.success('Profile analysis completed successfully');
+      }
+    } catch (error) {
+      console.error('Failed to fetch user profile:', error);
+      toast.error(
+        language === 'fi'
+          ? 'Virhe profiilin analysoinnissa'
+          : 'Error analyzing profile',
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    if (
+      currentStep === questions.length &&
+      !isProcessing &&
+      currentStep === 25
+    ) {
+      handleFetchingUserInfo();
+    }
+  }, [currentStep, questions.length]);
+
   if (!userInfo) {
     return null;
   }
   if (isLoading) {
-    <LoadingBox />;
+    return <LoadingBox />;
   }
   return (
     <div className='flex flex-col h-1/2 justify-center items-center p-2 sm:p-4 '>
-      {currentStep <= questions.length ? (
+      {currentStep < questions.length ? (
         <div className='flex flex-col justify-center items-center h-full w-full rounded-lg p-3 '>
           <div className='flex justify-end w-full items-center rounded-lg mb-2'>
             <button
@@ -159,89 +151,17 @@ const QuestionDisplay = () => {
           <div className='group space-y-2'>
             <h2
               className='text-center w-full font-medium text-base lg:text-lg text-bf-brand-primary break-words'
-              title={questions[currentStep].tooltip[language]}
+              title={questions[currentStep]?.tooltip[language]}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep].question[language]}
+              {questions[currentStep]?.question[language]}
             </h2>
-            {questions[currentStep].id === 'k1.1' && (
-              <div className='mt-2 text-sm font-bold text-bf-brand-primary '>
-                {isLoading ? (
-                  <div
-                    role='status'
-                    aria-label={
-                      language === 'fi' ? 'Ladataan...' : 'Loading...'
-                    }>
-                    {language === 'fi'
-                      ? 'Ladataan yritystietoja...'
-                      : 'Loading company information...'}
-                  </div>
-                ) : companyInfo ? (
-                  <div className='space-y-1'>
-                    <p>
-                      {companyInfo?.businessId?.value && (
-                        <>
-                          {language === 'fi' ? 'Y-tunnus: ' : 'Business ID: '}
-                          {companyInfo.businessId.value}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.names?.[0]?.name && (
-                        <>
-                          {language === 'fi' ? 'Nimi: ' : 'Name: '}
-                          {companyInfo.names[0].name}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.addresses?.[0]?.street && (
-                        <>
-                          {language === 'fi' ? 'Osoite: ' : 'Address: '}
-                          {companyInfo.addresses[0].street}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.website?.url && (
-                        <>
-                          {language === 'fi' ? 'Verkkosivusto: ' : 'Website: '}
-                          {companyInfo.website.url}
-                        </>
-                      )}
-                    </p>
-                    <p>
-                      {companyInfo?.mainBusinessLine?.descriptions?.[0]
-                        ?.description && (
-                        <>
-                          {language === 'fi'
-                            ? 'Päätoimiala: '
-                            : 'Main Business Line: '}
-                          {
-                            companyInfo.mainBusinessLine.descriptions[0]
-                              .description
-                          }
-                        </>
-                      )}
-                    </p>
-                    {isUnsupportedBusiness && (
-                      <div className='mt-4 space-y-2 text-red-600'>
-                        <p>
-                          {language === 'fi'
-                            ? 'Valitettavasti emme voi tarjota rahoitusta tälle toimialalle.'
-                            : 'Unfortunately, we cannot provide funding for this business sector.'}
-                        </p>
-                        {unsupportedReason && (
-                          <p className='text-xs'>
-                            {language === 'fi' ? 'Syy: ' : 'Reason: '}
-                            {unsupportedReason}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                ) : null}
-              </div>
+            {questions[currentStep]?.id === 'k1.1' && (
+              <CompanyInfoDisplay
+                isLoading={isLoading}
+                // @ts-expect-error
+                companyInfo={companyInfo}
+              />
             )}
             <h3
               className={`text-center text-sm text-bf-brand-primary transition-opacity duration-300 break-words ${
@@ -251,17 +171,14 @@ const QuestionDisplay = () => {
               } `}
               tabIndex={0}
               aria-live='polite'>
-              {questions[currentStep].tooltip[language]}
+              {questions[currentStep]?.tooltip[language]}
             </h3>
           </div>
         </div>
       ) : (
-        <h2 className='text-center text-base sm:text-lg md:text-xl lg:text-2xl '>
-          {language === 'fi'
-            ? 'Kiitos vastauksistasi!'
-            : 'Thank you for your answers!'}
-        </h2>
+        <CompletionMessage profileAnalysis={profileAnalysis} />
       )}
+      {isProcessing && <LoadingBox />}
     </div>
   );
 };

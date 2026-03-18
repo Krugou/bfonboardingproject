@@ -12,3 +12,4 @@ export const conditions: Condition[] = [
   {shorthand: 'all', nameFi: 'Kaikki', nameEn: 'All'},
   {shorthand: 'skip', nameFi: 'Ohita', nameEn: 'Skip'},
 ];
+

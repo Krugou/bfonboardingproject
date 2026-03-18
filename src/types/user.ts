@@ -7,10 +7,10 @@ export interface BusinessLine {
 export interface CompanyInfo {
   businessId: string;
   name: string;
-  registrationDate: string;
+  registrationDate?: string;
   companyForm?: string;
   mainBusinessLine?: BusinessLine;
-  createdAt: string;
+  createdAt?: string;
   status?: string;
 }
 
@@ -27,10 +27,24 @@ export interface UserProfile {
   browserInfo?: BrowserInfo;
   lastName?: string;
   firstName?: string;
+  uid?: string | null;
   totalScore?: number;
   businessId?: string;
+  isUnsupportedBusiness?: boolean;
+  isUnsupportedReason?: string;
   preferredLanguage?: string;
-  companyInfoResult?: CompanyInfo;
+  companyInfoResult?: CompanyInfo[];
+  companyInfo?: {
+    businessId?: {value: string};
+    names?: {name: string}[];
+    addresses?: {street: string}[];
+    website?: {url: string};
+    mainBusinessLine?: {
+      type: string;
+      descriptions: {description: string}[];
+    };
+    registrationDate?: string;
+  };
 }
 
 export interface UserContextState {
@@ -46,7 +60,9 @@ export interface UserContextState {
   currentStep: number;
   isLoading: boolean;
   isUnsupportedBusiness: boolean;
+  isUnsupportedReason: string | null;
   setIsUnsupportedBusiness: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUnsupportedReason: React.Dispatch<React.SetStateAction<string | null>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   saveDropdownSelection: (
@@ -54,4 +70,9 @@ export interface UserContextState {
     selectedOptions: string[],
   ) => void;
   updateUser: (updates: Partial<UserProfile>) => void;
+  companyInfo: UserProfile['companyInfo'] | null;
+  setCompanyInfo: React.Dispatch<
+    React.SetStateAction<UserProfile['companyInfo'] | null>
+  >;
+  fetchCompanyData: () => Promise<void>;
 }

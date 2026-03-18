@@ -1,10 +1,13 @@
 'use client';
 
+import React from 'react';
 import {UserProfile} from '@/types/user';
+import {useUserContext} from '@/context/UserContext';
+import LoadingBox from '../LoadingBox';
 
 interface AccountDetailsProps {
   label: string;
-  value: string;
+  value: string | number;
   className?: string;
 }
 
@@ -26,12 +29,20 @@ interface UserDetailsProps {
   language: string;
 }
 
-export const UserDetails: React.FC<UserDetailsProps> = ({
-  userInfo,
-  language,
-}) => {
+export const UserDetails: React.FC<UserDetailsProps> = ({}) => {
+  const {userInfo, language} = useUserContext();
+  console.log('🚀 ~ userInfo:', userInfo);
+
+  if (!userInfo) {
+    return <LoadingBox />;
+  }
+
   const createdAt = new Date(userInfo.createdAt);
   const lastLogin = userInfo.lastLogin ? new Date(userInfo.lastLogin) : null;
+
+  const answeredQuestionsCount = Array.isArray(userInfo.questionAnswers)
+    ? userInfo.questionAnswers.length
+    : Object.keys(userInfo.questionAnswers).length;
 
   return (
     <div className='space-y-4'>
@@ -66,13 +77,15 @@ export const UserDetails: React.FC<UserDetailsProps> = ({
           label={
             language === 'fi' ? 'Vastattuja kysymyksiä:' : 'Answered Questions:'
           }
-          value={userInfo.questionAnswers.length || 0}
+          value={answeredQuestionsCount}
         />
         <AccountDetailsField
           label={language === 'fi' ? 'Kokonaispisteet:' : 'Total Score:'}
           value={
             userInfo.totalScore !== undefined
-              ? userInfo.totalScore.toString()
+              ? userInfo.totalScore
+              : language === 'fi'
+              ? 'Ei tietoja'
               : 'N/A'
           }
         />

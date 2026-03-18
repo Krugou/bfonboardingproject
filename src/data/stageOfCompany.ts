@@ -19,7 +19,7 @@ export const stageOfCompany: AnswerOption[] = [
   },
   {
     key: 'planning_growth_and_internationalization',
-    score: 3,
+    score: 2,
     text: {
       en: 'I am planning growth and internationalization',
       fi: 'Suunnittelen kasvua ja kansainvälistymistä',

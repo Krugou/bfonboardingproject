@@ -1,19 +1,22 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {toast} from 'react-toastify';
 import {useUserContext} from '@/context/UserContext';
 
 export const useQuestionsLogic = () => {
   const {userInfo, questions, currentStep, setCurrentStep, language} =
     useUserContext();
+  const previousStep = useRef(currentStep);
 
   useEffect(() => {
-    // Skip if no questions or userInfo
     if (!questions.length || !userInfo) return;
 
     const currentQuestion = questions[currentStep];
     if (!currentQuestion) return;
 
-    // Check special conditions
+    // Determine navigation direction
+    const isMovingForward = currentStep > previousStep.current;
+    previousStep.current = currentStep;
+
     const shouldSkip = (() => {
       const specialCondition = currentQuestion.specialCondition;
       if (!specialCondition) return false;
@@ -29,12 +32,14 @@ export const useQuestionsLogic = () => {
           specialCondition.companyAge.maxYears &&
           ageInYears > specialCondition.companyAge.maxYears
         ) {
+          console.log('ageInYears', ageInYears);
           return true;
         }
         if (
           specialCondition.companyAge.minYears &&
           ageInYears < specialCondition.companyAge.minYears
         ) {
+          console.log('ageInYears', ageInYears);
           return true;
         }
       }
@@ -43,18 +48,27 @@ export const useQuestionsLogic = () => {
       if (specialCondition.numberOfEmployees?.max) {
         const employeeCount = parseInt(userInfo.questionAnswers['k2.5'] || '0');
         if (employeeCount > specialCondition.numberOfEmployees.max) {
+          console.log('employeeCount', employeeCount);
           return true;
         }
+      }
+      if (
+        // Skip housing questions if company is not eligible
+        // @ts-expect-error
+        !userInfo.companyForms?.includes('housing') &&
+        questions[currentStep]?.conditions?.includes('housing')
+      ) {
+        return true;
       }
 
       // Check dependent question condition
       if (specialCondition.questionId && specialCondition.allowedAnswers) {
-        const dependentAnswer =
-          userInfo.questionAnswers[specialCondition.questionId];
-        if (
-          !dependentAnswer ||
-          !specialCondition.allowedAnswers.includes(dependentAnswer)
-        ) {
+        const dependentAnswer = Number(
+          userInfo.questionAnswers[specialCondition.questionId]
+            ?.numberOfEmployees,
+        );
+
+        if (!specialCondition.allowedAnswers.includes(dependentAnswer)) {
           return true;
         }
       }
@@ -62,9 +76,14 @@ export const useQuestionsLogic = () => {
       return false;
     })();
 
-    // Skip to next question if conditions not met
     if (shouldSkip) {
-      setCurrentStep((prev) => Math.min(prev + 1, questions.length));
+      setCurrentStep((prev) => {
+        const nextStep = isMovingForward
+          ? Math.min(prev + 1, questions.length)
+          : Math.max(prev - 1, 0);
+        return nextStep;
+      });
+
       toast.info(
         language === 'fi'
           ? 'Siirrytään seuraavaan soveltuvaan kysymykseen'

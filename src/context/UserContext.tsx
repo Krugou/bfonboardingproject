@@ -2,18 +2,16 @@
 
 import {UserContextState, UserProfile} from '@/types/user';
 import {auth, db} from '@/utils/firebase';
+import {fetchHealthStatus} from '@/hooks/api';
+import {toast} from 'react-toastify';
 import {onAuthStateChanged} from 'firebase/auth';
 import {doc, getDoc, onSnapshot, updateDoc} from 'firebase/firestore';
 import React, {createContext, useContext, useEffect, useState} from 'react';
+import {fetchCompanyInfo} from '@/hooks/api';
+import {notAcceptedBusinessLines, BusinessLine} from '@/data/noBusinessLines';
 
 // Update the context type definition
-const UserContext = createContext<
-  | (UserContextState & {
-      fetchedBusinessIds: Set<string>;
-      addFetchedBusinessId: (id: string) => void;
-    })
-  | undefined
->(undefined);
+const UserContext = createContext<UserContextState | undefined>(undefined);
 
 export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   children,
@@ -25,11 +23,170 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [isUnsupportedBusiness, setIsUnsupportedBusiness] = useState(false);
+  const [isUnsupportedReason, setIsUnsupportedReason] = useState<string | null>(
+    null,
+  );
+  const [companyInfo, setCompanyInfo] = useState<
+    UserProfile['companyInfo'] | null
+  >(null);
+
   const updateUser = (updates: Partial<UserProfile>) => {
     if (!userInfo || !auth.currentUser?.uid) return;
 
     setUserInfo((prev) => ({...prev!, ...updates}));
   };
+
+  const validateBusinessLine = (
+    data: any,
+  ): {isUnsupported: boolean; reason: string | null} => {
+    try {
+      if (!data?.mainBusinessLine?.type) {
+        console.warn('Business line type is missing from company data');
+        return {isUnsupported: false, reason: null};
+      }
+
+      const businessLineCode = data.mainBusinessLine.type;
+      const unsupportedLine = notAcceptedBusinessLines.find(
+        (line: BusinessLine) => line.code === businessLineCode,
+      );
+
+      return {
+        isUnsupported: !!unsupportedLine,
+        // @ts-expect-error
+        reason: unsupportedLine
+          ? {
+              fi: unsupportedLine.descriptionFi,
+              en: unsupportedLine.descriptionEn,
+            }
+          : null,
+      };
+    } catch (error) {
+      console.error('Error validating business line:', error);
+      return {isUnsupported: false, reason: null};
+    }
+  };
+  const businessTypes = [
+    {code: 'AOY', id: 2, name: 'Asunto-osakeyhtiö', additionalInfo: 'housing'},
+    {code: 'ASH', id: 3, name: 'Asukashallintoalue'},
+    {code: 'ASY', id: 4, name: 'Asumisoikeusyhdistys'},
+    {code: 'AY', id: 5, name: 'Avoin yhtiö'},
+    {code: 'AYH', id: 6, name: 'Aatteellinen yhdistys'},
+    {code: 'ETS', id: 7, name: 'Euroopp.taloudell.etuyht.sivutoimipaikka'},
+    {code: 'ETY', id: 8, name: 'Eurooppalainen taloudellinen etuyhtymä'},
+    {code: 'SCE', id: 83, name: 'Eurooppaosuuskunta'},
+    {code: 'SCP', id: 84, name: 'Eurooppaosuuspankki'},
+    {code: 'HY', id: 9, name: 'Hypoteekkiyhdistys'},
+    {code: 'KOY', id: 10, name: 'Keskinäinen kiinteistöosakeyhtiö'},
+    {code: 'KVJ', id: 11, name: 'Julkinen keskinäinen vakuutusyhtiö'},
+    {code: 'KVY', id: 12, name: 'Keskinäinen vakuutusyhtiö'},
+    {code: 'KY', id: 13, name: 'Kommandiittiyhtiö'},
+    {code: 'OK', id: 14, name: 'Osuuskunta'},
+    {code: 'OP', id: 15, name: 'Osuuspankki'},
+    {code: 'OY', id: 16, name: 'Osakeyhtiö'},
+    {code: 'OYJ', id: 17, name: 'Julkinen osakeyhtiö'},
+    {code: 'SE', id: 80, name: 'Eurooppayhtiö'},
+    {code: 'SL', id: 19, name: 'Sivuliike'},
+    {code: 'SP', id: 20, name: 'Säästöpankki'},
+    {code: 'SÄÄ', id: 18, name: 'Säätiö'},
+    {code: 'TYH', id: 21, name: 'Taloudellinen yhdistys'},
+    {code: 'VOJ', id: 23, name: 'Julkinen vakuutusosakeyhtiö'},
+    {code: 'VOY', id: 24, name: 'Vakuutusosakeyhtiö'},
+    {code: 'VY', id: 25, name: 'Vakuutusyhdistys'},
+    {code: 'VALTLL', id: 22, name: 'Valtion liikelaitos'},
+  ];
+  const fetchCompanyData = async () => {
+    const businessId = userInfo?.questionAnswers['k1'];
+    if (!businessId) return;
+
+    try {
+      setIsLoading(true);
+      const companyInfoResult = await fetchCompanyInfo(businessId);
+      if (!companyInfoResult) throw new Error('Company information not found');
+      // @ts-expect-error
+      const type = companyInfoResult.mainBusinessLine?.type;
+      const {isUnsupported, reason} = validateBusinessLine(companyInfoResult);
+      if (isUnsupported) {
+        setIsUnsupportedBusiness(isUnsupported);
+        setIsUnsupportedReason(reason);
+        // @ts-expect-error
+        setUserInfo((prev) => ({
+          ...prev!,
+          isUnsupportedBusiness,
+          isUnsupportedReason: reason,
+          isUnsupportedBusinessLine: type,
+          companyInfo: companyInfoResult,
+        }));
+        return;
+      }
+      // @ts-expect-error
+      const updatedCompanyForms = companyInfoResult.companyForms.map(
+        (form: any) => {
+          const matchedType = businessTypes.find(
+            (type) => type.id === parseInt(form.type),
+          );
+          return matchedType
+            ? {...form, additionalInfo: matchedType.additionalInfo}
+            : form;
+        },
+      );
+      if (updatedCompanyForms.additionalInfo) {
+        setUserInfo((prev) => ({
+          ...prev!,
+          companyForms: updatedCompanyForms.additionalInfo,
+        }));
+      }
+
+      // @ts-expect-error
+      setCompanyInfo(companyInfoResult);
+      // @ts-expect-error
+      setUserInfo((prev) => ({
+        ...prev!,
+        isUnsupportedBusiness: false,
+        isUnsupportedReason: null,
+        isUnsupportedBusinessLine: null,
+        companyInfo: companyInfoResult,
+      }));
+
+      toast.success(
+        language === 'fi'
+          ? 'Yrityksen tiedot haettu onnistuneesti'
+          : 'Company information fetched successfully',
+      );
+    } catch (error) {
+      console.error('Error fetching company data:', error);
+      toast.error(
+        language === 'fi'
+          ? 'Virhe yritystietojen haussa'
+          : 'Error fetching company information',
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Add health check on mount
+  useEffect(() => {
+    const checkApiHealth = async () => {
+      try {
+        setIsLoading(true);
+        const health = await fetchHealthStatus();
+        if (!health?.status) {
+          toast.error(
+            'API service is currently unavailable. Some features may not work.',
+          );
+        }
+      } catch (error) {
+        toast.error(
+          'Unable to connect to the API service. Please try again later.',
+        );
+        console.error('Health check failed:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkApiHealth();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -41,18 +198,9 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
             if (accountData.preferredLanguage) {
               setLanguage(accountData.preferredLanguage);
             }
-            setUserInfo({
-              email: accountData.email ?? 'default@example.com',
-              questionAnswers: accountData.questionAnswers,
-              lastLogin: accountData.lastLogin?.toDate(),
-              createdAt: accountData.createdAt.toDate(),
-              browserInfo: accountData.browserInfo,
-              lastName: accountData.lastName,
-              firstName: accountData.firstName,
-              totalScore: accountData.totalScore ?? 0,
-              businessId: accountData.businessId,
-              preferredLanguage: accountData.preferredLanguage,
-            });
+            console.log('🚀 ~ unsubscribe ~ accountData:', accountData);
+            // @ts-expect-error
+            setUserInfo({...accountData, uid: user.uid, lastLogin: new Date()});
           }
         } catch (error) {
           console.error('Error fetching user info: ', error);
@@ -66,33 +214,19 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
   }, []);
 
   useEffect(() => {
-    if (userInfo) {
-      if (auth.currentUser?.uid) {
+    const updateUserInfo = async () => {
+      if (userInfo && auth.currentUser?.uid) {
         const accountDocRef = doc(db, 'accounts', auth.currentUser.uid);
-        const updateData: Partial<UserContextState['userInfo']> = {
-          email: userInfo.email,
-          questionAnswers: userInfo.questionAnswers,
-          lastLogin: userInfo.lastLogin,
-          createdAt: userInfo.createdAt,
-          browserInfo: userInfo.browserInfo,
-          lastName: userInfo.lastName,
-          firstName: userInfo.firstName,
-          totalScore: userInfo.totalScore ?? 0,
-          businessId: userInfo.businessId,
-          preferredLanguage: userInfo.preferredLanguage,
-        };
-
-        Object.keys(updateData).forEach(
-          (key) =>
-            updateData[key as keyof typeof updateData] === undefined &&
-            delete updateData[key as keyof typeof updateData],
-        );
-
-        updateDoc(accountDocRef, updateData).catch((error) => {
+        try {
+          // @ts-expect-error
+          await updateDoc(accountDocRef, userInfo);
+        } catch (error) {
           console.error('Error updating user info: ', error);
-        });
+        }
       }
-    }
+    };
+
+    updateUserInfo();
   }, [userInfo]);
 
   useEffect(() => {
@@ -196,6 +330,11 @@ export const UserProvider: React.FC<{children: React.ReactNode}> = ({
         setIsLoading,
         isUnsupportedBusiness,
         setIsUnsupportedBusiness,
+        setIsUnsupportedReason,
+        isUnsupportedReason,
+        companyInfo,
+        setCompanyInfo,
+        fetchCompanyData,
       }}>
       {children}
     </UserContext.Provider>

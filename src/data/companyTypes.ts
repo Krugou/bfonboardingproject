@@ -3,7 +3,7 @@ import type {AnswerOption} from '@/app/types';
 export const companyTypes: AnswerOption[] = [
   {
     key: 'startup',
-    score: 3,
+    score: 1,
     text: {
       en: 'Startup companies',
       fi: 'Startup-yritykset',
@@ -11,7 +11,7 @@ export const companyTypes: AnswerOption[] = [
   },
   {
     key: 'research_institution',
-    score: 2,
+    score: 1,
     text: {
       en: 'Research institutions (e.g. VTT)',
       fi: 'Tutkimuslaitokset (esim. VTT)',
@@ -19,7 +19,7 @@ export const companyTypes: AnswerOption[] = [
   },
   {
     key: 'university',
-    score: 2,
+    score: 1,
     text: {
       en: 'Universities',
       fi: 'Korkeakoulut',
@@ -27,7 +27,7 @@ export const companyTypes: AnswerOption[] = [
   },
   {
     key: 'sme',
-    score: 3,
+    score: 1,
     text: {
       en: 'SME companies',
       fi: 'PK-yritykset',

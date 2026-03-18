@@ -5,6 +5,7 @@ import rateLimit from 'express-rate-limit';
 import errorHandler from './middleware/errorHandler.js';
 import fetchOpenAiRouter from './routes/fetchOpenAi.js';
 import companyInfoRouter from './routes/companyInfo.js';
+import baseRoutes from './routes/baseRoutes.js';
 const app = express();
 const port = process.env.PORT || 3007;
 
@@ -19,7 +20,7 @@ if (process.env.test === 'test') {
 // Configure rate limiter
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 10, // limit each IP to 10 requests per windowMs
+  max: 50, // limit each IP to 10 requests per windowMs
   message: {
     error: 'Too many requests, please try again later.',
     retryAfter: 'Wait for 1 minute',
@@ -41,11 +42,7 @@ const startTime: Date = new Date();
 
 app.use(fetchOpenAiRouter);
 app.use(companyInfoRouter);
-
-// New route to respond with "Hello World"
-app.get('/', (_req, res) => {
-  res.send('Hello cutie, how are you doing?');
-});
+app.use(baseRoutes);
 
 // Middleware for centralized error handling
 app.use(errorHandler);

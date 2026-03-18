@@ -19,7 +19,7 @@ const fetchCompanyInfo = async (
   businessId: string,
 ): Promise<CompanyInfo | undefined> => {
   try {
-    return await doFetch<CompanyInfo>(`/company/${businessId}`);
+    return await doFetch<CompanyInfo>(`company/${businessId}`);
   } catch (error) {
     console.error('Error fetching company info:', error);
     return undefined;
@@ -46,7 +46,7 @@ const fetchWebsiteInfoOpenAI = async (
   password: string,
 ): Promise<WebsiteInfo | undefined> => {
   try {
-    return await doFetch<WebsiteInfo>('/fetch-website', {
+    return await doFetch<WebsiteInfo>('fetch-website', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({url, password}),
@@ -62,7 +62,7 @@ const fetchUserInfoOpenAI = async (
   password: string,
 ): Promise<UserProfileInfo | undefined> => {
   try {
-    return await doFetch<UserProfileInfo>('/user-info', {
+    return await doFetch<UserProfileInfo>('user-info', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({userInfo, password}),
@@ -73,4 +73,36 @@ const fetchUserInfoOpenAI = async (
   }
 };
 
-export {fetchCompanyInfo, fetchWebsiteInfoOpenAI, fetchUserInfoOpenAI};
+interface HealthCheckResponse {
+  status: boolean;
+  startTime: string;
+}
+
+/**
+ * Fetches the API server health status
+ * @returns Promise<HealthCheckResponse | undefined> - The server health status
+ * @throws Error if the health check fails
+ */
+const fetchHealthStatus = async (): Promise<
+  HealthCheckResponse | undefined
+> => {
+  try {
+    console.log('Checking API health...');
+    const response = await doFetch<HealthCheckResponse>('/health/status');
+    console.log('Health check response:', response);
+    return response;
+  } catch (error: any) {
+    console.error('Health check failed with error:', {
+      message: error.message,
+      stack: error.stack,
+    });
+    throw new Error(`API Health check failed: ${error.message}`);
+  }
+};
+
+export {
+  fetchCompanyInfo,
+  fetchWebsiteInfoOpenAI,
+  fetchUserInfoOpenAI,
+  fetchHealthStatus,
+};

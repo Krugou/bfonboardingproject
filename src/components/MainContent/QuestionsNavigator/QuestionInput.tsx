@@ -2,10 +2,11 @@ import React, {useEffect, useRef} from 'react';
 import {QuestionItem} from '@/app/types';
 import {useUserContext} from '@/context/UserContext';
 import SpecialInput from './QuestionInput/SpecialInput';
-import TextInput from './QuestionInput/TextInput';
 import AreaInput from './QuestionInput/AreaInput';
 import ChoiceInput from './QuestionInput/ChoiceInput';
 import DropdownInput from './QuestionInput/DropdownInput';
+import BusinessIdInput from './QuestionInput/BusinessIdInput';
+import NumberInput from './QuestionInput/NumberInput';
 import useVoiceCommand from '@/utils/useVoiceCommand';
 import useCommand from '@/utils/useCommand';
 import useSpeechRecognition from '@/utils/useSpeechRecognition';
@@ -43,31 +44,24 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
     if (!userInfo) {
       return null;
     }
-    switch (question.answerType) {
+    switch (question?.answerType) {
       case 'specialInput':
         return (
           <SpecialInput
             question={question}
-            language={language as 'en' | 'fi'}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
         );
 
+      case 'firstInput':
+        return <BusinessIdInput question={question} setAnswer={setAnswer} />;
       case 'directInput':
-        return (
-          <TextInput
-            question={question}
-            language={language as 'en' | 'fi'}
-            answers={userInfo.questionAnswers}
-            setAnswer={setAnswer}
-          />
-        );
+        return <NumberInput question={question} setAnswer={setAnswer} />;
       case 'directTextArea':
         return (
           <AreaInput
             question={question}
-            language={language as 'en' | 'fi'}
             answers={userInfo.questionAnswers}
             setAnswer={setAnswer}
           />
@@ -77,7 +71,6 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
         return (
           <ChoiceInput
             question={question}
-            language={language as 'en' | 'fi'}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
           />
@@ -87,18 +80,12 @@ const QuestionInput: React.FC<QuestionInputProps> = ({question}) => {
         return (
           <ChoiceInput
             question={question}
-            language={language as 'en' | 'fi'}
             handleSingleChoiceClick={handleSingleChoiceClick}
             handleMultiChoiceClick={handleMultiChoiceClick}
           />
         );
       case 'dropdown':
-        return (
-          <DropdownInput
-            question={question}
-            language={language as 'en' | 'fi'}
-          />
-        );
+        return <DropdownInput question={question} />;
       default:
         return null;
     }

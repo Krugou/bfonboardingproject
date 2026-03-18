@@ -1,26 +1,27 @@
 import {QuestionItem} from '@/app/types';
 import React, {useEffect, useState} from 'react';
+import {useUserContext} from '@/context/UserContext';
 
 interface AreaInputProps {
   question: QuestionItem;
-  language: 'en' | 'fi';
   answers: {[key: string]: any};
   setAnswer: (questionId: string, answer: any) => void;
 }
 
 const AreaInput: React.FC<AreaInputProps> = ({
   question,
-  language,
   answers,
   setAnswer,
 }) => {
+  const {language} = useUserContext();
   const [inputValue, setInputValue] = useState<string>('');
   const [charCount, setCharCount] = useState<number>(0);
 
   useEffect(() => {
     if (answers[question.id]) {
-      setInputValue(answers[question.id]);
-      setCharCount(answers[question.id].length);
+      console.log('answers[question.id]', answers[question.id]);
+      setInputValue(answers[question.id].summary);
+      setCharCount(answers[question.id].summary.length);
     }
   }, [answers, question.id]);
 

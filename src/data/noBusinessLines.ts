@@ -1,4 +1,4 @@
-interface BusinessLine {
+export interface BusinessLine {
   code: string;
   descriptionFi: string;
   descriptionEn: string;
@@ -260,22 +260,189 @@ export const notAcceptedBusinessLines: BusinessLine[] = [
   {
     code: '0141',
     descriptionFi: 'Lypsykarjan kasvatus',
-    descriptionEn: 'Dairy cattle farming',
+    descriptionEn: 'Raising of dairy cattle',
   },
   {
     code: '01410',
     descriptionFi: 'Lypsykarjan kasvatus',
-    descriptionEn: 'Dairy cattle farming',
+    descriptionEn: 'Raising of dairy cattle',
   },
   {
     code: '0142',
     descriptionFi: 'Muun nautakarjan ja puhvelien kasvatus',
-    descriptionEn: 'Other cattle and buffalo farming',
+    descriptionEn: 'Raising of other cattle and buffaloes',
   },
   {
     code: '01420',
     descriptionFi: 'Muun nautakarjan ja puhvelien kasvatus',
-    descriptionEn: 'Other cattle and buffalo farming',
+    descriptionEn: 'Raising of other cattle and buffaloes',
+  },
+  {
+    code: '0143',
+    descriptionFi: 'Hevosten ja muiden kavioeläinten kasvatus',
+    descriptionEn: 'Raising of horses and other equines',
+  },
+  {
+    code: '01430',
+    descriptionFi: 'Hevosten ja muiden kavioeläinten kasvatus',
+    descriptionEn: 'Raising of horses and other equines',
+  },
+  {
+    code: '0144',
+    descriptionFi: 'Kameli- ja muiden kaviokkaiden kasvatus',
+    descriptionEn: 'Raising of camels and camelids',
+  },
+  {
+    code: '01440',
+    descriptionFi: 'Kameli- ja muiden kaviokkaiden kasvatus',
+    descriptionEn: 'Raising of camels and camelids',
+  },
+  {
+    code: '0145',
+    descriptionFi: 'Lampaiden ja vuohien kasvatus',
+    descriptionEn: 'Raising of sheep and goats',
+  },
+  {
+    code: '01450',
+    descriptionFi: 'Lampaiden ja vuohien kasvatus',
+    descriptionEn: 'Raising of sheep and goats',
+  },
+  {
+    code: '0146',
+    descriptionFi: 'Sikojen kasvatus',
+    descriptionEn: 'Raising of swine/pigs',
+  },
+  {
+    code: '01461',
+    descriptionFi: 'Sikojen kasvatus porsastuotantoa varten',
+    descriptionEn: 'Raising of pigs for piglets',
+  },
+  {
+    code: '01462',
+    descriptionFi: 'Sikojen kasvatus lihantuotantoa varten',
+    descriptionEn: 'Raising of pigs for meat',
+  },
+  {
+    code: '0147',
+    descriptionFi: 'Siipikarjan kasvatus',
+    descriptionEn: 'Raising of poultry',
+  },
+  {
+    code: '01471',
+    descriptionFi: 'Munantuotanto',
+    descriptionEn: 'Production of eggs',
+  },
+  {
+    code: '01472',
+    descriptionFi: 'Kanojen kasvatus',
+    descriptionEn: 'Raising of chickens',
+  },
+  {
+    code: '01479',
+    descriptionFi: 'Muun siipikarjan kasvatus',
+    descriptionEn: 'Raising of other poultry',
+  },
+  {
+    code: '0149',
+    descriptionFi: 'Muiden eläinten kasvatus',
+    descriptionEn: 'Raising of other animals',
+  },
+  {
+    code: '01491',
+    descriptionFi: 'Turkistarhaus',
+    descriptionEn: 'Fur farming',
+  },
+  {
+    code: '01492',
+    descriptionFi: 'Poronhoito',
+    descriptionEn: 'Reindeer farming',
+  },
+  {
+    code: '01499',
+    descriptionFi: 'Muu eläinten kasvatus',
+    descriptionEn: 'Other farming of animals',
+  },
+  {
+    code: '015',
+    descriptionFi: 'Sekaviljely',
+    descriptionEn: 'Mixed farming',
+  },
+  {
+    code: '0150',
+    descriptionFi: 'Sekaviljely',
+    descriptionEn: 'Mixed farming',
+  },
+  {
+    code: '01500',
+    descriptionFi: 'Sekaviljely',
+    descriptionEn: 'Mixed farming',
+  },
+  {
+    code: '016',
+    descriptionFi:
+      'Maatalouden tukipalvelut ja sadonkorjuun jälkeiset toiminnot',
+    descriptionEn:
+      'Support activities to agriculture and post-harvest crop activities',
+  },
+  {
+    code: '0161',
+    descriptionFi: 'Kasvituotannon tukipalvelut',
+    descriptionEn: 'Support activities for crop production',
+  },
+  {
+    code: '01611',
+    descriptionFi: 'Kasvien kasvattamisen tukipalvelut',
+    descriptionEn: 'Support service activities for crop growing',
+  },
+  {
+    code: '01612',
+    descriptionFi: 'Maan pitäminen maatalouskäytössä',
+    descriptionEn: 'Keeping land in agricultural condition',
+  },
+  {
+    code: '0162',
+    descriptionFi: 'Eläintuotannon tukipalvelut',
+    descriptionEn: 'Support activities for animal production',
+  },
+  {
+    code: '01620',
+    descriptionFi: 'Eläintuotannon tukipalvelut',
+    descriptionEn: 'Support activities for animal production',
+  },
+  {
+    code: '0163',
+    descriptionFi: 'Sadonkorjuun jälkeiset toiminnot',
+    descriptionEn: 'Post-harvest crop activities',
+  },
+  {
+    code: '01630',
+    descriptionFi: 'Sadonkorjuun jälkeiset toiminnot',
+    descriptionEn: 'Post-harvest crop activities',
+  },
+  {
+    code: '0164',
+    descriptionFi: 'Siementen käsittely lisäämistä varten',
+    descriptionEn: 'Seed processing for propagation',
+  },
+  {
+    code: '01640',
+    descriptionFi: 'Siementen käsittely lisäämistä varten',
+    descriptionEn: 'Seed processing for propagation',
+  },
+  {
+    code: '017',
+    descriptionFi: 'Metsästys, ansastus ja niihin liittyvät palvelut',
+    descriptionEn: 'Hunting, trapping and related service activities',
+  },
+  {
+    code: '0170',
+    descriptionFi: 'Metsästys, ansastus ja niihin liittyvät palvelut',
+    descriptionEn: 'Hunting, trapping and related service activities',
+  },
+  {
+    code: '01700',
+    descriptionFi: 'Metsästys, ansastus ja niihin liittyvät palvelut',
+    descriptionEn: 'Hunting, trapping and related service activities',
   },
   {
     code: '84301',

@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore';
 import {db} from '@/utils/firebase';
 import {toast} from 'react-toastify';
-
+import InsertMockData from '../InsertMockData';
 const AdminPanel: React.FC = () => {
   const {questions, setQuestions, language} = useUserContext();
   const [currentQuestion, setCurrentQuestion] = useState<QuestionItem | null>(
@@ -40,6 +40,8 @@ const AdminPanel: React.FC = () => {
       maxLength: 0,
       validationRegex: {en: '', fi: ''},
       specialCondition: {},
+      ttsAudio: false,
+      originalOrder: 0,
     };
     setCurrentQuestion(newQuestion);
     setIsEditing(true);
@@ -91,13 +93,16 @@ const AdminPanel: React.FC = () => {
       const {name, value} = e.target;
       const [field, subfield] = name.split('.');
       if (subfield) {
-        setCurrentQuestion({
-          ...currentQuestion,
-          [field as string]: {
-            ...currentQuestion[field as keyof QuestionItem],
-            [subfield]: value,
-          },
-        });
+        const fieldValue = currentQuestion[field as keyof QuestionItem];
+        if (typeof fieldValue === 'object' && fieldValue !== null) {
+          setCurrentQuestion({
+            ...currentQuestion,
+            [field as string]: {
+              ...(fieldValue as Record<string, unknown>),
+              [subfield]: value,
+            },
+          });
+        }
       } else {
         setCurrentQuestion({
           ...currentQuestion,
@@ -195,6 +200,7 @@ const AdminPanel: React.FC = () => {
               onClick={handleRestoreClick}>
               {language === 'en' ? 'Restore Backup' : 'Palauta varmuuskopio'}
             </button>
+            {/* <InsertMockData /> */}
           </div>
           <QuestionsFlow
             questions={questions}
